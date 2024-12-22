@@ -92,15 +92,6 @@ class _HomePageState extends State<HomePage> {
                     size: 60,
                   ),
                 ),
-                SizedBox(height: 20),
-                Text(
-                  "Bölüm-1",
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blueAccent,
-                  ),
-                ),
               ],
             ),
           ),

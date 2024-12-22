@@ -29,8 +29,28 @@ class _AppBarStatsState extends State<AppBarStats> {
     if (widget.remainingLives == 0) startCountdown();
   }
 
+  @override
+  void didUpdateWidget(covariant AppBarStats oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (widget.remainingLives == 0 && (countdownTimer == null || !countdownTimer!.isActive)) {
+      countdownSeconds = 10; // Varsayılan süre
+      startCountdown();
+    } else if (widget.remainingLives > 0 && countdownTimer != null) {
+      countdownTimer?.cancel(); // Sayaç durdurulur
+      countdownSeconds = 10; // Sayaç sıfırlanır
+    }
+  }
+
+  @override
+  void dispose() {
+    countdownTimer?.cancel();
+    super.dispose();
+  }
+
   void startCountdown() {
     countdownTimer?.cancel(); // Önceki sayaç varsa iptal et
+    
     countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         if (countdownSeconds > 0) {
@@ -41,21 +61,6 @@ class _AppBarStatsState extends State<AppBarStats> {
         }
       });
     });
-  }
-
-  @override
-  void didUpdateWidget(covariant AppBarStats oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.remainingLives == 0 && countdownTimer == null) {
-      countdownSeconds = 10;
-      startCountdown();
-    }
-  }
-
-  @override
-  void dispose() {
-    countdownTimer?.cancel();
-    super.dispose();
   }
 
   String formatCountdown(int seconds) {

@@ -415,7 +415,43 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver {
           shuffleLetters();
         } else {
           // Bölüm tamamlandığında yapılacak işlemler
-          goToNextSection(); // Bir sonraki bölüme geç
+          showNextLevelDialog(
+            context,
+            currentMainSection,
+            currentSubSection,
+            () {
+              setState(() {
+                String? nextSubSection =
+                    getNextSubSection(currentMainSection, currentSubSection);
+                if (nextSubSection != null) {
+                  currentSubSection = nextSubSection;
+                } else {
+                  List<String> mainSections = puzzleSections.keys.toList();
+                  int currentMainIndex = mainSections.indexOf(currentMainSection);
+                  if (currentMainIndex + 1 < mainSections.length) {
+                    currentMainSection = mainSections[currentMainIndex + 1];
+                    currentSubSection =
+                        puzzleSections[currentMainSection]!.keys.first;
+                  } else {
+                    // Tüm bölümler tamamlandı
+                    return;
+                  }
+                }
+                currentIndex = 0;
+                correctWords.clear();
+                selectedLetters.clear();
+                visitedIndexes.clear();
+                linePoints.clear();
+                shuffledLetters = puzzleSections[currentMainSection]![currentSubSection]![currentIndex]['word']!.split('');
+                shuffleLetters();
+              });
+            },
+            () {
+              Navigator.of(context).pop();
+            },
+            incrementScore,
+            saveGameData,
+          );
         }
       } else {
         remainingLives = max(0, remainingLives - 1); // Hakları azalt, sıfırın altına düşmesine izin verme
@@ -443,7 +479,6 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver {
       }
     });
   }
-
 
   void triggerShakeEffect() {
     setState(() {
@@ -525,6 +560,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver {
   void gainExtraLife() {
     setState(() {
       remainingLives++; // Kullanıcıya bir hak daha ekle
+      saveGameData();
     });
   }
 
