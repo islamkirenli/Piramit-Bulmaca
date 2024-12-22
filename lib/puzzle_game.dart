@@ -406,6 +406,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver {
           shuffleLetters();
         } else {
           // Bölüm tamamlandığında yapılacak işlemler
+          goToNextSection(); // Bir sonraki bölüme geç
         }
       } else {
         remainingLives = max(0, remainingLives - 1); // Hakları azalt, sıfırın altına düşmesine izin verme

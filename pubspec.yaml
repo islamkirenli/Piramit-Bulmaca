@@ -41,6 +41,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_cube: ^0.1.1
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -66,7 +67,9 @@ flutter:
   - assets/animations/coin_up_animation.json
   - assets/animations/coin_flip_animation.json
   - assets/images/piramit_background.jpg
-  - assets/images/game_background.webp
+  - assets/images/game_background.webp   
+  - assets/images/game_piramit.png
+
 
   
   #   - images/a_dot_ham.jpeg
