@@ -55,7 +55,16 @@ class _HomePageState extends State<HomePage> {
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             elevation: 0,
-            title: AppBarStats(score: score, remainingLives: remainingLives),
+            title: AppBarStats(
+              score: score,
+              remainingLives: remainingLives,
+              onTimerEnd: () {
+                setState(() {
+                  remainingLives = 5; // Hakları sıfırla
+                  saveGameData();
+                });
+              },
+            ),
           ),
           body: Center(
             child: Column(
@@ -150,5 +159,11 @@ class _HomePageState extends State<HomePage> {
       score = prefs.getInt('score') ?? 0;
       remainingLives = prefs.getInt('remainingLives') ?? 5;
     });
+  }
+
+  Future<void> saveGameData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('score', score); // Skoru kaydeder
+    await prefs.setInt('remainingLives', remainingLives); // Kalan hakları kaydeder
   }
 }

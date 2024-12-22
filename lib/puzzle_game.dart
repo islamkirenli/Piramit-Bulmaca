@@ -85,7 +85,16 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           centerTitle: false,
-          title: AppBarStats(score: score, remainingLives: remainingLives),
+          title: AppBarStats(
+              score: score,
+              remainingLives: remainingLives,
+              onTimerEnd: () {
+                setState(() {
+                  remainingLives = 5; // Hakları sıfırla
+                  saveGameData();
+                });
+              },
+            ),
           actions: [
             IconButton(
               icon: Icon(Icons.settings, size: 28), // Ayarlar simgesi
