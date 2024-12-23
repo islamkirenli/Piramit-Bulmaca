@@ -80,26 +80,35 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                ElevatedButton(
-                  onPressed: () {
-                    // Oyun ekranına geçiş
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => PuzzleGame()),
+                ValueListenableBuilder<int>(
+                  valueListenable: GlobalProperties.remainingLives,
+                  builder: (context, remainingLives, _) {
+                    return ElevatedButton(
+                      onPressed: remainingLives > 0
+                          ? () {
+                              // Oyun ekranına geçiş
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => PuzzleGame()),
+                              );
+                            }
+                          : null, // Eğer hak yoksa buton devre dışı
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.all(40),
+                        shape: CircleBorder(),
+                        backgroundColor: remainingLives > 0
+                            ? Colors.blueAccent
+                            : Colors.grey, // Aktif değilse gri
+                        elevation: 5,
+                        shadowColor: Colors.black.withOpacity(0.4),
+                      ),
+                      child: Icon(
+                        Icons.play_arrow,
+                        color: Colors.white,
+                        size: 60,
+                      ),
                     );
                   },
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.all(40),
-                    shape: CircleBorder(),
-                    backgroundColor: Colors.blueAccent,
-                    elevation: 5,
-                    shadowColor: Colors.black.withOpacity(0.4),
-                  ),
-                  child: Icon(
-                    Icons.play_arrow,
-                    color: Colors.white,
-                    size: 60,
-                  ),
                 ),
               ],
             ),
@@ -168,5 +177,4 @@ class _HomePageState extends State<HomePage> {
     GlobalProperties.countdownSeconds.value = prefs.getInt('countdownSeconds') ?? 15;
     GlobalProperties.isTimerRunning.value = prefs.getBool('isTimerRunning') ?? false;
   }
-
 }
