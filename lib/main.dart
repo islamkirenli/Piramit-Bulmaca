@@ -28,15 +28,26 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  bool isDataLoaded = false;
 
   @override
   void initState() {
     super.initState();
-    loadGameData();
+    loadGameData().then((_) {
+      setState(() {
+        isDataLoaded = true;
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    if (!isDataLoaded) {
+      return Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
     return Stack(
       children: [
         // Arka plan görseli
@@ -58,6 +69,7 @@ class _HomePageState extends State<HomePage> {
               onTimerEnd: () {
                 setState(() {
                   GlobalProperties.remainingLives.value = 3; // Hakları sıfırla
+                  GlobalProperties.countdownSeconds.value = 15;
                   saveGameData();
                 });
               },
@@ -141,17 +153,20 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Future<void> loadGameData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      GlobalProperties.score.value = prefs.getInt('score') ?? 0;
-      GlobalProperties.remainingLives.value = prefs.getInt('remainingLives') ?? 3;
-    });
-  }
-
   Future<void> saveGameData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('score', GlobalProperties.score.value); // Skoru kaydeder
-    await prefs.setInt('remainingLives', GlobalProperties.remainingLives.value); // Kalan hakları kaydeder
+    await prefs.setInt('score', GlobalProperties.score.value);
+    await prefs.setInt('remainingLives', GlobalProperties.remainingLives.value);
+    await prefs.setInt('countdownSeconds', GlobalProperties.countdownSeconds.value);
+    await prefs.setBool('isTimerRunning', GlobalProperties.isTimerRunning.value);
   }
+
+  Future<void> loadGameData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    GlobalProperties.score.value = prefs.getInt('score') ?? 0;
+    GlobalProperties.remainingLives.value = prefs.getInt('remainingLives') ?? 3;
+    GlobalProperties.countdownSeconds.value = prefs.getInt('countdownSeconds') ?? 15;
+    GlobalProperties.isTimerRunning.value = prefs.getBool('isTimerRunning') ?? false;
+  }
+
 }

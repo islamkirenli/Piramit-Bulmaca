@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'dart:async';
 import 'global_properties.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AppBarStats extends StatefulWidget {
   final VoidCallback onTimerEnd; // Sayaç bittiğinde çağrılacak fonksiyon
@@ -21,7 +22,11 @@ class _AppBarStatsState extends State<AppBarStats> {
   @override
   void initState() {
     super.initState();
-    if (GlobalProperties.remainingLives.value == 0) startCountdown();
+    if (GlobalProperties.remainingLives.value == 0 &&
+        GlobalProperties.countdownSeconds.value > 0 &&
+        !GlobalProperties.isTimerRunning.value) {
+      startCountdown(); // Sayaç başlamış değilse başlat
+    }
   }
 
   @override
@@ -39,19 +44,25 @@ class _AppBarStatsState extends State<AppBarStats> {
   @override
   void dispose() {
     countdownTimer?.cancel();
+    GlobalProperties.isTimerRunning.value = false;
     super.dispose();
   }
 
   void startCountdown() {
-    countdownTimer?.cancel(); // Önceki sayaç varsa iptal et
-    
+    if (countdownTimer != null && countdownTimer!.isActive) {
+      return; // Zaten çalışıyorsa bir daha başlatma
+    }
+
+    GlobalProperties.isTimerRunning.value = true; // Timer başlatılıyor
     countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         if (GlobalProperties.countdownSeconds.value > 0) {
           GlobalProperties.countdownSeconds.value--;
+          saveGameData(); // Her değişiklikte kaydet
         } else {
           timer.cancel();
-          widget.onTimerEnd(); // Sayaç bittiğinde kalan hakları yenile
+          GlobalProperties.isTimerRunning.value = false; // Timer durduruluyor
+          widget.onTimerEnd();
         }
       });
     });
@@ -61,6 +72,13 @@ class _AppBarStatsState extends State<AppBarStats> {
     final int minutes = seconds ~/ 60;
     final int remainingSeconds = seconds % 60;
     return '${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
+  }
+
+  Future<void> saveGameData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('score', GlobalProperties.score.value); // Skoru kaydeder
+    await prefs.setInt('remainingLives', GlobalProperties.remainingLives.value); // Kalan hakları kaydeder
+    await prefs.setInt('countdownSeconds', GlobalProperties.countdownSeconds.value); // Sayaç değerini kaydeder
   }
 
   @override

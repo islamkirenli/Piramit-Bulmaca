@@ -58,24 +58,53 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver {
   bool showHintLetter = false; // İpucu harfi görünürlük durumu
   List<int> revealedIndexes = []; // Açılan harflerin indekslerini saklar
   List<int> revealedIndexesForCurrentWord = []; // Mevcut kelimenin açılan harfleri
+  bool isDataLoaded = false; // Veri yüklenme durumu
 
 
   @override
   void initState() {
     super.initState();
     loadInitialSection();
-    loadGameData(); // Coin ve kalan hakları yükler
+    loadGameData().then((_) {
+      setState(() {
+        isDataLoaded = true;
+      });
+      if (GlobalProperties.remainingLives.value == 0 &&
+          GlobalProperties.countdownSeconds.value > 0 &&
+          !GlobalProperties.isTimerRunning.value) {
+        // Timer henüz çalışmıyorsa başlat
+        startCountdownInAppBarStats();
+      }
+    });
   }
 
+  void startCountdownInAppBarStats() {
+    // AppBarStats içindeki sayaç yönetimi burada tetikleniyor
+    AppBarStats(onTimerEnd: () {
+      setState(() {
+        GlobalProperties.remainingLives.value = 3;
+        GlobalProperties.countdownSeconds.value = 15;
+        saveGameData();
+      });
+    }).createState().startCountdown();
+  }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    saveGameData(); // Oyun kapatıldığında veriyi kaydet
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    if (!isDataLoaded) {
+      // Veri yüklenirken bir yüklenme animasyonu göster
+      return Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
     return WillPopScope(
       onWillPop: () async {
         return false;
@@ -88,6 +117,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver {
               onTimerEnd: () {
                 setState(() {
                   GlobalProperties.remainingLives.value = 3; // Hakları sıfırla
+                  GlobalProperties.countdownSeconds.value = 15; // Sayaç sıfırlanır
                   saveGameData();
                 });
               },
@@ -660,19 +690,22 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver {
     });
   }
 
-  Future<void> loadGameData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      GlobalProperties.score.value = prefs.getInt('score') ?? 0; // Kaydedilmiş skor, yoksa 0
-      GlobalProperties.remainingLives.value = prefs.getInt('remainingLives') ?? 3; // Kaydedilmiş hak, yoksa 3
-    });
-  }
-
   Future<void> saveGameData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('score', GlobalProperties.score.value); // Skoru kaydeder
-    await prefs.setInt('remainingLives', GlobalProperties.remainingLives.value); // Kalan hakları kaydeder
+    await prefs.setInt('score', GlobalProperties.score.value);
+    await prefs.setInt('remainingLives', GlobalProperties.remainingLives.value);
+    await prefs.setInt('countdownSeconds', GlobalProperties.countdownSeconds.value);
+    await prefs.setBool('isTimerRunning', GlobalProperties.isTimerRunning.value);
   }
+
+  Future<void> loadGameData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    GlobalProperties.score.value = prefs.getInt('score') ?? 0;
+    GlobalProperties.remainingLives.value = prefs.getInt('remainingLives') ?? 3;
+    GlobalProperties.countdownSeconds.value = prefs.getInt('countdownSeconds') ?? 15;
+    GlobalProperties.isTimerRunning.value = prefs.getBool('isTimerRunning') ?? false;
+  }
+
 
   void showHint() {
     setState(() {
