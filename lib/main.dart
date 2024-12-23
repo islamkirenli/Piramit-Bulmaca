@@ -4,6 +4,7 @@ import 'settings.dart';
 import 'sections.dart';
 import 'app_bar_stats.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'global_properties.dart';
 
 void main() {
   runApp(MyApp());
@@ -27,8 +28,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int score = 0; // Varsayılan değer
-  int remainingLives = 5; // Varsayılan değer
 
   @override
   void initState() {
@@ -56,11 +55,9 @@ class _HomePageState extends State<HomePage> {
             backgroundColor: Colors.transparent,
             elevation: 0,
             title: AppBarStats(
-              score: score,
-              remainingLives: remainingLives,
               onTimerEnd: () {
                 setState(() {
-                  remainingLives = 5; // Hakları sıfırla
+                  GlobalProperties.remainingLives.value = 3; // Hakları sıfırla
                   saveGameData();
                 });
               },
@@ -147,14 +144,14 @@ class _HomePageState extends State<HomePage> {
   Future<void> loadGameData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      score = prefs.getInt('score') ?? 0;
-      remainingLives = prefs.getInt('remainingLives') ?? 5;
+      GlobalProperties.score.value = prefs.getInt('score') ?? 0;
+      GlobalProperties.remainingLives.value = prefs.getInt('remainingLives') ?? 3;
     });
   }
 
   Future<void> saveGameData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('score', score); // Skoru kaydeder
-    await prefs.setInt('remainingLives', remainingLives); // Kalan hakları kaydeder
+    await prefs.setInt('score', GlobalProperties.score.value); // Skoru kaydeder
+    await prefs.setInt('remainingLives', GlobalProperties.remainingLives.value); // Kalan hakları kaydeder
   }
 }

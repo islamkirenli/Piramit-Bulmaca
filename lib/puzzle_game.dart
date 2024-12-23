@@ -9,6 +9,7 @@ import 'dynamic_polygon_painter.dart'; // Çokgen çizim dosyası
 import 'package:shared_preferences/shared_preferences.dart';
 import 'app_bar_stats.dart'; // AppBarStats bileşenini dahil edin
 import 'settings.dart';
+import 'global_properties.dart';
 
 
 void main() {
@@ -40,8 +41,6 @@ class PuzzleGame extends StatefulWidget {
 class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver {
   int currentPuzzle = 0;
   int currentIndex = 0;
-  int score = 0;
-  int remainingLives = 5;
   String feedbackMessage = '';
   List<String> shuffledLetters = [];
   List<String> selectedLetters = [];
@@ -86,11 +85,9 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver {
           automaticallyImplyLeading: false,
           centerTitle: false,
           title: AppBarStats(
-              score: score,
-              remainingLives: remainingLives,
               onTimerEnd: () {
                 setState(() {
-                  remainingLives = 5; // Hakları sıfırla
+                  GlobalProperties.remainingLives.value = 3; // Hakları sıfırla
                   saveGameData();
                 });
               },
@@ -153,7 +150,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver {
                     
                     return GestureDetector(
                       onTap: () {
-                        if (remainingLives == 0) {
+                        if (GlobalProperties.remainingLives.value == 0) {
                           setState(() {
                             feedbackMessage = "Kalan hak yok! Ekstra hak almanız gerekiyor.";
                           });
@@ -372,7 +369,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver {
   }
 
   void onDragEnd() {
-    if (remainingLives == 0) {
+    if (GlobalProperties.remainingLives.value == 0) {
       // Eğer hak sıfırsa kullanıcı oynayamaz
       setState(() {
         feedbackMessage = "Kalan hak yok! Ekstra hak almanız gerekiyor.";
@@ -454,9 +451,8 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver {
           );
         }
       } else {
-        remainingLives = max(0, remainingLives - 1); // Hakları azalt, sıfırın altına düşmesine izin verme
+        GlobalProperties.remainingLives.value = max(0, GlobalProperties.remainingLives.value - 1); // Hakları azalt, sıfırın altına düşmesine izin verme
         saveGameData();
-        feedbackMessage = "Yanlış tahmin! Kalan hak: $remainingLives";
         triggerShakeEffect();
         Future.delayed(Duration(seconds: 1), () {
           setState(() {
@@ -466,7 +462,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver {
             linePoints.clear();
           });
         });
-        if (remainingLives == 0) {
+        if (GlobalProperties.remainingLives.value == 0) {
           showGameOverDialog(
             context,
             resetGame,
@@ -510,26 +506,23 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver {
   }
 
   void checkAnswer(String selectedWord, String correctWord) {
-    if (remainingLives == 0) {
+    if (GlobalProperties.remainingLives.value == 0) {
       // Hak sıfırsa oynanamaz
       setState(() {
-        feedbackMessage = "Kalan hak yok! Ekstra hak almanız gerekiyor.";
       });
       return;
     }
 
     if (selectedWord == correctWord) {
       setState(() {
-        feedbackMessage = "Doğru tahmin!";
       });
     } else {
       setState(() {
-        remainingLives = max(0, remainingLives - 1); // Sıfırın altına düşmesine izin verme
+        GlobalProperties.remainingLives.value = max(0, GlobalProperties.remainingLives.value - 1); // Sıfırın altına düşmesine izin verme
         saveGameData();
-        feedbackMessage = "Yanlış tahmin! Kalan hak: $remainingLives";
       });
 
-      if (remainingLives == 0) {
+      if (GlobalProperties.remainingLives.value == 0) {
         showGameOverDialog(
           context,
           resetGame,
@@ -548,7 +541,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver {
     setState(() {
       currentPuzzle = 0; // İlk bölüme dön
       currentIndex = 0; // İlk kelimeye dön
-      remainingLives = 5; // Kullanıcıya tekrar 5 hak ver
+      GlobalProperties.remainingLives.value = 3; // Kullanıcıya tekrar 5 hak ver
       feedbackMessage = ''; // Geri bildirim mesajını temizle
       selectedLetters.clear(); // Seçilen harfleri temizle
       visitedLetters.clear();
@@ -559,7 +552,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver {
   /// Kullanıcıya bir hak daha veren fonksiyon
   void gainExtraLife() {
     setState(() {
-      remainingLives++; // Kullanıcıya bir hak daha ekle
+      GlobalProperties.remainingLives.value++; // Kullanıcıya bir hak daha ekle
       saveGameData();
     });
   }
@@ -656,7 +649,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver {
     Timer.periodic(Duration(milliseconds: 200), (timer) {
       setState(() {
         if (currentStep < steps) {
-          score += stepAmount; // Skoru adım adım artır
+          GlobalProperties.score.value += stepAmount; // Skoru adım adım artır
           currentStep++;
         } else {
           // Timer'ı durdur
@@ -670,15 +663,15 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver {
   Future<void> loadGameData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      score = prefs.getInt('score') ?? 0; // Kaydedilmiş skor, yoksa 0
-      remainingLives = prefs.getInt('remainingLives') ?? 5; // Kaydedilmiş hak, yoksa 3
+      GlobalProperties.score.value = prefs.getInt('score') ?? 0; // Kaydedilmiş skor, yoksa 0
+      GlobalProperties.remainingLives.value = prefs.getInt('remainingLives') ?? 3; // Kaydedilmiş hak, yoksa 3
     });
   }
 
   Future<void> saveGameData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('score', score); // Skoru kaydeder
-    await prefs.setInt('remainingLives', remainingLives); // Kalan hakları kaydeder
+    await prefs.setInt('score', GlobalProperties.score.value); // Skoru kaydeder
+    await prefs.setInt('remainingLives', GlobalProperties.remainingLives.value); // Kalan hakları kaydeder
   }
 
   void showHint() {

@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'dart:async';
+import 'global_properties.dart';
 
 class AppBarStats extends StatefulWidget {
-  final int score;
-  final int remainingLives;
   final VoidCallback onTimerEnd; // Sayaç bittiğinde çağrılacak fonksiyon
 
   const AppBarStats({
     Key? key,
-    required this.score,
-    required this.remainingLives,
     required this.onTimerEnd,
   }) : super(key: key);
 
@@ -19,26 +16,23 @@ class AppBarStats extends StatefulWidget {
 }
 
 class _AppBarStatsState extends State<AppBarStats> {
-  late int countdownSeconds;
   Timer? countdownTimer;
 
   @override
   void initState() {
     super.initState();
-    countdownSeconds = 10; // Sayaç süresi
-    if (widget.remainingLives == 0) startCountdown();
+    if (GlobalProperties.remainingLives.value == 0) startCountdown();
   }
 
   @override
   void didUpdateWidget(covariant AppBarStats oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (widget.remainingLives == 0 && (countdownTimer == null || !countdownTimer!.isActive)) {
-      countdownSeconds = 10; // Varsayılan süre
+    if (GlobalProperties.remainingLives.value == 0 && (countdownTimer == null || !countdownTimer!.isActive)) {
       startCountdown();
-    } else if (widget.remainingLives > 0 && countdownTimer != null) {
+    } else if (GlobalProperties.remainingLives.value > 0 && countdownTimer != null) {
       countdownTimer?.cancel(); // Sayaç durdurulur
-      countdownSeconds = 10; // Sayaç sıfırlanır
+      GlobalProperties.countdownSeconds.value = 15; // Sayaç sıfırlanır
     }
   }
 
@@ -53,8 +47,8 @@ class _AppBarStatsState extends State<AppBarStats> {
     
     countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
-        if (countdownSeconds > 0) {
-          countdownSeconds--;
+        if (GlobalProperties.countdownSeconds.value > 0) {
+          GlobalProperties.countdownSeconds.value--;
         } else {
           timer.cancel();
           widget.onTimerEnd(); // Sayaç bittiğinde kalan hakları yenile
@@ -100,7 +94,7 @@ class _AppBarStatsState extends State<AppBarStats> {
                 ),
               ),
               Text(
-                '  ${widget.score}',
+                '  ${GlobalProperties.score.value}',
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -134,7 +128,7 @@ class _AppBarStatsState extends State<AppBarStats> {
                 size: 20,
               ),
               Text(
-                '  ${widget.remainingLives}',
+                '  ${GlobalProperties.remainingLives.value}',
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -146,7 +140,7 @@ class _AppBarStatsState extends State<AppBarStats> {
         ),
         const SizedBox(width: 5),
         // Sayaç (yalnızca kalan haklar 0 ise gösterilir)
-        if (widget.remainingLives == 0)
+        if (GlobalProperties.remainingLives.value == 0)
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             decoration: BoxDecoration(
@@ -169,7 +163,7 @@ class _AppBarStatsState extends State<AppBarStats> {
                   size: 20,
                 ),
                 Text(
-                  '  ${formatCountdown(countdownSeconds)}',
+                  '  ${formatCountdown(GlobalProperties.countdownSeconds.value)}',
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,

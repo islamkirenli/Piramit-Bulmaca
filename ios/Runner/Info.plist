@@ -45,5 +45,23 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>Bildirim göndermek için izin gerekiyor.</string>
+	<key>UIRequiresFullScreen</key>
+	<true/>
+	<key>NSLocalNotificationsUsageDescription</key>
+	<string>Bildirim göndermek için izin gerekiyor.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Kameraya erişim gerekli.</string>
 </dict>
 </plist>
