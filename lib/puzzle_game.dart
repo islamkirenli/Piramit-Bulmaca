@@ -5,11 +5,11 @@ import 'game_over_dialog.dart'; // Pop-up için ayrı dosya
 import 'puzzle_data.dart'; // puzzleData'yı içe aktar
 import 'next_level_dialog.dart';
 import 'section_colors.dart'; // Renk haritası dosyasını dahil edin
-import 'dynamic_polygon_painter.dart'; // Çokgen çizim dosyası
 import 'package:shared_preferences/shared_preferences.dart';
 import 'app_bar_stats.dart'; // AppBarStats bileşenini dahil edin
 import 'settings.dart';
 import 'global_properties.dart';
+import 'animated_polygon.dart';
 
 
 void main() {
@@ -59,6 +59,10 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver {
   List<int> revealedIndexes = []; // Açılan harflerin indekslerini saklar
   List<int> revealedIndexesForCurrentWord = []; // Mevcut kelimenin açılan harfleri
   bool isDataLoaded = false; // Veri yüklenme durumu
+
+  final GlobalKey<AnimatedPolygonWidgetState> _polygonKey =
+    GlobalKey<AnimatedPolygonWidgetState>();
+
 
 
   @override
@@ -298,42 +302,15 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver {
                   onLetterDrag(localPosition);
                 },
                 onPanEnd: (_) => onDragEnd(),
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    CustomPaint(
-                      size: Size(300, 300),
-                      painter: DynamicPolygonPainter(
-                        letters: shuffledLetters,
-                        linePoints: linePoints,
-                        temporaryLineEnd: temporaryLineEnd,
-                        polygonFillColor:
-                            sectionColors[currentPuzzle]?['inside'] ??
-                                Colors.grey,
-                        polygonStrokeColor:
-                            sectionColors[currentPuzzle]?['border'] ??
-                                Colors.black,
-                        polygonStrokeWidth: 2.0,
-                      ),
-                    ),
-                    Positioned(
-                      child: GestureDetector(
-                        onTap: shuffleLetters,
-                        child: Container(
-                          width: 50,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                          ),
-                          child: Icon(
-                            Icons.shuffle,
-                            color: Colors.white,
-                            size: 30,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                child: AnimatedPolygonWidget(
+                  key: _polygonKey,
+                  initialSides: shuffledLetters.length.toDouble(),
+                  size: 300,
+                  color: Colors.green,
+                  letters: shuffledLetters,
+                  selectedIndexes: visitedIndexes, // Seçilen harflerin indeksleri
+                  linePoints: linePoints,
+                  temporaryLineEnd: temporaryLineEnd,
                 ),
               ),
             ),
@@ -400,7 +377,6 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver {
 
   void onDragEnd() {
     if (GlobalProperties.remainingLives.value == 0) {
-      // Eğer hak sıfırsa kullanıcı oynayamaz
       setState(() {
         feedbackMessage = "Kalan hak yok! Ekstra hak almanız gerekiyor.";
       });
@@ -431,6 +407,8 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver {
         if (!correctWords.contains(correctWord)) {
           correctWords.add(correctWord);
         }
+
+        _polygonKey.currentState?.reduceSides(); // Kenar sayısını azalt
         if (currentIndex < puzzleSections[currentMainSection]![currentSubSection]!.length - 1) {
           currentIndex++;
           revealedIndexesForCurrentWord.clear();
@@ -441,29 +419,21 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver {
               puzzleSections[currentMainSection]![currentSubSection]![currentIndex]['word']!.split('');
           shuffleLetters();
         } else {
-          // Bölüm tamamlandığında yapılacak işlemler
-          showNextLevelDialog(
-            context,
-            currentMainSection,
-            currentSubSection,
-            () {
-              setState(() {
-                String? nextSubSection =
-                    getNextSubSection(currentMainSection, currentSubSection);
-                if (nextSubSection != null) {
-                  currentSubSection = nextSubSection;
-                } else {
-                  List<String> mainSections = puzzleSections.keys.toList();
-                  int currentMainIndex = mainSections.indexOf(currentMainSection);
-                  if (currentMainIndex + 1 < mainSections.length) {
-                    currentMainSection = mainSections[currentMainIndex + 1];
-                    currentSubSection =
-                        puzzleSections[currentMainSection]!.keys.first;
-                  } else {
-                    // Tüm bölümler tamamlandı
-                    return;
-                  }
-                }
+          // Bölüm tamamlandı
+          if (correctWords.length ==
+              puzzleSections[currentMainSection]![currentSubSection]!.length) {
+            int maxWordLength = puzzleSections[currentMainSection]![currentSubSection]!
+                .map((wordData) => wordData['word']!.length)
+                .reduce((a, b) => a > b ? a : b);
+
+            // Çokgen kenarlarını güncellemek için bir callback'e bırak
+            showNextLevelDialog(
+              context,
+              currentMainSection,
+              currentSubSection,
+              () {
+                _polygonKey.currentState?.setSides(maxWordLength.toDouble());
+                goToNextSection();
                 currentIndex = 0;
                 correctWords.clear();
                 selectedLetters.clear();
@@ -471,17 +441,17 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver {
                 linePoints.clear();
                 shuffledLetters = puzzleSections[currentMainSection]![currentSubSection]![currentIndex]['word']!.split('');
                 shuffleLetters();
-              });
-            },
-            () {
-              Navigator.of(context).pop();
-            },
-            incrementScore,
-            saveGameData,
-          );
+              },
+              () {
+                Navigator.of(context).pop();
+              },
+              incrementScore,
+              saveGameData,
+            );
+          }
         }
       } else {
-        GlobalProperties.remainingLives.value = max(0, GlobalProperties.remainingLives.value - 1); // Hakları azalt, sıfırın altına düşmesine izin verme
+        GlobalProperties.remainingLives.value = max(0, GlobalProperties.remainingLives.value - 1);
         saveGameData();
         triggerShakeEffect();
         Future.delayed(Duration(seconds: 1), () {
@@ -505,6 +475,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver {
       }
     });
   }
+
 
   void triggerShakeEffect() {
     setState(() {
@@ -612,7 +583,15 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver {
         selectedLetters.clear();
         visitedIndexes.clear();
         linePoints.clear();
-        shuffledLetters = puzzleSections[currentMainSection]![currentSubSection]![currentIndex]['word']!.split('');
+
+        // Yeni alt bölümdeki en uzun kelimeyi al ve çokgenin kenar sayısını güncelle
+        int maxWordLength = puzzleSections[currentMainSection]![currentSubSection]!
+            .map((wordData) => wordData['word']!.length)
+            .reduce((a, b) => a > b ? a : b);
+        _polygonKey.currentState?.setSides(maxWordLength.toDouble());
+
+        shuffledLetters =
+            puzzleSections[currentMainSection]![currentSubSection]![currentIndex]['word']!.split('');
         shuffledLetters.shuffle(); // Harfleri karıştır
       });
     } else {
@@ -628,7 +607,15 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver {
           selectedLetters.clear();
           visitedIndexes.clear();
           linePoints.clear();
-          shuffledLetters = puzzleSections[currentMainSection]![currentSubSection]![currentIndex]['word']!.split('');
+
+          // Yeni ana bölümdeki en uzun kelimeyi al ve çokgenin kenar sayısını güncelle
+          int maxWordLength = puzzleSections[currentMainSection]![currentSubSection]!
+              .map((wordData) => wordData['word']!.length)
+              .reduce((a, b) => a > b ? a : b);
+          _polygonKey.currentState?.setSides(maxWordLength.toDouble());
+
+          shuffledLetters =
+              puzzleSections[currentMainSection]![currentSubSection]![currentIndex]['word']!.split('');
           shuffledLetters.shuffle(); // Harfleri karıştır
         });
       }
@@ -706,75 +693,61 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver {
     GlobalProperties.isTimerRunning.value = prefs.getBool('isTimerRunning') ?? false;
   }
 
-
   void showHint() {
     setState(() {
       String currentWord =
           puzzleSections[currentMainSection]![currentSubSection]![currentIndex]['word']!;
 
-      // Henüz açılmamış harflerin indekslerini al
       List<int> unopenedIndexes = List.generate(currentWord.length, (i) => i)
           .where((i) => !revealedIndexesForCurrentWord.contains(i))
           .toList();
 
       if (unopenedIndexes.isNotEmpty) {
-        // Rastgele bir indeksi seç
         int randomIndex = unopenedIndexes[Random().nextInt(unopenedIndexes.length)];
-        revealedIndexesForCurrentWord.add(randomIndex); // Harfi aç
+        revealedIndexesForCurrentWord.add(randomIndex);
       }
 
-      // Tüm harfler açıldıysa kelimeyi doğru kabul et
       if (revealedIndexesForCurrentWord.length == currentWord.length) {
         feedbackMessage = "Doğru tahmin!";
         if (!correctWords.contains(currentWord)) {
           correctWords.add(currentWord);
         }
 
-        // Bir sonraki kelimeye geçiş
+        _polygonKey.currentState?.reduceSides(); // Kenar sayısını azalt
+
         if (currentIndex < puzzleSections[currentMainSection]![currentSubSection]!.length - 1) {
           currentIndex++;
-          revealedIndexesForCurrentWord.clear(); // Açılmış ipuçlarını sıfırla
+          revealedIndexesForCurrentWord.clear();
           selectedLetters.clear();
-          visitedIndexes.clear(); // Ziyaret edilen indeksleri sıfırla
+          visitedIndexes.clear();
           linePoints.clear();
           shuffledLetters =
               puzzleSections[currentMainSection]![currentSubSection]![currentIndex]['word']!.split('');
-          shuffleLetters(); // Yeni kelimeyi karıştır
+          shuffleLetters();
         } else {
-          // Bölüm tamamlandığında yapılacak işlemler
+          revealedIndexesForCurrentWord.clear();
+          // Bölüm tamamlandı
           if (correctWords.length ==
               puzzleSections[currentMainSection]![currentSubSection]!.length) {
+            int maxWordLength = puzzleSections[currentMainSection]![currentSubSection]!
+                .map((wordData) => wordData['word']!.length)
+                .reduce((a, b) => a > b ? a : b);
+
+            // Çokgen kenarlarını güncellemek için bir callback'e bırak
             showNextLevelDialog(
               context,
               currentMainSection,
               currentSubSection,
               () {
-                setState(() {
-                  String? nextSubSection =
-                      getNextSubSection(currentMainSection, currentSubSection);
-                  if (nextSubSection != null) {
-                    currentSubSection = nextSubSection;
-                  } else {
-                    List<String> mainSections = puzzleSections.keys.toList();
-                    int currentMainIndex = mainSections.indexOf(currentMainSection);
-                    if (currentMainIndex + 1 < mainSections.length) {
-                      currentMainSection = mainSections[currentMainIndex + 1];
-                      currentSubSection =
-                          puzzleSections[currentMainSection]!.keys.first;
-                    } else {
-                      // Tüm bölümler tamamlandı
-                      return;
-                    }
-                  }
-
-                  currentIndex = 0;
-                  correctWords.clear();
-                  selectedLetters.clear();
-                  visitedIndexes.clear();
-                  linePoints.clear();
-                  shuffledLetters = puzzleSections[currentMainSection]![currentSubSection]![currentIndex]['word']!.split('');
-                  shuffleLetters();
-                });
+                _polygonKey.currentState?.setSides(maxWordLength.toDouble());
+                goToNextSection();
+                currentIndex = 0;
+                correctWords.clear();
+                selectedLetters.clear();
+                visitedIndexes.clear();
+                linePoints.clear();
+                shuffledLetters = puzzleSections[currentMainSection]![currentSubSection]![currentIndex]['word']!.split('');
+                shuffleLetters();
               },
               () {
                 Navigator.of(context).pop();
@@ -787,4 +760,5 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver {
       }
     });
   }
+
 }
