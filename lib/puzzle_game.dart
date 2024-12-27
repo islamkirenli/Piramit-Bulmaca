@@ -302,15 +302,37 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver {
                   onLetterDrag(localPosition);
                 },
                 onPanEnd: (_) => onDragEnd(),
-                child: AnimatedPolygonWidget(
-                  key: _polygonKey,
-                  initialSides: shuffledLetters.length.toDouble(),
-                  size: 300,
-                  color: Colors.green,
-                  letters: shuffledLetters,
-                  selectedIndexes: visitedIndexes, // Seçilen harflerin indeksleri
-                  linePoints: linePoints,
-                  temporaryLineEnd: temporaryLineEnd,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    AnimatedPolygonWidget(
+                      key: _polygonKey,
+                      initialSides: shuffledLetters.length.toDouble(),
+                      size: 300,
+                      color: Colors.green,
+                      letters: shuffledLetters,
+                      selectedIndexes: visitedIndexes, // Seçilen harflerin indeksleri
+                      linePoints: linePoints,
+                      temporaryLineEnd: temporaryLineEnd,
+                    ),
+                    Positioned(
+                      child: GestureDetector(
+                        onTap: shuffleLetters,
+                        child: Container(
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            Icons.shuffle,
+                            color: Colors.white,
+                            size: 30,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -760,5 +782,4 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver {
       }
     });
   }
-
 }
