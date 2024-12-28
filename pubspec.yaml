@@ -67,6 +67,7 @@ flutter:
   - assets/animations/next_level_animation.json
   - assets/animations/coin_up_animation.json
   - assets/animations/coin_flip_animation.json
+  - assets/animations/game_over_animation.json
   - assets/images/piramit_background.jpg
   - assets/images/game_background.webp   
   - assets/images/game_piramit.png
