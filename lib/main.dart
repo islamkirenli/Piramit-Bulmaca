@@ -6,6 +6,7 @@ import 'app_bar_stats.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'global_properties.dart';
 import 'dart:math';
+import 'time_completed_dialog.dart';
 
 void main() {
   runApp(MyApp());
@@ -80,11 +81,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
             elevation: 0,
             title: AppBarStats(
               onTimerEnd: () {
-                setState(() {
-                  GlobalProperties.remainingLives.value = 3; // Hakları sıfırla
-                  GlobalProperties.countdownSeconds.value = 15;
-                  saveGameData();
-                });
+                onTimerEnd(context); // Zaman dolduğunda pop-up göster
               },
             ),
           ),
@@ -186,6 +183,17 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         ),
       ],
     );
+  }
+
+  void onTimerEnd(BuildContext context) {
+    showTimeCompletedDialog(context, () {
+      // Pop-up kapatıldığında yapılacak işlemler
+      setState(() { // setState ile kalan hakları ve sayaç değerini güncelle
+        GlobalProperties.remainingLives.value = 3; // Hakları sıfırla
+        GlobalProperties.countdownSeconds.value = 15; // Sayaç sıfırlanır
+      });
+      saveGameData(); // Veriyi kaydet
+    });
   }
 
   Future<void> saveGameData() async {

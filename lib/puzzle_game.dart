@@ -10,6 +10,7 @@ import 'app_bar_stats.dart'; // AppBarStats bileşenini dahil edin
 import 'settings.dart';
 import 'global_properties.dart';
 import 'animated_polygon.dart';
+import 'time_completed_dialog.dart';
 
 
 void main() {
@@ -94,11 +95,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Si
   void startCountdownInAppBarStats() {
     // AppBarStats içindeki sayaç yönetimi burada tetikleniyor
     AppBarStats(onTimerEnd: () {
-      setState(() {
-        GlobalProperties.remainingLives.value = 3;
-        GlobalProperties.countdownSeconds.value = 15;
-        saveGameData();
-      });
+      onTimerEnd(context); // Zaman dolduğunda pop-up göster
     }).createState().startCountdown();
   }
 
@@ -129,11 +126,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Si
           centerTitle: false,
           title: AppBarStats(
               onTimerEnd: () {
-                setState(() {
-                  GlobalProperties.remainingLives.value = 3; // Hakları sıfırla
-                  GlobalProperties.countdownSeconds.value = 15; // Sayaç sıfırlanır
-                  saveGameData();
-                });
+                onTimerEnd(context); // Zaman dolduğunda pop-up göster
               },
             ),
           actions: [
@@ -719,6 +712,17 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Si
           onComplete(); // Artış tamamlandığında geri çağırma çalıştır
         }
       });
+    });
+  }
+
+  void onTimerEnd(BuildContext context) {
+    showTimeCompletedDialog(context, () {
+      // Pop-up kapatıldığında yapılacak işlemler
+      setState(() { // setState ile kalan hakları ve sayaç değerini güncelle
+        GlobalProperties.remainingLives.value = 3; // Hakları sıfırla
+        GlobalProperties.countdownSeconds.value = 15; // Sayaç sıfırlanır
+      });
+      saveGameData(); // Veriyi kaydet
     });
   }
 
