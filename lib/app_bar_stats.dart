@@ -3,6 +3,8 @@ import 'package:lottie/lottie.dart';
 import 'dart:async';
 import 'global_properties.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'show_coin_popup.dart'; // Coin pop-up
+import 'show_lives_popup.dart'; // Remaining lives pop-up
 
 class AppBarStats extends StatefulWidget {
   final VoidCallback onTimerEnd; // Sayaç bittiğinde çağrılacak fonksiyon
@@ -86,77 +88,129 @@ class _AppBarStatsState extends State<AppBarStats> {
     return Row(
       children: [
         // Skor gösterimi
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 1,
-                blurRadius: 5,
-                offset: const Offset(0, 2),
-              ),
-            ],
-          ),
-          child: Row(
+        GestureDetector(
+          onTap: () => showCoinPopup(context), // Coin kapsülüne tıklanıldığında
+          child: Stack(
+            clipBehavior: Clip.none,
             children: [
-              SizedBox(
-                height: 20,
-                width: 20,
-                child: Lottie.asset(
-                  'assets/animations/coin_flip_animation.json',
-                  repeat: true,
-                  animate: true,
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 1,
+                      blurRadius: 5,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: Lottie.asset(
+                        'assets/animations/coin_flip_animation.json',
+                        repeat: true,
+                        animate: true,
+                      ),
+                    ),
+                    Text(
+                      '  ${GlobalProperties.score.value}',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              Text(
-                '  ${GlobalProperties.score.value}',
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
+              Positioned(
+                bottom: -5,
+                right: -5,
+                child: Container(
+                  height: 16,
+                  width: 16,
+                  decoration: BoxDecoration(
+                    color: Colors.green,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.white, width: 1),
+                  ),
+                  child: const Icon(
+                    Icons.add,
+                    color: Colors.white,
+                    size: 12,
+                  ),
                 ),
               ),
             ],
           ),
         ),
-        const SizedBox(width: 5),
+        const SizedBox(width: 10),
         // Kalan haklar
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 1,
-                blurRadius: 5,
-                offset: const Offset(0, 2),
-              ),
-            ],
-          ),
-          child: Row(
+        GestureDetector(
+          onTap: () => showLivesPopup(context), // Remaining Lives kapsülüne tıklanıldığında
+          child: Stack(
+            clipBehavior: Clip.none,
             children: [
-              const Icon(
-                Icons.favorite,
-                color: Colors.red,
-                size: 20,
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 1,
+                      blurRadius: 5,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.favorite,
+                      color: Colors.red,
+                      size: 20,
+                    ),
+                    Text(
+                      '  ${GlobalProperties.remainingLives.value}',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              Text(
-                '  ${GlobalProperties.remainingLives.value}',
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
+              Positioned(
+                bottom: -5,
+                right: -5,
+                child: Container(
+                  height: 16,
+                  width: 16,
+                  decoration: BoxDecoration(
+                    color: Colors.green,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.white, width: 1),
+                  ),
+                  child: const Icon(
+                    Icons.add,
+                    color: Colors.white,
+                    size: 12,
+                  ),
                 ),
               ),
             ],
           ),
         ),
-        const SizedBox(width: 5),
+        const SizedBox(width: 10),
         // Sayaç (yalnızca kalan haklar 0 ise gösterilir)
         if (GlobalProperties.remainingLives.value == 0)
           Container(
@@ -194,4 +248,5 @@ class _AppBarStatsState extends State<AppBarStats> {
       ],
     );
   }
+
 }
