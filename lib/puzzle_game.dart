@@ -38,7 +38,7 @@ class PuzzleGame extends StatefulWidget {
   _PuzzleGameState createState() => _PuzzleGameState();
 }
 
-class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver {
+class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, SingleTickerProviderStateMixin {
   int currentPuzzle = 0;
   int currentIndex = 0;
   String feedbackMessage = '';
@@ -60,6 +60,9 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver {
   List<int> revealedIndexesForCurrentWord = []; // Mevcut kelimenin açılan harfleri
   bool isDataLoaded = false; // Veri yüklenme durumu
 
+  late AnimationController _settingsIconController;
+
+
   final GlobalKey<AnimatedPolygonWidgetState> _polygonKey =
     GlobalKey<AnimatedPolygonWidgetState>();
 
@@ -68,6 +71,12 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
+    // Animasyon denetleyicisini başlat
+    _settingsIconController = AnimationController(
+      duration: Duration(milliseconds: 500),
+      vsync: this,
+    );
+
     loadInitialSection();
     loadGameData().then((_) {
       setState(() {
@@ -95,6 +104,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver {
 
   @override
   void dispose() {
+    _settingsIconController.dispose(); // Animasyon denetleyicisini temizle
     WidgetsBinding.instance.removeObserver(this);
     saveGameData(); // Oyun kapatıldığında veriyi kaydet
     super.dispose();
@@ -128,12 +138,25 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver {
             ),
           actions: [
             IconButton(
-              icon: Icon(Icons.settings, size: 28), // Ayarlar simgesi
+              icon: AnimatedBuilder(
+                animation: _settingsIconController,
+                builder: (context, child) {
+                  return Transform.rotate(
+                    angle: _settingsIconController.value * pi / 2,
+                    child: child,
+                  );
+                },
+                child: Icon(Icons.settings, size: 28), // Ayarlar simgesi
+              ),
               onPressed: () {
+                _settingsIconController.forward(from: 0); // Animasyonu başlat
+
                 showDialog(
                   context: context,
                   builder: (context) => SettingsDialog(sourcePage: 'puzzle_game'),
-                );
+                ).then((_) {
+                  _settingsIconController.reverse(); // Animasyonu geri al
+                });
               },
             ),
           ],

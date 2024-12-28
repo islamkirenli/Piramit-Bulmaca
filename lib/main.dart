@@ -5,6 +5,7 @@ import 'sections.dart';
 import 'app_bar_stats.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'global_properties.dart';
+import 'dart:math';
 
 void main() {
   runApp(MyApp());
@@ -27,17 +28,29 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin{
   bool isDataLoaded = false;
+  late AnimationController _settingsIconController;
 
   @override
   void initState() {
     super.initState();
+    _settingsIconController = AnimationController(
+      duration: Duration(milliseconds: 500),
+      vsync: this,
+    );
+
     loadGameData().then((_) {
       setState(() {
         isDataLoaded = true;
       });
     });
+  }
+
+  @override
+  void dispose() {
+    _settingsIconController.dispose(); // Animasyon denetleyicisini temizle
+    super.dispose();
   }
 
   @override
@@ -123,15 +136,28 @@ class _HomePageState extends State<HomePage> {
                   child: FloatingActionButton(
                     heroTag: 'settingsButton',
                     onPressed: () {
+                      _settingsIconController.forward(from: 0); // Animasyonu başlat
+
                       showDialog(
                         context: context,
                         builder: (context) => SettingsDialog(sourcePage: 'main'),
-                      );
+                      ).then((_) {
+                        _settingsIconController.reverse(); // Animasyonu geri al
+                      });
                     },
                     backgroundColor: Colors.blueAccent,
-                    child: Icon(
-                      Icons.settings,
-                      color: Colors.white,
+                    child: AnimatedBuilder(
+                      animation: _settingsIconController,
+                      builder: (context, child) {
+                        return Transform.rotate(
+                          angle: _settingsIconController.value * pi / 2,
+                          child: child,
+                        );
+                      },
+                      child: Icon(
+                        Icons.settings,
+                        color: Colors.white,
+                      ),
                     ),
                     shape: CircleBorder(),
                   ),
