@@ -69,6 +69,7 @@ flutter:
   - assets/animations/coin_flip_animation.json
   - assets/animations/game_over_animation.json
   - assets/animations/time_completed_animation.json
+  - assets/animations/heart_beat_animation.json
   - assets/images/piramit_background.jpg
   - assets/images/game_background.webp   
   - assets/images/game_piramit.png

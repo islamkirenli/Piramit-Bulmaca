@@ -207,10 +207,14 @@ class _AppBarStatsState extends State<AppBarStats> {
                 ),
                 child: Row(
                   children: [
-                    const Icon(
-                      Icons.favorite,
-                      color: Colors.red,
-                      size: 20,
+                    SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: Lottie.asset(
+                        'assets/animations/heart_beat_animation.json',
+                        repeat: true,
+                        animate: true,
+                      ),
                     ),
                     Text(
                       '  ${GlobalProperties.remainingLives.value}',
