@@ -34,39 +34,69 @@ class _AppBarStatsState extends State<AppBarStats> {
   @override
   void didUpdateWidget(covariant AppBarStats oldWidget) {
     super.didUpdateWidget(oldWidget);
-
-    if (GlobalProperties.remainingLives.value == 0 && (countdownTimer == null || !countdownTimer!.isActive)) {
-      startCountdown();
-    } else if (GlobalProperties.remainingLives.value > 0 && countdownTimer != null) {
-      countdownTimer?.cancel(); // Sayaç durdurulur
-      GlobalProperties.countdownSeconds.value = 15; // Sayaç sıfırlanır
+    // Eğer sonradan kalan hak 0'a düşerse, timer'ı başlat
+    // (veya yeniden başlatmak gerekirse) 
+    if (GlobalProperties.remainingLives.value == 0) {
+      if (countdownTimer == null || !(countdownTimer!.isActive)) {
+        startCountdown();
+      }
+    } else {
+      // Kalan hak > 0 olduysa, timer'ı durdurup sayaç varsayılan 15'e çekebiliriz:
+      countdownTimer?.cancel();
+      countdownTimer = null;
+      GlobalProperties.countdownSeconds.value = 15; 
+      GlobalProperties.isTimerRunning.value = false;
     }
   }
 
   @override
   void dispose() {
     countdownTimer?.cancel();
+    countdownTimer = null;
     GlobalProperties.isTimerRunning.value = false;
     super.dispose();
   }
 
   void startCountdown() {
+    // Eğer timer hâlâ aktifse, tekrar kurmayalım
     if (countdownTimer != null && countdownTimer!.isActive) {
-      return; // Zaten çalışıyorsa bir daha başlatma
+      return;
     }
 
-    GlobalProperties.isTimerRunning.value = true; // Timer başlatılıyor
+    // Eğer isTimerRunning.value = false ise, henüz deadline belirlenmemiştir demektir.
+    // O zaman şu andan + X saniye olarak bitiş zamanını kuralım.
+    if (!GlobalProperties.isTimerRunning.value) {
+      final now = DateTime.now().millisecondsSinceEpoch;
+      // Burada 15 sabit ise sabitlersiniz; eğer puzzle_game'den vs. geliyorsa oradaki countdownSeconds'ı kullanabilirsiniz.
+      GlobalProperties.deadlineTimestamp =
+          now + (GlobalProperties.countdownSeconds.value * 1000);
+
+      GlobalProperties.isTimerRunning.value = true;
+      saveGameData(); 
+    }
+
+    // Her saniye bir Timer kuruyoruz
     countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      setState(() {
-        if (GlobalProperties.countdownSeconds.value > 0) {
-          GlobalProperties.countdownSeconds.value--;
-          saveGameData(); // Her değişiklikte kaydet
-        } else {
-          timer.cancel();
-          GlobalProperties.isTimerRunning.value = false; // Timer durduruluyor
-          widget.onTimerEnd();
-        }
-      });
+      final now = DateTime.now().millisecondsSinceEpoch;
+      final diff = GlobalProperties.deadlineTimestamp - now;
+
+      if (diff <= 0) {
+        // Süre dolmuş
+        timer.cancel();
+        countdownTimer = null;
+
+        // Sayaç değerlerini sıfırla
+        GlobalProperties.countdownSeconds.value = 0;
+        GlobalProperties.isTimerRunning.value = false;
+
+        saveGameData(); 
+        widget.onTimerEnd(); 
+      } else {
+        // Hâlâ zaman var => kalan saniyeyi (diff/1000) olarak ayarla
+        GlobalProperties.countdownSeconds.value = (diff / 1000).ceil();
+      }
+
+      setState(() {}); 
     });
   }
 
@@ -81,6 +111,10 @@ class _AppBarStatsState extends State<AppBarStats> {
     await prefs.setInt('score', GlobalProperties.score.value); // Skoru kaydeder
     await prefs.setInt('remainingLives', GlobalProperties.remainingLives.value); // Kalan hakları kaydeder
     await prefs.setInt('countdownSeconds', GlobalProperties.countdownSeconds.value); // Sayaç değerini kaydeder
+    await prefs.setBool('isTimerRunning', GlobalProperties.isTimerRunning.value);
+
+    // Deadline da mutlaka kaydedilmeli
+    await prefs.setInt('deadlineTimestamp', GlobalProperties.deadlineTimestamp);
   }
 
   @override
@@ -248,5 +282,4 @@ class _AppBarStatsState extends State<AppBarStats> {
       ],
     );
   }
-
 }

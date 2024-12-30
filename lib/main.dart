@@ -7,6 +7,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'global_properties.dart';
 import 'dart:math';
 import 'time_completed_dialog.dart';
+import 'dart:async'; // <<< Timer için ekle
+
 
 void main() {
   runApp(MyApp());
@@ -32,6 +34,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin{
   bool isDataLoaded = false;
   late AnimationController _settingsIconController;
+  Timer? _timer;
 
   @override
   void initState() {
@@ -45,11 +48,15 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       setState(() {
         isDataLoaded = true;
       });
+      if (GlobalProperties.isTimerRunning.value) {
+        handleCountdownLogic();
+      }
     });
   }
 
   @override
   void dispose() {
+    _timer?.cancel();
     _settingsIconController.dispose(); // Animasyon denetleyicisini temizle
     super.dispose();
   }
@@ -187,13 +194,47 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
 
   void onTimerEnd(BuildContext context) {
     showTimeCompletedDialog(context, () {
-      // Pop-up kapatıldığında yapılacak işlemler
-      setState(() { // setState ile kalan hakları ve sayaç değerini güncelle
+      setState(() {
         GlobalProperties.remainingLives.value = 3; // Hakları sıfırla
         GlobalProperties.countdownSeconds.value = 15; // Sayaç sıfırlanır
+        GlobalProperties.isTimerRunning.value = false;
       });
-      saveGameData(); // Veriyi kaydet
+      saveGameData();
     });
+  }
+
+  void handleCountdownLogic() {
+    final now = DateTime.now().millisecondsSinceEpoch;
+    final diff = GlobalProperties.deadlineTimestamp - now;
+
+    if (diff <= 0) {
+      onTimerEnd(context);
+      // Süre zaten dolmuş
+      GlobalProperties.countdownSeconds.value = 0;
+      GlobalProperties.isTimerRunning.value = false;
+      saveGameData();
+    } else {
+      // Hala zaman var => kalan saniyeyi hesapla
+      GlobalProperties.countdownSeconds.value = (diff / 1000).ceil();
+      GlobalProperties.isTimerRunning.value = true;
+
+      // Mevcut bir timer varsa iptal et
+      _timer?.cancel();
+
+      // Her saniye bir Timer kuruyoruz ve setState ile UI'ı tazeliyoruz
+      _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+        setState(() {
+          if (GlobalProperties.countdownSeconds.value <= 1) {
+            timer.cancel();
+            GlobalProperties.countdownSeconds.value = 0;
+            GlobalProperties.isTimerRunning.value = false;
+            saveGameData();
+          } else {
+            GlobalProperties.countdownSeconds.value--;
+          }
+        });
+      });
+    }
   }
 
   Future<void> saveGameData() async {
@@ -202,13 +243,46 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     await prefs.setInt('remainingLives', GlobalProperties.remainingLives.value);
     await prefs.setInt('countdownSeconds', GlobalProperties.countdownSeconds.value);
     await prefs.setBool('isTimerRunning', GlobalProperties.isTimerRunning.value);
+    await prefs.setInt('deadlineTimestamp', GlobalProperties.deadlineTimestamp);
   }
 
   Future<void> loadGameData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+
     GlobalProperties.score.value = prefs.getInt('score') ?? 0;
     GlobalProperties.remainingLives.value = prefs.getInt('remainingLives') ?? 3;
     GlobalProperties.countdownSeconds.value = prefs.getInt('countdownSeconds') ?? 15;
     GlobalProperties.isTimerRunning.value = prefs.getBool('isTimerRunning') ?? false;
+
+    // deadlineTimestamp'i yükle
+    GlobalProperties.deadlineTimestamp = prefs.getInt('deadlineTimestamp') ?? 0;
+
+    // Şu anki zaman
+    final now = DateTime.now().millisecondsSinceEpoch;
+
+    // Eğer deadline 0 değil ve deadline <= now ise süre dolmuş demektir
+    if (GlobalProperties.deadlineTimestamp != 0 &&
+        GlobalProperties.deadlineTimestamp <= now) {
+      
+      // >>> Timer aslında bitmiş, yani uygulama kapalıyken süre doldu.
+      // Bunu işaretle:
+      GlobalProperties.isTimeCompletedWhileAppClosed = true;
+
+      // Hakları yenile (istersen onTimerEnd içinde de yenileyebilirsin ama burada da olur)
+      GlobalProperties.remainingLives.value = 3;
+      GlobalProperties.countdownSeconds.value = 15;
+      GlobalProperties.isTimerRunning.value = false;
+
+      // Kaydetmeyi unutma
+      await saveGameData();
+
+    } else if (GlobalProperties.deadlineTimestamp != 0) {
+      // Süre henüz dolmamış, yani deadline gelecekte
+      final remainingMillis = GlobalProperties.deadlineTimestamp - now;
+      final remainingSecs = (remainingMillis / 1000).ceil();
+
+      GlobalProperties.countdownSeconds.value = remainingSecs > 0 ? remainingSecs : 0;
+      GlobalProperties.isTimerRunning.value = true;
+    }
   }
 }

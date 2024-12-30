@@ -60,6 +60,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Si
   List<int> revealedIndexes = []; // Açılan harflerin indekslerini saklar
   List<int> revealedIndexesForCurrentWord = []; // Mevcut kelimenin açılan harfleri
   bool isDataLoaded = false; // Veri yüklenme durumu
+  bool isTimeCompletedWhileAppClosed = false;
 
   late AnimationController _settingsIconController;
 
@@ -72,6 +73,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Si
   @override
   void initState() {
     super.initState();
+    GlobalProperties.countdownSeconds.value = 15;
     // Animasyon denetleyicisini başlat
     _settingsIconController = AnimationController(
       duration: Duration(milliseconds: 500),
@@ -83,21 +85,35 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Si
       setState(() {
         isDataLoaded = true;
       });
-      if (GlobalProperties.remainingLives.value == 0 &&
-          GlobalProperties.countdownSeconds.value > 0 &&
-          !GlobalProperties.isTimerRunning.value) {
-        // Timer henüz çalışmıyorsa başlat
+
+      // 1) Eğer uygulama kapalıyken timer süresi dolmuşsa,
+      //    onTimerEnd fonksiyonunu otomatik tetikle.
+      if (isTimeCompletedWhileAppClosed) {
+        //onTimerEnd(context);
+      } 
+      // 2) Değilse ve haklar yine 0 ise, sayacı başlatmayı düşünebilirsin
+      else if (GlobalProperties.remainingLives.value == 0 &&
+               GlobalProperties.countdownSeconds.value > 0 &&
+               !GlobalProperties.isTimerRunning.value) {
         startCountdownInAppBarStats();
       }
     });
   }
+  
 
   void startCountdownInAppBarStats() {
-    // AppBarStats içindeki sayaç yönetimi burada tetikleniyor
-    AppBarStats(onTimerEnd: () {
-      onTimerEnd(context); // Zaman dolduğunda pop-up göster
-    }).createState().startCountdown();
+    // 1) Timer’ın bitiş zamanını hesapla
+    final now = DateTime.now().millisecondsSinceEpoch;
+    GlobalProperties.deadlineTimestamp = now + (GlobalProperties.countdownSeconds.value * 1000);
+
+    // 2) Timer’ın aktif olduğunu işaretle
+    GlobalProperties.isTimerRunning.value = true;
+
+    // 3) Hemen kaydet
+    saveGameData();
   }
+
+
 
   @override
   void dispose() {
@@ -501,6 +517,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Si
           });
         });
         if (GlobalProperties.remainingLives.value == 0) {
+          startCountdownInAppBarStats();
           showGameOverDialog(
             context,
             resetGame,
@@ -716,15 +733,19 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Si
   }
 
   void onTimerEnd(BuildContext context) {
+    GlobalProperties.isTimeCompletedWhileAppClosed = false;
+    // Timer bitince popup göstermek istiyorsan, göster
     showTimeCompletedDialog(context, () {
-      // Pop-up kapatıldığında yapılacak işlemler
-      setState(() { // setState ile kalan hakları ve sayaç değerini güncelle
-        GlobalProperties.remainingLives.value = 3; // Hakları sıfırla
-        GlobalProperties.countdownSeconds.value = 15; // Sayaç sıfırlanır
+      // Popup kapatılırken hakları yenile
+      setState(() {
+        GlobalProperties.remainingLives.value = 3;
+        GlobalProperties.countdownSeconds.value = 15;
+        GlobalProperties.isTimerRunning.value = false;
       });
-      saveGameData(); // Veriyi kaydet
+      saveGameData();
     });
   }
+
 
   Future<void> saveGameData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -732,15 +753,49 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Si
     await prefs.setInt('remainingLives', GlobalProperties.remainingLives.value);
     await prefs.setInt('countdownSeconds', GlobalProperties.countdownSeconds.value);
     await prefs.setBool('isTimerRunning', GlobalProperties.isTimerRunning.value);
+    await prefs.setInt('deadlineTimestamp', GlobalProperties.deadlineTimestamp);
   }
 
   Future<void> loadGameData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+
     GlobalProperties.score.value = prefs.getInt('score') ?? 0;
     GlobalProperties.remainingLives.value = prefs.getInt('remainingLives') ?? 3;
     GlobalProperties.countdownSeconds.value = prefs.getInt('countdownSeconds') ?? 15;
     GlobalProperties.isTimerRunning.value = prefs.getBool('isTimerRunning') ?? false;
+
+    // deadlineTimestamp'i yükle
+    GlobalProperties.deadlineTimestamp = prefs.getInt('deadlineTimestamp') ?? 0;
+
+    // Şu anki zaman
+    final now = DateTime.now().millisecondsSinceEpoch;
+
+    // Eğer deadline 0 değil ve deadline <= now ise süre dolmuş demektir
+    if (GlobalProperties.deadlineTimestamp != 0 &&
+        GlobalProperties.deadlineTimestamp <= now) {
+      
+      // >>> Timer aslında bitmiş, yani uygulama kapalıyken süre doldu.
+      // Bunu işaretle:
+      isTimeCompletedWhileAppClosed = true;
+
+      // Hakları yenile (istersen onTimerEnd içinde de yenileyebilirsin ama burada da olur)
+      GlobalProperties.remainingLives.value = 3;
+      GlobalProperties.countdownSeconds.value = 15;
+      GlobalProperties.isTimerRunning.value = false;
+
+      // Kaydetmeyi unutma
+      await saveGameData();
+
+    } else if (GlobalProperties.deadlineTimestamp != 0) {
+      // Süre henüz dolmamış, yani deadline gelecekte
+      final remainingMillis = GlobalProperties.deadlineTimestamp - now;
+      final remainingSecs = (remainingMillis / 1000).ceil();
+
+      GlobalProperties.countdownSeconds.value = remainingSecs > 0 ? remainingSecs : 0;
+      GlobalProperties.isTimerRunning.value = true;
+    }
   }
+
 
   void showHint() {
     setState(() {

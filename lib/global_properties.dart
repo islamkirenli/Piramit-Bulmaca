@@ -5,4 +5,6 @@ class GlobalProperties {
   static final ValueNotifier<int> score = ValueNotifier<int>(0);
   static final ValueNotifier<int> countdownSeconds = ValueNotifier<int>(30);
   static final ValueNotifier<bool> isTimerRunning = ValueNotifier<bool>(false);
+  static int deadlineTimestamp = 0;
+  static bool isTimeCompletedWhileAppClosed = false;
 }
