@@ -64,6 +64,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Si
   List<int> revealedIndexesForCurrentWord = []; // Mevcut kelimenin açılan harfleri
   bool isDataLoaded = false; // Veri yüklenme durumu
   bool isTimeCompletedWhileAppClosed = false;
+  int? lastOpenedIndex; // <--- Yeni açılan harfin indeksini tutacak
 
   late AnimationController _settingsIconController;
 
@@ -264,23 +265,60 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Si
                               ),
                             ),
                             alignment: Alignment.center,
-                            child: Text(
-                              correctWords.contains(word)
-                                  ? word.characters.join('  ') // Doğru tahmin edilen kelime
-                                  : index == currentIndex
-                                      ? List.generate(word.length, (charIndex) {
-                                          return revealedIndexesForCurrentWord.contains(charIndex)
-                                              ? ' ' + word[charIndex] + ' '
-                                              : ' _ ';
-                                        }).join('')
-                                      : ' _ ' * word.length,
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 8,
-                              ),
-                              textAlign: TextAlign.center,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: List.generate(word.length, (charIndex) {
+                                // Harf açık mı?
+                                bool isRevealed = correctWords.contains(word) ||
+                                    (index == currentIndex && revealedIndexesForCurrentWord.contains(charIndex));
+
+                                return AnimatedSwitcher(
+                                  duration: Duration(milliseconds: 400),
+                                  transitionBuilder: (child, animation) {
+                                    return ScaleTransition(scale: animation, child: child);
+                                  },
+                                  // Eğer harf açılmışsa (isRevealed), Lottie animasyonlu Stack göster
+                                  // Aksi halde '_' yaz
+                                  child: isRevealed
+                                      ? Stack(
+                                          alignment: Alignment.center,
+                                          key: ValueKey('stack-$index-$charIndex'),
+                                          children: [
+                                            Text(
+                                              ' ${word[charIndex]} ',
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                                letterSpacing: 7,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 35,
+                                              height: 35,
+                                              child: Transform.scale(
+                                                scale: 6.0, // Animasyonu içeride büyütmek için
+                                                child: Lottie.asset(
+                                                  'assets/animations/single_hint_animation.json',
+                                                  repeat: false,
+                                                  animate: true,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      : Text(
+                                          ' _ ',
+                                          key: ValueKey('hidden-$index-$charIndex'),
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            letterSpacing: 7,
+                                          ),
+                                        ),
+                                );
+                              }),
                             ),
                           ),
                         );
@@ -928,6 +966,16 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Si
       if (unopenedIndexes.isNotEmpty) {
         int randomIndex = unopenedIndexes[Random().nextInt(unopenedIndexes.length)];
         revealedIndexesForCurrentWord.add(randomIndex);
+
+        // YENİ: Açılan harfi kaydet
+        lastOpenedIndex = randomIndex;
+
+        // Örnek: 1 saniye sonra lastOpenedIndex’i sıfırlayıp animasyonu gizlemek isterseniz:
+        Timer(Duration(seconds: 1), () {
+          setState(() {
+            lastOpenedIndex = null; 
+          });
+        });
       }
 
       if (revealedIndexesForCurrentWord.length == currentWord.length) {
