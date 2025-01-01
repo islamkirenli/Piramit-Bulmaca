@@ -239,7 +239,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
 
   Future<void> saveGameData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('score', GlobalProperties.score.value);
+    await prefs.setInt('coin', GlobalProperties.coin.value);
     await prefs.setInt('remainingLives', GlobalProperties.remainingLives.value);
     await prefs.setInt('countdownSeconds', GlobalProperties.countdownSeconds.value);
     await prefs.setBool('isTimerRunning', GlobalProperties.isTimerRunning.value);
@@ -249,7 +249,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   Future<void> loadGameData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    GlobalProperties.score.value = prefs.getInt('score') ?? 0;
+    GlobalProperties.coin.value = prefs.getInt('coin') ?? 0;
     GlobalProperties.remainingLives.value = prefs.getInt('remainingLives') ?? 3;
     GlobalProperties.countdownSeconds.value = prefs.getInt('countdownSeconds') ?? 15;
     GlobalProperties.isTimerRunning.value = prefs.getBool('isTimerRunning') ?? false;

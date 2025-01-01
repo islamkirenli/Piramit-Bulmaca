@@ -108,7 +108,7 @@ class _AppBarStatsState extends State<AppBarStats> {
 
   Future<void> saveGameData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('score', GlobalProperties.score.value); // Skoru kaydeder
+    await prefs.setInt('coin', GlobalProperties.coin.value); // Skoru kaydeder
     await prefs.setInt('remainingLives', GlobalProperties.remainingLives.value); // Kalan hakları kaydeder
     await prefs.setInt('countdownSeconds', GlobalProperties.countdownSeconds.value); // Sayaç değerini kaydeder
     await prefs.setBool('isTimerRunning', GlobalProperties.isTimerRunning.value);
@@ -153,7 +153,7 @@ class _AppBarStatsState extends State<AppBarStats> {
                       ),
                     ),
                     Text(
-                      '  ${GlobalProperties.score.value}',
+                      '  ${GlobalProperties.coin.value}',
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
