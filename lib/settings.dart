@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:lottie/lottie.dart';
+
 
 
 class SettingsDialog extends StatefulWidget {
@@ -100,11 +102,50 @@ class _SettingsDialogState extends State<SettingsDialog> {
           icon: Icons.home,
           label: 'Menü',
           color: Colors.blue,
-          onPressed: () {
-            Navigator.of(context).pop(); // Pop-up'ı kapat
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => HomePage()), // HomePage'e yönlendir
-              (route) => false, // Önceki tüm sayfaları kaldır
+          onPressed: () async {
+            // Lottie animasyon ekranını göster
+            await showGeneralDialog(
+              context: context,
+              barrierDismissible: false, // Kullanıcı animasyonu kapatamaz
+              barrierColor: Colors.transparent, // Hafif siyah arka plan
+              pageBuilder: (context, _, __) {
+                return Scaffold(
+                  backgroundColor: Colors.transparent, // Arka plan rengini siyah yap
+                  body: Stack(
+                    children: [
+                      Positioned.fill(
+                        child: Center( // Animasyonu ekranın tam ortasına hizala
+                          child: Transform.scale(
+                            scale: 1, // Animasyonu büyütüp tam ortalamak için
+                            child: Transform.translate(
+                              offset: Offset(0, 0), // Animasyonun dikey ve yatay ofsetini ayarla
+                              child: Lottie.asset(
+                                'assets/animations/screen_transition_animation.json',
+                                width: MediaQuery.of(context).size.width, // Ekran genişliği
+                                height: MediaQuery.of(context).size.height, // Ekran yüksekliği
+                                fit: BoxFit.fill, // Ekranı tamamen kapla
+                                repeat: false, // Animasyonu bir kez oynat
+                                onLoaded: (composition) {
+                                  Future.delayed(
+                                    composition.duration, // Animasyon süresince bekle
+                                    () {
+                                      Navigator.of(context).pop(); // Animasyon bitince dialog kapat
+                                      Navigator.of(context).pushAndRemoveUntil(
+                                        MaterialPageRoute(builder: (context) => HomePage()), // HomePage'e yönlendir
+                                        (route) => false, // Önceki tüm sayfaları kaldır
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
             );
           },
         ),

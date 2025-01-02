@@ -8,6 +8,8 @@ import 'global_properties.dart';
 import 'dart:math';
 import 'time_completed_dialog.dart';
 import 'dart:async'; // <<< Timer için ekle
+import 'package:lottie/lottie.dart';
+
 
 
 void main() {
@@ -101,12 +103,51 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                   valueListenable: GlobalProperties.remainingLives,
                   builder: (context, remainingLives, _) {
                     return ElevatedButton(
-                      onPressed: remainingLives > 0
-                          ? () {
-                              // Oyun ekranına geçiş
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => PuzzleGame()),
+                        onPressed: remainingLives > 0
+                          ? () async {
+                              // Lottie animasyon ekranını tam ekran ve merkezde göster
+                              await showGeneralDialog(
+                                context: context,
+                                barrierDismissible: false, // Kullanıcı animasyonu kapatamaz
+                                barrierColor: Colors.transparent, // Hafif siyah arka plan
+                                pageBuilder: (context, _, __) {
+                                  return Scaffold(
+                                    backgroundColor: Colors.transparent, // Arka plan rengini siyah yap
+                                    body: Stack(
+                                      children: [
+                                        Positioned.fill(
+                                          child: Center( // Animasyonu ekranın tam ortasına hizala
+                                            child: Transform.scale(
+                                              scale: 1, // Animasyonu büyütüp tam ortalamak için
+                                              child: Transform.translate(
+                                                offset: Offset(0, 0), // Animasyonun dikey ve yatay ofsetini ayarla
+                                                child: Lottie.asset(
+                                                  'assets/animations/screen_transition_animation.json',
+                                                  width: MediaQuery.of(context).size.width, // Ekran genişliği
+                                                  height: MediaQuery.of(context).size.height, // Ekran yüksekliği
+                                                  fit: BoxFit.fill, // Ekranı tamamen kapla
+                                                  repeat: false, // Animasyonu bir kez oynat
+                                                  onLoaded: (composition) {
+                                                    Future.delayed(
+                                                      composition.duration, // Animasyon süresince bekle
+                                                      () {
+                                                        Navigator.of(context).pop(); // Animasyon bitince dialog kapat
+                                                        Navigator.of(context).pushAndRemoveUntil(
+                                                          MaterialPageRoute(builder: (context) => PuzzleGame()),
+                                                          (route) => false, // Önceki ekranları temizle
+                                                        );
+                                                      },
+                                                    );
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
                               );
                             }
                           : null, // Eğer hak yoksa buton devre dışı

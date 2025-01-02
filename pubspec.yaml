@@ -72,6 +72,7 @@ flutter:
   - assets/animations/heart_beat_animation.json
   - assets/animations/single_hint_animation.json
   - assets/animations/word_hint_animation.json
+  - assets/animations/screen_transition_animation.json
   - assets/images/piramit_background.jpg
   - assets/images/game_background.webp   
   - assets/images/game_piramit.png
