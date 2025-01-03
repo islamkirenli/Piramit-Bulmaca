@@ -39,7 +39,7 @@ class AnimatedPolygonWidgetState extends State<AnimatedPolygonWidget>
 
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 700),
     );
 
     _sidesAnimation = Tween<double>(
@@ -52,7 +52,6 @@ class AnimatedPolygonWidgetState extends State<AnimatedPolygonWidget>
 
   /// Kenar sayısını azaltma işlemi, dışarıdan tetiklenebilir hale getirildi.
   void reduceSides() {
-    print("reduce çağrıldı");
     if (_currentSides > 3) {
       setState(() {
         _currentSides--; // Kenar sayısını azalt

@@ -76,6 +76,8 @@ flutter:
   - assets/images/piramit_background.jpg
   - assets/images/game_background.webp   
   - assets/images/game_piramit.png
+  - assets/images/correct_guess.png
+  - assets/images/correct_guess2.png
 
 
   
