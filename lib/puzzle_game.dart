@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'game_over_dialog.dart'; // Pop-up için ayrı dosya
 import 'puzzle_data.dart'; // puzzleData'yı içe aktar
 import 'next_level_dialog.dart';
@@ -17,6 +18,8 @@ import 'show_coin_popup.dart';
 
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
   runApp(MyApp());
 }
 
@@ -71,6 +74,8 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
   int correctAnswerCounter = 0; // Doğru cevapların sayısını takip eder
   List<String> correctGuessImages = []; // Görsellerin yolu
   String? currentCorrectGuessImage; // Şu anki gösterilen görsel
+  late BannerAd _bannerAd;
+  bool _isBannerAdReady = false;
 
 
   late AnimationController _settingsIconController;
@@ -94,6 +99,25 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
       'assets/images/correct_guess/correct_guess4.png',
       'assets/images/correct_guess/correct_guess5.png',
     ];
+
+    // Banner reklamını oluştur ve yükle
+    _bannerAd = BannerAd(
+      adUnitId: 'ca-app-pub-3940256099942544/2934735716', // AdMob reklam birimi kimliğinizi buraya yazın
+      size: AdSize.banner,
+      request: AdRequest(),
+      listener: BannerAdListener(
+        onAdLoaded: (_) {
+          setState(() {
+            _isBannerAdReady = true;
+          });
+        },
+        onAdFailedToLoad: (ad, error) {
+          print('Banner failed to load: $error');
+          ad.dispose();
+        },
+      ),
+    );
+    _bannerAd.load();
 
     // Correct Guess animasyonu için controller
     _correctGuessController = AnimationController(
@@ -135,6 +159,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
 
   @override
   void dispose() {
+    _bannerAd.dispose();
     _correctGuessController.dispose(); // Correct Guess controller'ını temizle
     _settingsIconController.dispose(); // Animasyon denetleyicisini temizle
     WidgetsBinding.instance.removeObserver(this);
@@ -540,7 +565,13 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                     ),
                   ),
                 ),
-                SizedBox(height: 40),
+                SizedBox(height: 5), // Reklamın en altta görünmesi için Spacer ekleniyor
+                if (_isBannerAdReady)
+                  Container(
+                    height: _bannerAd.size.height.toDouble(),
+                    width: _bannerAd.size.width.toDouble(),
+                    child: AdWidget(ad: _bannerAd),
+                  ),
               ],
             ),
           ),

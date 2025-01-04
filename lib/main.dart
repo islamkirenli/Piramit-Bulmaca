@@ -9,10 +9,14 @@ import 'dart:math';
 import 'time_completed_dialog.dart';
 import 'dart:async'; // <<< Timer için ekle
 import 'package:lottie/lottie.dart';
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
   runApp(MyApp());
 }
 
@@ -41,6 +45,8 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   @override
   void initState() {
     super.initState();
+    requestAppTrackingPermission();
+
     _settingsIconController = AnimationController(
       duration: Duration(milliseconds: 500),
       vsync: this,
@@ -54,6 +60,15 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         handleCountdownLogic();
       }
     });
+  }
+
+  Future<void> requestAppTrackingPermission() async {
+    final status = await AppTrackingTransparency.requestTrackingAuthorization();
+    if (status == TrackingStatus.authorized) {
+      print("Kullanıcı izni verdi.");
+    } else {
+      print("Kullanıcı izin vermedi.");
+    }
   }
 
   @override
