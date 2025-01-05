@@ -848,13 +848,44 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
     });
   }
 
-  /// Kullanıcıya bir hak daha veren fonksiyon
   void gainExtraLife() {
-    setState(() {
-      GlobalProperties.remainingLives.value++; // Kullanıcıya bir hak daha ekle
-      saveGameData();
-    });
+    // Reklam hazırsa göster
+    if (_isInterstitialAdReady) {
+      _interstitialAd.show();
+      _isInterstitialAdReady = false;
+      loadInterstitialAd(); // Reklamı tekrar yükle
+
+      // Reklam gösteriminden sonra hak ekleme işlemi
+      _interstitialAd.fullScreenContentCallback = FullScreenContentCallback(
+        onAdDismissedFullScreenContent: (InterstitialAd ad) {
+          // Kullanıcı reklamı kapattıktan sonra hak ekle
+          ad.dispose();
+          setState(() {
+            GlobalProperties.remainingLives.value++; // Kullanıcıya bir hak ekle
+            saveGameData();
+          });
+          print("Reklam kapatıldı, hak eklendi.");
+        },
+        onAdFailedToShowFullScreenContent: (InterstitialAd ad, AdError error) {
+          // Reklam gösteriminde bir hata oluşursa yine hak ekle
+          ad.dispose();
+          setState(() {
+            GlobalProperties.remainingLives.value++;
+            saveGameData();
+          });
+          print("Reklam gösterilemedi, hak yine eklendi.");
+        },
+      );
+    } else {
+      // Reklam hazır değilse doğrudan hak ekle
+      setState(() {
+        GlobalProperties.remainingLives.value++;
+        saveGameData();
+      });
+      print("Reklam hazır değil, doğrudan hak eklendi.");
+    }
   }
+
 
   String? getNextSubSection(String mainSection, String currentSub) {
     List<String> subSections = puzzleSections[mainSection]!.keys.toList();
