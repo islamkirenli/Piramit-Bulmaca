@@ -31,7 +31,7 @@ dependencies:
   flutter:
     sdk: flutter
   lottie: ^2.3.2
-  flutter_local_notifications: ^12.0.4
+  #flutter_local_notifications: ^9.0.0
   google_mobile_ads: ^5.2.0
 
 
