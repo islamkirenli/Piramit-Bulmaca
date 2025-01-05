@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'puzzle_game.dart';
 import 'global_properties.dart';
 
+/// --- Değiştirmeden kullanabilirsiniz ---
 Future<Set<String>> getCompletedSections() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   List<String> completedSections = prefs.getStringList('completedSections') ?? [];
@@ -19,6 +20,7 @@ Future<void> markSectionAsCompleted(String sectionKey) async {
   }
 }
 
+/// --- ANA BÖLÜMLER ---
 class SectionsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -34,11 +36,20 @@ class SectionsPage extends StatelessWidget {
           }
 
           Set<String> completedSections = snapshot.data ?? {};
+          // puzzleSections.keys => Ana bölüm isimleri (ör. ["Bölüm 1", "Bölüm 2", ...])
+          List<String> allSections = puzzleSections.keys.toList();
+
           return ListView.builder(
-            itemCount: puzzleSections.keys.length,
+            itemCount: allSections.length,
             itemBuilder: (context, index) {
-              String sectionName = puzzleSections.keys.elementAt(index);
-              bool isUnlocked = index == 0 || completedSections.contains(puzzleSections.keys.elementAt(index - 1));
+              String sectionName = allSections[index];
+
+              /// --- DEĞİŞİKLİK 1 ---
+              /// Bir ana bölümün kilidi:
+              /// - index == 0 (ilk ana bölüm) ise açık,
+              /// - veya bir önceki ana bölüm "MAIN:<previousSection>" şeklinde tamamlanmışsa açık.
+              bool isUnlocked = (index == 0) ||
+                  completedSections.contains("MAIN:${allSections[index - 1]}");
 
               return GestureDetector(
                 onTap: isUnlocked
@@ -62,14 +73,20 @@ class SectionsPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Center(
-                    child: Text(
-                      sectionName,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    child: isUnlocked
+                        ? Text(
+                            sectionName,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )
+                        : Icon(
+                            Icons.lock,
+                            color: Colors.white,
+                            size: 30,
+                          ),
                   ),
                 ),
               );
@@ -81,28 +98,46 @@ class SectionsPage extends StatelessWidget {
   }
 }
 
-
-class SubSectionsPage extends StatelessWidget {
+/// --- ALT BÖLÜMLER ---
+class SubSectionsPage extends StatefulWidget {
   final String sectionName;
   final Map<String, List<Map<String, String>>> subSections;
 
-  SubSectionsPage({required this.sectionName, required this.subSections});
+  SubSectionsPage({
+    required this.sectionName,
+    required this.subSections,
+  });
+
+  @override
+  _SubSectionsPageState createState() => _SubSectionsPageState();
+}
+
+class _SubSectionsPageState extends State<SubSectionsPage> {
+  late Future<Set<String>> _completedSectionsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _completedSectionsFuture = getCompletedSections();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(sectionName),
+        title: Text(widget.sectionName),
         backgroundColor: Colors.blueAccent,
       ),
       body: FutureBuilder<Set<String>>(
-        future: getCompletedSections(),
+        future: _completedSectionsFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           }
 
           Set<String> completedSections = snapshot.data ?? {};
+          List<String> allSubSections = widget.subSections.keys.toList();
+
           return ValueListenableBuilder<int>(
             valueListenable: GlobalProperties.remainingLives,
             builder: (context, remainingLives, _) {
@@ -114,29 +149,58 @@ class SubSectionsPage extends StatelessWidget {
                   mainAxisSpacing: 10,
                   childAspectRatio: 1,
                 ),
-                itemCount: subSections.keys.length,
+                itemCount: allSubSections.length,
                 itemBuilder: (context, index) {
-                  String subSectionKey = subSections.keys.elementAt(index);
-                  String sectionKey = "$sectionName-$subSectionKey";
+                  String subSectionKey = allSubSections[index];
+                  String fullKey = "${widget.sectionName}-$subSectionKey";
 
-                  bool isUnlocked = index == 0 ||
-                      completedSections.contains("$sectionName-${subSections.keys.elementAt(index - 1)}");
+                  // Örnek: İlk 3 alt bölüm direkt açık, sonrakiler bir önceki tamamlandıysa açık.
+                  bool isUnlocked = (index < 3) ||
+                      completedSections.contains(
+                        "${widget.sectionName}-${allSubSections[index - 1]}",
+                      );
 
-                  bool isCompleted = completedSections.contains(sectionKey);
+                  bool isCompleted = completedSections.contains(fullKey);
 
                   return GestureDetector(
                     onTap: isUnlocked && remainingLives > 0
-                        ? () {
-                            Navigator.push(
+                        ? () async {
+                            // Oyun sayfasına git
+                            await Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => PuzzleGame(
-                                  initialMainSection: sectionName,
+                                  initialMainSection: widget.sectionName,
                                   initialSubSection: subSectionKey,
                                 ),
                               ),
-                            ).then((_) {
-                              markSectionAsCompleted(sectionKey);
+                            );
+
+                            // Geri dönünce bu alt bölümü completedSections'a ekle
+                            await markSectionAsCompleted(fullKey);
+
+                            /// --- DEĞİŞİKLİK 2 ---
+                            /// Eğer bu oynanan alt bölüm "20" ise (örn. "20". alt bölüm),
+                            /// bir sonraki ana bölümü ("MAIN:<sonraki bölüm>") açalım.
+                            if (subSectionKey == "20") {
+                              // puzzleSections içerisinden tüm ana bölümleri alalım
+                              List<String> allMainSections =
+                                  puzzleSections.keys.toList();
+                              // Mevcut ana bölümün index'ini bulalım
+                              int currentIndex = allMainSections
+                                  .indexOf(widget.sectionName);
+                              // Sonraki ana bölüm var mı (out of range olmazsa)
+                              if (currentIndex >= 0 &&
+                                  currentIndex < allMainSections.length - 1) {
+                                String nextSection =
+                                    allMainSections[currentIndex + 1];
+                                await markSectionAsCompleted("MAIN:$nextSection");
+                              }
+                            }
+
+                            // SharedPreferences'ı yeniden oku ve sayfayı güncelle
+                            setState(() {
+                              _completedSectionsFuture = getCompletedSections();
                             });
                           }
                         : null,
@@ -148,14 +212,19 @@ class SubSectionsPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Center(
-                        child: Text(
-                          "$subSectionKey",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                        child: isUnlocked
+                            ? Text(
+                                subSectionKey,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )
+                            : Icon(
+                                Icons.lock,
+                                color: Colors.white,
+                              ),
                       ),
                     ),
                   );
@@ -169,11 +238,10 @@ class SubSectionsPage extends StatelessWidget {
   }
 }
 
-
+/// --- Uygulama başlangıcı ---
 void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     home: SectionsPage(),
   ));
 }
-

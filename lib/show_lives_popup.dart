@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:in_app_purchase/in_app_purchase.dart';
+//import 'package:in_app_purchase/in_app_purchase.dart';
 import 'global_properties.dart';
 import 'in_app_purchase_service.dart';
 
