@@ -306,7 +306,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     GlobalProperties.coin.value = prefs.getInt('coin') ?? 0;
-    GlobalProperties.remainingLives.value = prefs.getInt('remainingLives') ?? 1;
+    GlobalProperties.remainingLives.value = prefs.getInt('remainingLives') ?? 3;
     GlobalProperties.countdownSeconds.value = prefs.getInt('countdownSeconds') ?? 15;
     GlobalProperties.isTimerRunning.value = prefs.getBool('isTimerRunning') ?? false;
 
