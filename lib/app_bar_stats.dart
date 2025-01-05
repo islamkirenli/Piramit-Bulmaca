@@ -34,19 +34,22 @@ class _AppBarStatsState extends State<AppBarStats> {
   @override
   void didUpdateWidget(covariant AppBarStats oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // Eğer sonradan kalan hak 0'a düşerse, timer'ı başlat
-    // (veya yeniden başlatmak gerekirse) 
-    if (GlobalProperties.remainingLives.value == 0) {
-      if (countdownTimer == null || !(countdownTimer!.isActive)) {
-        startCountdown();
-      }
-    } else {
-      // Kalan hak > 0 olduysa, timer'ı durdurup sayaç varsayılan 15'e çekebiliriz:
+
+    // Hak sıfırdan büyüğe çıktıysa timer'ı durdur ve sayaç sıfırla
+    if (GlobalProperties.remainingLives.value > 0) {
       countdownTimer?.cancel();
       countdownTimer = null;
-      GlobalProperties.countdownSeconds.value = 15; 
+      GlobalProperties.countdownSeconds.value = 15;
       GlobalProperties.isTimerRunning.value = false;
     }
+
+    // Hak sıfıra düştüyse ve sayaç aktif değilse başlat
+    if (GlobalProperties.remainingLives.value == 0 &&
+        (countdownTimer == null || !countdownTimer!.isActive)) {
+      startCountdown();
+    }
+
+    setState(() {}); // AppBar'ı yeniden çiz
   }
 
   @override

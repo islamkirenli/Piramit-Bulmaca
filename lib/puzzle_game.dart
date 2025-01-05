@@ -76,6 +76,9 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
   String? currentCorrectGuessImage; // Şu anki gösterilen görsel
   late BannerAd _bannerAd;
   bool _isBannerAdReady = false;
+  late Timer _bannerAdTimer;
+  late InterstitialAd _interstitialAd;
+  bool _isInterstitialAdReady = false;
 
 
   late AnimationController _settingsIconController;
@@ -100,24 +103,19 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
       'assets/images/correct_guess/correct_guess5.png',
     ];
 
-    // Banner reklamını oluştur ve yükle
-    _bannerAd = BannerAd(
-      adUnitId: 'ca-app-pub-3940256099942544/2934735716', // AdMob reklam birimi kimliğinizi buraya yazın
-      size: AdSize.banner,
-      request: AdRequest(),
-      listener: BannerAdListener(
-        onAdLoaded: (_) {
-          setState(() {
-            _isBannerAdReady = true;
-          });
-        },
-        onAdFailedToLoad: (ad, error) {
-          print('Banner failed to load: $error');
-          ad.dispose();
-        },
-      ),
-    );
-    _bannerAd.load();
+    // Banner reklamı oluştur ve yükle
+    createAndLoadBannerAd();
+
+    loadInterstitialAd(); // Interstitial reklamı yükle
+
+    // Banner reklamını 5 saniyede bir yenile
+    _bannerAdTimer = Timer.periodic(Duration(seconds: 5), (_) {
+      setState(() {
+        _bannerAd.dispose(); // Mevcut banner reklamı temizle
+        createAndLoadBannerAd(); // Yeni bir banner reklam oluştur ve yükle
+        print("banner yenilendi.");
+      });
+    });
 
     // Correct Guess animasyonu için controller
     _correctGuessController = AnimationController(
@@ -159,7 +157,9 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
 
   @override
   void dispose() {
-    _bannerAd.dispose();
+    _bannerAdTimer.cancel(); // Timer'ı durdur
+    _bannerAd.dispose(); // Mevcut reklamı temizle
+    _interstitialAd.dispose();
     _correctGuessController.dispose(); // Correct Guess controller'ını temizle
     _settingsIconController.dispose(); // Animasyon denetleyicisini temizle
     WidgetsBinding.instance.removeObserver(this);
@@ -875,6 +875,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
 
     if (nextSubSection != null) {
       setState(() {
+        showInterstitialAd(); // Reklamı göster
         currentSubSection = nextSubSection;
         currentIndex = 0;
         correctWords.clear();
@@ -1031,11 +1032,6 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
       // >>> Timer aslında bitmiş, yani uygulama kapalıyken süre doldu.
       // Bunu işaretle:
       isTimeCompletedWhileAppClosed = true;
-
-      // Hakları yenile (istersen onTimerEnd içinde de yenileyebilirsin ama burada da olur)
-      GlobalProperties.remainingLives.value = 3;
-      GlobalProperties.countdownSeconds.value = 15;
-      GlobalProperties.isTimerRunning.value = false;
 
       // Kaydetmeyi unutma
       await saveGameData();
@@ -1235,5 +1231,54 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
     setState(() {
       showWordHintAnimation = false;
     });
+  }
+
+  void createAndLoadBannerAd() {
+    _bannerAd = BannerAd(
+      adUnitId: 'ca-app-pub-3940256099942544/2934735716', // AdMob reklam birimi kimliğiniz
+      size: AdSize.banner,
+      request: AdRequest(),
+      listener: BannerAdListener(
+        onAdLoaded: (_) {
+          setState(() {
+            _isBannerAdReady = true;
+          });
+        },
+        onAdFailedToLoad: (ad, error) {
+          print('Banner failed to load: $error');
+          ad.dispose();
+        },
+      ),
+    );
+    _bannerAd.load();
+  }
+
+  // Interstitial reklamı yükleyen fonksiyon
+  void loadInterstitialAd() {
+    InterstitialAd.load(
+      adUnitId: 'ca-app-pub-3940256099942544/4411468910', // AdMob interstitial reklam birimi kimliğiniz
+      request: AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+        onAdLoaded: (InterstitialAd ad) {
+          _interstitialAd = ad;
+          _isInterstitialAdReady = true;
+        },
+        onAdFailedToLoad: (LoadAdError error) {
+          print('Interstitial ad failed to load: $error');
+          _isInterstitialAdReady = false;
+        },
+      ),
+    );
+  }
+
+  // Interstitial reklamı gösteren fonksiyon
+  void showInterstitialAd() {
+    if (_isInterstitialAdReady) {
+      _interstitialAd.show();
+      _isInterstitialAdReady = false;
+      loadInterstitialAd(); // Reklamı tekrar yükle
+    } else {
+      print('Interstitial ad is not ready yet.');
+    }
   }
 }

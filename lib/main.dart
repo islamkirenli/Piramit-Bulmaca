@@ -306,7 +306,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     GlobalProperties.coin.value = prefs.getInt('coin') ?? 0;
-    GlobalProperties.remainingLives.value = prefs.getInt('remainingLives') ?? 3;
+    GlobalProperties.remainingLives.value = prefs.getInt('remainingLives') ?? 1;
     GlobalProperties.countdownSeconds.value = prefs.getInt('countdownSeconds') ?? 15;
     GlobalProperties.isTimerRunning.value = prefs.getBool('isTimerRunning') ?? false;
 
@@ -323,11 +323,6 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       // >>> Timer aslında bitmiş, yani uygulama kapalıyken süre doldu.
       // Bunu işaretle:
       GlobalProperties.isTimeCompletedWhileAppClosed = true;
-
-      // Hakları yenile (istersen onTimerEnd içinde de yenileyebilirsin ama burada da olur)
-      GlobalProperties.remainingLives.value = 3;
-      GlobalProperties.countdownSeconds.value = 15;
-      GlobalProperties.isTimerRunning.value = false;
 
       // Kaydetmeyi unutma
       await saveGameData();
