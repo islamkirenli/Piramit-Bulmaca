@@ -79,6 +79,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
   late Timer _bannerAdTimer;
   late InterstitialAd _interstitialAd;
   bool _isInterstitialAdReady = false;
+  bool shouldShowAds = false;
 
 
   late AnimationController _settingsIconController;
@@ -138,19 +139,32 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
     loadGameData().then((_) {
       setState(() {
         isDataLoaded = true;
-      });
 
-      // 1) Eğer uygulama kapalıyken timer süresi dolmuşsa,
-      //    onTimerEnd fonksiyonunu otomatik tetikle.
-      if (isTimeCompletedWhileAppClosed) {
-        //onTimerEnd(context);
-      } 
-      // 2) Değilse ve haklar yine 0 ise, sayacı başlatmayı düşünebilirsin
-      else if (GlobalProperties.remainingLives.value == 0 &&
-               GlobalProperties.countdownSeconds.value > 0 &&
-               !GlobalProperties.isTimerRunning.value) {
-        startCountdownInAppBarStats();
-      }
+        // *** YENİ *** Reklam gösterecek miyiz?
+        shouldShowAds = checkIfShouldShowAds(currentMainSection, currentSubSection);
+
+        // Eğer reklam göstermemiz gerekiyorsa Banner ve Interstitial yüklüyoruz.
+        if (shouldShowAds) {
+          createAndLoadBannerAd();
+          loadInterstitialAd(); 
+          _bannerAdTimer = Timer.periodic(Duration(seconds: 5), (_) {
+            setState(() {
+              _bannerAd.dispose();
+              createAndLoadBannerAd();
+              print("banner yenilendi.");
+            });
+          });
+        }
+
+        // (Diğer kodlar, örneğin timer bitmiş mi kontrolü vs.)
+        if (isTimeCompletedWhileAppClosed) {
+          // onTimerEnd(context);
+        } else if (GlobalProperties.remainingLives.value == 0 &&
+                  GlobalProperties.countdownSeconds.value > 0 &&
+                  !GlobalProperties.isTimerRunning.value) {
+          startCountdownInAppBarStats();
+        }
+      });
     });
   }
 
@@ -566,7 +580,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                   ),
                 ),
                 SizedBox(height: 5), // Reklamın en altta görünmesi için Spacer ekleniyor
-                if (_isBannerAdReady)
+                if (shouldShowAds && _isBannerAdReady)
                   Container(
                     height: _bannerAd.size.height.toDouble(),
                     width: _bannerAd.size.width.toDouble(),
@@ -1304,12 +1318,28 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
 
   // Interstitial reklamı gösteren fonksiyon
   void showInterstitialAd() {
-    if (_isInterstitialAdReady) {
+    if (shouldShowAds && _isInterstitialAdReady) {
       _interstitialAd.show();
       _isInterstitialAdReady = false;
       loadInterstitialAd(); // Reklamı tekrar yükle
     } else {
       print('Interstitial ad is not ready yet.');
+    }
+  }
+
+  bool checkIfShouldShowAds(String mainSection, String subSection) {
+    // Eğer "Ana Bölüm 1" ise alt bölüm sayısını kontrol edelim:
+    if (mainSection == "Ana Bölüm 1") {
+      final subSecInt = int.tryParse(subSection) ?? 0;
+      // 10. alt bölümü geçtikten sonra, yani 11 veya üstüyse reklam göster
+      if (subSecInt > 10) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      // Ana Bölüm 2 veya 3 veya başka bir bölüme geçilmişse direkt göster
+      return true;
     }
   }
 }
