@@ -3,6 +3,7 @@ import 'package:lottie/lottie.dart';
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'main.dart';
+import 'in_app_purchase_service.dart';
 
 void showNextLevelDialog(
   BuildContext context,
@@ -57,7 +58,7 @@ void showNextLevelDialog(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
-        backgroundColor: const Color(0xFFfef7ff), // Arka plan rengini ayarlayın
+        backgroundColor: const Color(0xFFfef7ff), 
         titlePadding: EdgeInsets.zero,
         contentPadding: EdgeInsets.zero,
         content: Column(
@@ -96,36 +97,36 @@ void showNextLevelDialog(
               children: [
                 ElevatedButton(
                   onPressed: () async {
-                    // Lottie animasyon ekranını göster
+                    // HomePage'e geçiş yapan animasyon gösterme kodu
                     await showGeneralDialog(
                       context: context,
-                      barrierDismissible: false, // Kullanıcı animasyonu kapatamaz
-                      barrierColor: Colors.transparent, // Hafif siyah arka plan
+                      barrierDismissible: false,
+                      barrierColor: Colors.transparent,
                       pageBuilder: (context, _, __) {
                         return Scaffold(
-                          backgroundColor: Colors.transparent, // Arka plan rengini siyah yap
+                          backgroundColor: Colors.transparent,
                           body: Stack(
                             children: [
                               Positioned.fill(
-                                child: Center( // Animasyonu ekranın tam ortasına hizala
+                                child: Center(
                                   child: Transform.scale(
-                                    scale: 1, // Animasyonu büyütüp tam ortalamak için
+                                    scale: 1,
                                     child: Transform.translate(
-                                      offset: Offset(0, 0), // Animasyonun dikey ve yatay ofsetini ayarla
+                                      offset: Offset(0, 0),
                                       child: Lottie.asset(
                                         'assets/animations/screen_transition_animation.json',
-                                        width: MediaQuery.of(context).size.width, // Ekran genişliği
-                                        height: MediaQuery.of(context).size.height, // Ekran yüksekliği
-                                        fit: BoxFit.fill, // Ekranı tamamen kapla
-                                        repeat: false, // Animasyonu bir kez oynat
+                                        width: MediaQuery.of(context).size.width,
+                                        height: MediaQuery.of(context).size.height,
+                                        fit: BoxFit.fill,
+                                        repeat: false,
                                         onLoaded: (composition) {
                                           Future.delayed(
-                                            composition.duration, // Animasyon süresince bekle
+                                            composition.duration,
                                             () {
-                                              Navigator.of(context).pop(); // Animasyon bitince dialog kapat
+                                              Navigator.of(context).pop();
                                               Navigator.of(context).pushAndRemoveUntil(
-                                                MaterialPageRoute(builder: (context) => HomePage()), // HomePage'e yönlendir
-                                                (route) => false, // Önceki tüm sayfaları kaldır
+                                                MaterialPageRoute(builder: (context) => HomePage()),
+                                                (route) => false,
                                               );
                                             },
                                           );
@@ -170,6 +171,59 @@ void showNextLevelDialog(
                 ),
               ],
             ),
+
+            // EKLENEN KISIMLAR BAŞLANGICI
+            const SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Divider(
+                color: Colors.grey,
+                thickness: 1,
+              ),
+            ),
+            const SizedBox(height: 8),
+
+            // Üst tarafa kısa bir açıklama metni
+            const Text(
+              'Reklamları Kaldır',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+
+            // Sadece görselin kendisini buton olarak kullanan GestureDetector
+            GestureDetector(
+              onTap: () async {
+                // 1) InAppPurchaseService örneğinizi oluşturun veya elde edin
+                final iapService = InAppPurchaseService();
+                iapService.initialize(); 
+                  // Eğer uygulamanızda bu service daha önce initialize edildiyse,
+                  // tekrar initialize etmeye gerek olmayabilir.
+
+                // 2) Ürünleri yükle (remove_ads ürününü de sorgular)
+                await iapService.loadProducts();
+
+                // 3) remove_ads product'ını bul
+                final candidates = iapService.products.where((p) => p.id == 'remove_ads');
+                final removeAdsProduct = candidates.isNotEmpty ? candidates.first : null;
+
+                if (removeAdsProduct != null) {
+                  // Ürünü satın alma işlemini başlat
+                  await iapService.purchaseProduct(removeAdsProduct);
+                } else {
+                  debugPrint("remove_ads ürünü bulunamadı veya yüklenemedi.");
+                }
+              },
+              child: Image.asset(
+                'assets/images/ads_block.png',
+                width: 80,
+                height: 80,
+              ),
+            ),
+            // EKLENEN KISIMLAR SONU
+
             const SizedBox(height: 16),
           ],
         ),

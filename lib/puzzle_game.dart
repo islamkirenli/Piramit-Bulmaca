@@ -151,7 +151,6 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
             setState(() {
               _bannerAd.dispose();
               createAndLoadBannerAd();
-              print("banner yenilendi.");
             });
           });
         }
@@ -603,6 +602,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                     child: Lottie.asset(
                     'assets/animations/word_hint_animation.json',
                     fit: BoxFit.contain,
+                    repeat: false,
                     ),
                   )
                 )
@@ -736,6 +736,8 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
             int maxWordLength = puzzleSections[currentMainSection]![currentSubSection]!
                 .map((wordData) => wordData['word']!.length)
                 .reduce((a, b) => a > b ? a : b);
+
+            showInterstitialAd();
 
             // Çokgen kenarlarını güncellemek için bir callback'e bırak
             showNextLevelDialog(
@@ -879,24 +881,8 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
             saveGameData();
           });
           print("Reklam kapatıldı, hak eklendi.");
-        },
-        onAdFailedToShowFullScreenContent: (InterstitialAd ad, AdError error) {
-          // Reklam gösteriminde bir hata oluşursa yine hak ekle
-          ad.dispose();
-          setState(() {
-            GlobalProperties.remainingLives.value++;
-            saveGameData();
-          });
-          print("Reklam gösterilemedi, hak yine eklendi.");
-        },
+        }
       );
-    } else {
-      // Reklam hazır değilse doğrudan hak ekle
-      setState(() {
-        GlobalProperties.remainingLives.value++;
-        saveGameData();
-      });
-      print("Reklam hazır değil, doğrudan hak eklendi.");
     }
   }
 
@@ -920,7 +906,6 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
 
     if (nextSubSection != null) {
       setState(() {
-        showInterstitialAd(); // Reklamı göster
         currentSubSection = nextSubSection;
         currentIndex = 0;
         correctWords.clear();
@@ -1154,6 +1139,8 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                 .map((wordData) => wordData['word']!.length)
                 .reduce((a, b) => a > b ? a : b);
 
+            showInterstitialAd();
+
             // Çokgen kenarlarını güncellemek için bir callback'e bırak
             showNextLevelDialog(
               context,
@@ -1242,6 +1229,8 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
           int maxWordLength = puzzleSections[currentMainSection]![currentSubSection]!
               .map((wordData) => wordData['word']!.length)
               .reduce((a, b) => a > b ? a : b);
+          
+          showInterstitialAd(); // Reklamı göster
 
           showNextLevelDialog(
             context,

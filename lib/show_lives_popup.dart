@@ -134,7 +134,7 @@ Future<void> showLivesPopup(BuildContext context) async {
               onTap: () async {
                 final product = inAppPurchaseService.products.firstWhere(
                   (element) => element.id == InAppPurchaseService.oneLifeProductId,
-                  orElse: () => throw Exception('Ürün bulunamadı'),
+                  orElse: () => throw Exception('Ürün bulunamadı, 1 hak'),
                 );
                 await inAppPurchaseService.purchaseProduct(product);
               },
@@ -147,7 +147,7 @@ Future<void> showLivesPopup(BuildContext context) async {
               onTap: () async {
                 final product = inAppPurchaseService.products.firstWhere(
                   (element) => element.id == InAppPurchaseService.fiveLivesProductId,
-                  orElse: () => throw Exception('Ürün bulunamadı'),
+                  orElse: () => throw Exception('Ürün bulunamadı, 5 hak'),
                 );
                 await inAppPurchaseService.purchaseProduct(product);
               },
@@ -160,7 +160,7 @@ Future<void> showLivesPopup(BuildContext context) async {
               onTap: () async {
                 final product = inAppPurchaseService.products.firstWhere(
                   (element) => element.id == InAppPurchaseService.tenLivesProductId,
-                  orElse: () => throw Exception('Ürün bulunamadı'),
+                  orElse: () => throw Exception('Ürün bulunamadı, 10 hak'),
                 );
                 await inAppPurchaseService.purchaseProduct(product);
               },

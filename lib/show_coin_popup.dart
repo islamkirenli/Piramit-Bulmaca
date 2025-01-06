@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'global_properties.dart';
+import 'in_app_purchase_service.dart';
 
 Future<void> showCoinPopup(BuildContext context) async {
   RewardedAd? _rewardedAd;
@@ -60,11 +61,15 @@ Future<void> showCoinPopup(BuildContext context) async {
   // Popup açılmadan önce reklam yükleniyor
   loadRewardedAd();
 
+  // In-app purchase service örneği
+  final inAppPurchaseService = InAppPurchaseService();
+  inAppPurchaseService.initialize();
+  await inAppPurchaseService.loadProducts();
+
   await showDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        // Modern görünüm: beyaz arkaplan, yuvarlak kenar
         backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
@@ -79,14 +84,8 @@ Future<void> showCoinPopup(BuildContext context) async {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Başlığın hemen altında ince bir ayrım çizgisi
-            Divider(
-              color: Colors.grey[300],
-              thickness: 1,
-            ),
+            Divider(color: Colors.grey[300], thickness: 1),
             const SizedBox(height: 12),
-
-            // Yönlendirici metin
             Text(
               'Reklam izleyerek coin kazanabilirsiniz.',
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -94,8 +93,6 @@ Future<void> showCoinPopup(BuildContext context) async {
                   ),
             ),
             const SizedBox(height: 16),
-
-            // Ortada bir dairesel buton (reklam izleme)
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -116,42 +113,53 @@ Future<void> showCoinPopup(BuildContext context) async {
               ],
             ),
             const SizedBox(height: 24),
-
-            // Reklam butonu ve satın alma seçenekleri arasında ayrım
-            Divider(
-              color: Colors.grey[300],
-              thickness: 1,
-            ),
+            Divider(color: Colors.grey[300], thickness: 1),
             const SizedBox(height: 8),
 
-            // Satın alma seçenekleri (her biri ayrı çerçevede gölgeyle gösteriliyor)
+            // 100 Coin
             _buildPurchaseCard(
               context,
               '100 Coin - \$1.99',
               Icons.monetization_on,
-              onTap: () {
-                // TODO: Burada in-app purchase veya benzer satın alma işlemini başlatın
-                debugPrint('100 Coin satın alma tıklandı.');
+              onTap: () async {
+                // 100 Coin satın alma tıklandı
+                final product = inAppPurchaseService.products.firstWhere(
+                  (element) => element.id == InAppPurchaseService.coin100ProductId,
+                  orElse: () => throw Exception('Ürün bulunamadı, 100 coin'),
+                );
+                await inAppPurchaseService.purchaseProduct(product);
               },
             ),
             const SizedBox(height: 12),
+
+            // 500 Coin
             _buildPurchaseCard(
               context,
               '500 Coin - \$7.99',
               Icons.monetization_on,
-              onTap: () {
-                // TODO: Burada in-app purchase veya benzer satın alma işlemini başlatın
-                debugPrint('500 Coin satın alma tıklandı.');
+              onTap: () async {
+                // 500 Coin satın alma tıklandı
+                final product = inAppPurchaseService.products.firstWhere(
+                  (element) => element.id == InAppPurchaseService.coin500ProductId,
+                  orElse: () => throw Exception('Ürün bulunamadı, 500 coin'),
+                );
+                await inAppPurchaseService.purchaseProduct(product);
               },
             ),
             const SizedBox(height: 12),
+
+            // 1000 Coin
             _buildPurchaseCard(
               context,
               '1000 Coin - \$14.99',
               Icons.monetization_on,
-              onTap: () {
-                // TODO: Burada in-app purchase veya benzer satın alma işlemini başlatın
-                debugPrint('1000 Coin satın alma tıklandı.');
+              onTap: () async {
+                // 1000 Coin satın alma tıklandı
+                final product = inAppPurchaseService.products.firstWhere(
+                  (element) => element.id == InAppPurchaseService.coin1000ProductId,
+                  orElse: () => throw Exception('Ürün bulunamadı, 1000 coin'),
+                );
+                await inAppPurchaseService.purchaseProduct(product);
               },
             ),
           ],
@@ -163,7 +171,7 @@ Future<void> showCoinPopup(BuildContext context) async {
               Navigator.of(context).pop();
             },
             style: TextButton.styleFrom(
-              foregroundColor: Colors.indigo, // Metin rengi
+              foregroundColor: Colors.indigo,
               textStyle: const TextStyle(fontWeight: FontWeight.bold),
             ),
             child: const Text('Kapat'),
@@ -173,6 +181,7 @@ Future<void> showCoinPopup(BuildContext context) async {
     },
   );
 }
+
 
 /// Her satın alma satırını ayrı bir çerçevede gösteren widget
 Widget _buildPurchaseCard(

@@ -5,21 +5,26 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'global_properties.dart';
 
 class InAppPurchaseService {
-  // in_app_purchase paketi için temel instance
   final InAppPurchase _inAppPurchase = InAppPurchase.instance;
 
-  // Store’dan gelecek product listesi
+  // Mağazadan gelecek ürün bilgileri
   List<ProductDetails> products = [];
 
-  // Satın alma güncellemelerini dinlemek için stream subscription
   late StreamSubscription<List<PurchaseDetails>> _subscription;
 
-  // Uygulamada tanımlı ürün kimlikleri
+  // Mevcut ürün kimlikleri (hak satın alma, reklam kaldırma vs.)
   static const String oneLifeProductId = 'one_life';
   static const String fiveLivesProductId = 'five_lives';
   static const String tenLivesProductId = 'ten_lives';
 
-  // Satın alma güncellemelerini dinlemeye başla
+  // Reklamları kaldır
+  static const String removeAdsProductId = 'remove_ads';
+
+  // *** YENİ: Coin ürün kimlikleri ekleniyor ***
+  static const String coin100ProductId = 'coin_100';
+  static const String coin500ProductId = 'coin_500';
+  static const String coin1000ProductId = 'coin_1000';
+
   void initialize() {
     final purchaseUpdateStream = _inAppPurchase.purchaseStream;
     _subscription = purchaseUpdateStream.listen(
@@ -30,13 +35,11 @@ class InAppPurchaseService {
         _subscription.cancel();
       },
       onError: (error) {
-        // Hata yönetimi
         debugPrint('Purchase Stream Error: $error');
       },
     );
   }
 
-  // Store’dan ürün bilgilerini çek
   Future<void> loadProducts() async {
     final bool available = await _inAppPurchase.isAvailable();
     if (!available) {
@@ -44,11 +47,15 @@ class InAppPurchaseService {
       return;
     }
 
-    // Sorgulanacak ürün kimlikleri
+    // Ürün kimlikleri set’i (hak, reklam kaldırma, coin paketleri)
     const Set<String> ids = {
       oneLifeProductId,
       fiveLivesProductId,
       tenLivesProductId,
+      removeAdsProductId,
+      coin100ProductId,
+      coin500ProductId,
+      coin1000ProductId,
     };
 
     final ProductDetailsResponse response =
@@ -67,65 +74,78 @@ class InAppPurchaseService {
     products = response.productDetails;
   }
 
-  // Ürünü satın alma işlemini başlat
+  // Satın alma işlemini başlatma (consumable vs. non-consumable)
   Future<void> purchaseProduct(ProductDetails product) async {
     final PurchaseParam purchaseParam = PurchaseParam(productDetails: product);
-    
-    // Hak (can) gibi tüketilebilir ürünler için buyConsumable:
-    await _inAppPurchase.buyConsumable(
-      purchaseParam: purchaseParam,
-      autoConsume: true, // Android için otomatik tüketim
-    );
+
+    if (product.id == removeAdsProductId) {
+      // Reklam kaldırma ürünü (non-consumable)
+      await _inAppPurchase.buyNonConsumable(purchaseParam: purchaseParam);
+    } else {
+      // Diğer ürünleriniz (canlar ve coin paketleri) -> consumable
+      await _inAppPurchase.buyConsumable(
+        purchaseParam: purchaseParam,
+        autoConsume: true,
+      );
+    }
   }
 
-  // Satın alma güncellemelerini dinle
   Future<void> _listenToPurchaseUpdated(List<PurchaseDetails> purchases) async {
     for (var purchase in purchases) {
       switch (purchase.status) {
         case PurchaseStatus.pending:
-          // Ödeme işlemi beklemede
           break;
         case PurchaseStatus.purchased:
-          // Satın alma başarılı
-          // -> Hak ekleme, veri kaydetme vb. işlemlerinizi yapın
           await _handleSuccessfulPurchase(purchase);
-
-          // Satın almayı tamamlayın (özellikle iOS için önemli)
           _inAppPurchase.completePurchase(purchase);
           break;
         case PurchaseStatus.error:
-          // Satın alma hatası
           debugPrint('Satın alma hatası: ${purchase.error}');
           break;
         case PurchaseStatus.restored:
-          // Önceden satın alınmış ürünü geri yükleme
           _inAppPurchase.completePurchase(purchase);
           break;
         case PurchaseStatus.canceled:
-          // Kullanıcı satın almayı iptal etti
           break;
       }
     }
   }
 
-  // Başarılı satın alma sonrası hak ekleme
+  // Satın alma tamamlanınca yapılacaklar
   Future<void> _handleSuccessfulPurchase(PurchaseDetails purchase) async {
+    // 1) Hak (can) satın alımı
     if (purchase.productID == oneLifeProductId) {
       GlobalProperties.remainingLives.value += 1;
     } else if (purchase.productID == fiveLivesProductId) {
       GlobalProperties.remainingLives.value += 5;
     } else if (purchase.productID == tenLivesProductId) {
       GlobalProperties.remainingLives.value += 10;
+    } 
+    // 2) Reklam kaldırma
+    else if (purchase.productID == removeAdsProductId) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('adsRemoved', true);
+      debugPrint("Reklamlar kalıcı olarak kaldırıldı (adsRemoved=true).");
+    }
+    // 3) Coin satın alımı
+    else if (purchase.productID == coin100ProductId) {
+      GlobalProperties.coin.value += 100;
+    } else if (purchase.productID == coin500ProductId) {
+      GlobalProperties.coin.value += 500;
+    } else if (purchase.productID == coin1000ProductId) {
+      GlobalProperties.coin.value += 1000;
     }
 
-    // Satın alma sonrası veriyi kaydet
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // Hak veya coin güncellediysek kaydedelim
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('coin', GlobalProperties.coin.value);
     await prefs.setInt('remainingLives', GlobalProperties.remainingLives.value);
 
-    debugPrint('Satın alma başarılı! Mevcut hak: ${GlobalProperties.remainingLives.value}');
+    debugPrint(
+      'Satın alma başarılı! Coin: ${GlobalProperties.coin.value}, Hak: ${GlobalProperties.remainingLives.value}',
+    );
   }
 
-  // Abonelik iptali vb. durumlarda stream dinlemeyi bırakın
   void dispose() {
     _subscription.cancel();
   }
