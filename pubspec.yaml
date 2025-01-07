@@ -76,9 +76,14 @@ flutter:
   - assets/animations/word_hint_animation.json
   - assets/animations/screen_transition_animation.json
   - assets/images/piramit_background.jpg
+  - assets/images/piramit_background2.jpg
+  - assets/images/piramit_background3.jpg
   - assets/images/game_background.webp   
   - assets/images/game_piramit.png
   - assets/images/ads_block.png
+  - assets/images/buttons/play_button.png
+  - assets/images/buttons/levels_button.png
+  - assets/images/buttons/settings_button.png
   - assets/images/correct_guess/correct_guess1.png
   - assets/images/correct_guess/correct_guess2.png
   - assets/images/correct_guess/correct_guess3.png
