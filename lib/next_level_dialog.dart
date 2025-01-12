@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'main.dart';
 import 'in_app_purchase_service.dart';
+import 'global_properties.dart';
 
 void showNextLevelDialog(
   BuildContext context,
@@ -71,13 +72,13 @@ void showNextLevelDialog(
               height: 150,
               fit: BoxFit.contain,
             ),
-            const Padding(
+            Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               child: Column(
                 children: [
                   Text(
                     'Tebrikler!',
-                    style: TextStyle(
+                    style: GlobalProperties.globalTextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
                     ),
@@ -86,6 +87,7 @@ void showNextLevelDialog(
                   SizedBox(height: 8),
                   Text(
                     'Bölümü başarıyla tamamladınız!',
+                    style: GlobalProperties.globalTextStyle(),
                     textAlign: TextAlign.center,
                   ),
                 ],
@@ -184,10 +186,10 @@ void showNextLevelDialog(
             const SizedBox(height: 8),
 
             // Üst tarafa kısa bir açıklama metni
-            const Text(
+            Text(
               'Reklamları Kaldır',
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: GlobalProperties.globalTextStyle(
                 fontWeight: FontWeight.bold,
               ),
             ),

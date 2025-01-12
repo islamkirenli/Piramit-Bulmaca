@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
+import 'package:pyramid_puzzle/global_properties.dart';
+
 class AnimatedPolygonWidget extends StatefulWidget {
   final double initialSides;
   final double size;
@@ -213,7 +215,7 @@ class PolygonPainter extends CustomPainter {
       if (i < letters.length) { // Kelimenin harflerini sırayla çiz
         textPainter.text = TextSpan(
           text: letters[i],
-          style: TextStyle(
+          style: GlobalProperties.globalTextStyle(
             color: Colors.white,
             fontSize: 35,
             fontWeight: FontWeight.bold,

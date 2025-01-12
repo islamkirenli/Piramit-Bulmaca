@@ -76,7 +76,7 @@ Future<void> showCoinPopup(BuildContext context) async {
         ),
         title: Text(
           'Coin Satın Al',
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+          style: GlobalProperties.globalTextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.black87,
               ),
@@ -88,7 +88,7 @@ Future<void> showCoinPopup(BuildContext context) async {
             const SizedBox(height: 12),
             Text(
               'Reklam izleyerek coin kazanabilirsiniz.',
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+              style: GlobalProperties.globalTextStyle(
                     color: Colors.black87,
                   ),
             ),
@@ -174,7 +174,7 @@ Future<void> showCoinPopup(BuildContext context) async {
               foregroundColor: Colors.indigo,
               textStyle: const TextStyle(fontWeight: FontWeight.bold),
             ),
-            child: const Text('Kapat'),
+            child: Text('Kapat', style: GlobalProperties.globalTextStyle(),),
           ),
         ],
       );
@@ -207,7 +207,7 @@ Widget _buildPurchaseCard(
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       title: Text(
         title,
-        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+        style: GlobalProperties.globalTextStyle(
               color: Colors.black87,
             ),
       ),

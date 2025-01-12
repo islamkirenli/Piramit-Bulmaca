@@ -72,7 +72,7 @@ Future<void> showLivesPopup(BuildContext context) async {
         ),
         title: Text(
           'Kalan Hak Satın Al',
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+          style: GlobalProperties.globalTextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.black87,
               ),
@@ -90,7 +90,7 @@ Future<void> showLivesPopup(BuildContext context) async {
             // Reklam butonunun üzerinde yönlendirici bir metin
             Text(
               'Reklam izleyerek can kazanabilirsiniz.',
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+              style: GlobalProperties.globalTextStyle(
                     color: Colors.black87,
                   ),
             ),
@@ -178,7 +178,7 @@ Future<void> showLivesPopup(BuildContext context) async {
               foregroundColor: Colors.indigo, // Metin rengi
               textStyle: const TextStyle(fontWeight: FontWeight.bold),
             ),
-            child: const Text('Kapat'),
+            child: Text('Kapat', style: GlobalProperties.globalTextStyle(),),
           ),
         ],
       );
@@ -210,7 +210,7 @@ Widget _buildPurchaseCard(
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       title: Text(
         title,
-        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+        style: GlobalProperties.globalTextStyle(
               color: Colors.black87,
             ),
       ),

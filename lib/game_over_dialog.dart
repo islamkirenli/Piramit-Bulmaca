@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart'; // Lottie paketini dahil edin
 import 'main.dart';
+import 'global_properties.dart';
 
 void showGameOverDialog(BuildContext context, VoidCallback onRestart, VoidCallback onGainLife, VoidCallback onGoHome) {
   showDialog(
@@ -21,13 +22,14 @@ void showGameOverDialog(BuildContext context, VoidCallback onRestart, VoidCallba
             SizedBox(height: 10),
             Text(
               'Oyun Bitti!',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              style: GlobalProperties.globalTextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
           ],
         ),
         content: Text(
           'Tüm haklarınızı kaybettiniz.',
+          style: GlobalProperties.globalTextStyle(),
           textAlign: TextAlign.center,
         ),
         actions: [

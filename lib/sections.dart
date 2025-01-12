@@ -26,7 +26,7 @@ class SectionsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Bölümler"),
+        title: Text("Bölümler", style: GlobalProperties.globalTextStyle(),),
       ),
       body: FutureBuilder<Set<String>>(
         future: getCompletedSections(),
@@ -76,7 +76,7 @@ class SectionsPage extends StatelessWidget {
                     child: isUnlocked
                         ? Text(
                             sectionName,
-                            style: TextStyle(
+                            style: GlobalProperties.globalTextStyle(
                               color: Colors.white,
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -125,7 +125,7 @@ class _SubSectionsPageState extends State<SubSectionsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.sectionName),
+        title: Text(widget.sectionName, style: GlobalProperties.globalTextStyle(),),
         backgroundColor: Colors.blueAccent,
       ),
       body: FutureBuilder<Set<String>>(
@@ -216,7 +216,7 @@ class _SubSectionsPageState extends State<SubSectionsPage> {
                             ? Text(
                                 subSectionKey,
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
+                                style: GlobalProperties.globalTextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                 ),

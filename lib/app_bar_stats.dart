@@ -157,7 +157,7 @@ class _AppBarStatsState extends State<AppBarStats> {
                     ),
                     Text(
                       '  ${GlobalProperties.coin.value}',
-                      style: const TextStyle(
+                      style: GlobalProperties.globalTextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
@@ -221,7 +221,7 @@ class _AppBarStatsState extends State<AppBarStats> {
                     ),
                     Text(
                       '  ${GlobalProperties.remainingLives.value}',
-                      style: const TextStyle(
+                      style: GlobalProperties.globalTextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
@@ -277,7 +277,7 @@ class _AppBarStatsState extends State<AppBarStats> {
                 ),
                 Text(
                   '  ${formatCountdown(GlobalProperties.countdownSeconds.value)}',
-                  style: const TextStyle(
+                  style: GlobalProperties.globalTextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,

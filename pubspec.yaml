@@ -33,6 +33,7 @@ dependencies:
   lottie: ^2.3.2
   google_mobile_ads: ^5.2.0
   in_app_purchase: ^3.2.0 
+  google_fonts: ^6.2.1
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -88,7 +89,6 @@ flutter:
   - assets/images/correct_guess/correct_guess2.png
   - assets/images/correct_guess/correct_guess3.png
   - assets/images/correct_guess/correct_guess4.png
-  - assets/images/correct_guess/correct_guess5.png
 
 
   

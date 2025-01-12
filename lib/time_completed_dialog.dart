@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart'; // Lottie paketini dahil edin
+import 'global_properties.dart';
 
 void showTimeCompletedDialog(BuildContext context, VoidCallback onContinue) {
   showDialog(
@@ -20,13 +21,14 @@ void showTimeCompletedDialog(BuildContext context, VoidCallback onContinue) {
             SizedBox(height: 10), // Animasyon ile başlık arasında boşluk
             Text(
               'Yeni Haklarınız Yüklendi!',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              style: GlobalProperties.globalTextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
           ],
         ),
         content: Text(
           'Haklarınız yenilendi, tekrar oynamaya devam edebilirsiniz.',
+          style: GlobalProperties.globalTextStyle(),
           textAlign: TextAlign.center,
         ),
         actions: [
@@ -42,7 +44,7 @@ void showTimeCompletedDialog(BuildContext context, VoidCallback onContinue) {
               ),
               child: Text(
                 'Devam Et',
-                style: TextStyle(color: Colors.white, fontSize: 16),
+                style: GlobalProperties.globalTextStyle(color: Colors.white, fontSize: 16),
               ),
             ),
           ),

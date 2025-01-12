@@ -257,7 +257,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                   child: SingleChildScrollView(
                     child: Text(
                       puzzleSections[currentMainSection]![currentSubSection]![currentIndex]['hint']!,
-                      style: TextStyle(
+                      style: GlobalProperties.globalTextStyle(
                         color: Colors.white,
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -339,7 +339,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                                           children: [
                                             Text(
                                               ' ${word[charIndex]} ',
-                                              style: TextStyle(
+                                              style: GlobalProperties.globalTextStyle(
                                                 fontSize: 20,
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.bold,
@@ -363,7 +363,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                                       : Text(
                                           ' _ ',
                                           key: ValueKey('hidden-$index-$charIndex'),
-                                          style: TextStyle(
+                                          style: GlobalProperties.globalTextStyle(
                                             fontSize: 20,
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold,
@@ -426,7 +426,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                                   Text(
                                     // Kelimenin harf sayısı x 100
                                     '${(puzzleSections[currentMainSection]![currentSubSection]![currentIndex]['word']!.length-1) * 100}',
-                                    style: TextStyle(
+                                    style: GlobalProperties.globalTextStyle(
                                       color: Colors.white,
                                       fontSize: 10,
                                       fontWeight: FontWeight.bold,
@@ -461,7 +461,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                           alignment: Alignment.center,
                           child: Text(
                             selectedLetters.join(''),
-                            style: TextStyle(color: Colors.white, fontSize: 15),
+                            style: GlobalProperties.globalTextStyle(color: Colors.white, fontSize: 15),
                           ),
                         ),
                       ),
@@ -507,7 +507,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                                   const SizedBox(width: 2),
                                   Text(
                                     '100',
-                                    style: TextStyle(
+                                    style: GlobalProperties.globalTextStyle(
                                       color: Colors.white,
                                       fontSize: 10,
                                       fontWeight: FontWeight.bold,
