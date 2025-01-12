@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart'; // Lottie paketini dahil edin
 import 'main.dart';
 import 'global_properties.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 void showGameOverDialog(BuildContext context, VoidCallback onRestart, VoidCallback onGainLife, VoidCallback onGoHome) {
+  AudioPlayer? clickAudioPlayer = AudioPlayer();
+
   showDialog(
     context: context,
     barrierDismissible: false, // Pop-up dışına tıklanınca kapanmasın
@@ -38,6 +41,8 @@ void showGameOverDialog(BuildContext context, VoidCallback onRestart, VoidCallba
             children: [
               ElevatedButton(
                 onPressed: () async {
+                  await clickAudioPlayer.stop();
+                  await clickAudioPlayer.play(AssetSource('audios/click_audio.mp3'));
                   // Lottie animasyon ekranını göster
                   await showGeneralDialog(
                     context: context,
@@ -95,7 +100,9 @@ void showGameOverDialog(BuildContext context, VoidCallback onRestart, VoidCallba
                 ),
               ),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async{
+                  await clickAudioPlayer.stop();
+                  await clickAudioPlayer.play(AssetSource('audios/click_audio.mp3'));
                   Navigator.of(context).pop(); // Pop-up'ı kapat
                   onGainLife(); // Kullanıcıya bir hak daha ver
                 },

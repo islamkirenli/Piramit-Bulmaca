@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-//import 'package:in_app_purchase/in_app_purchase.dart';
 import 'global_properties.dart';
 import 'in_app_purchase_service.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 Future<void> showLivesPopup(BuildContext context) async {
   RewardedAd? _rewardedAd;
+  AudioPlayer? _clickAudioPlayer = AudioPlayer();
 
   // InAppPurchaseService örneği (Ürünleri ve satın alma işlemini yönetmek için)
   final inAppPurchaseService = InAppPurchaseService();
@@ -101,7 +102,13 @@ Future<void> showLivesPopup(BuildContext context) async {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                  onPressed: showRewardedAd,
+                  onPressed: () async{
+                    await _clickAudioPlayer.stop();
+                    await _clickAudioPlayer.play(
+                      AssetSource('audios/click_audio.mp3'),
+                    );
+                    showRewardedAd();
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.indigo,
                     shape: const CircleBorder(),
@@ -132,6 +139,10 @@ Future<void> showLivesPopup(BuildContext context) async {
               '1 Hak - \$0.99',
               Icons.favorite,
               onTap: () async {
+                await _clickAudioPlayer.stop();
+                await _clickAudioPlayer.play(
+                  AssetSource('audios/click_audio.mp3'),
+                );
                 final product = inAppPurchaseService.products.firstWhere(
                   (element) => element.id == InAppPurchaseService.oneLifeProductId,
                   orElse: () => throw Exception('Ürün bulunamadı, 1 hak'),
@@ -145,6 +156,10 @@ Future<void> showLivesPopup(BuildContext context) async {
               '5 Hak - \$4.49',
               Icons.favorite,
               onTap: () async {
+                await _clickAudioPlayer.stop();
+                await _clickAudioPlayer.play(
+                  AssetSource('audios/click_audio.mp3'),
+                );
                 final product = inAppPurchaseService.products.firstWhere(
                   (element) => element.id == InAppPurchaseService.fiveLivesProductId,
                   orElse: () => throw Exception('Ürün bulunamadı, 5 hak'),
@@ -158,6 +173,10 @@ Future<void> showLivesPopup(BuildContext context) async {
               '10 Hak - \$7.99',
               Icons.favorite,
               onTap: () async {
+                await _clickAudioPlayer.stop();
+                await _clickAudioPlayer.play(
+                  AssetSource('audios/click_audio.mp3'),
+                );
                 final product = inAppPurchaseService.products.firstWhere(
                   (element) => element.id == InAppPurchaseService.tenLivesProductId,
                   orElse: () => throw Exception('Ürün bulunamadı, 10 hak'),
@@ -170,7 +189,11 @@ Future<void> showLivesPopup(BuildContext context) async {
         actionsPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         actions: [
           TextButton(
-            onPressed: () {
+            onPressed: () async{
+              await _clickAudioPlayer.stop();
+              await _clickAudioPlayer.play(
+                AssetSource('audios/click_audio.mp3'),
+              );
               Navigator.of(context).pop();
               inAppPurchaseService.dispose();
             },
@@ -183,7 +206,9 @@ Future<void> showLivesPopup(BuildContext context) async {
         ],
       );
     },
-  );
+  ).then((_) {
+    _clickAudioPlayer.dispose();
+  });
 }
 
 /// Satın alma seçeneğini tek başına bir çerçeve içinde gösteren widget

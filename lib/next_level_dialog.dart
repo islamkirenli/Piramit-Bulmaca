@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'main.dart';
 import 'in_app_purchase_service.dart';
 import 'global_properties.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 void showNextLevelDialog(
   BuildContext context,
@@ -15,6 +16,8 @@ void showNextLevelDialog(
   Function(int, VoidCallback) incrementScore, // Skor artırma fonksiyonu parametre olarak ekleniyor
   saveGameData
 ) {
+  AudioPlayer? clickAudioPlayer = AudioPlayer();
+
   // Tamamlanan bölümü kaydet
   updateCompletionStatus(mainSection, subSection);
 
@@ -99,6 +102,8 @@ void showNextLevelDialog(
               children: [
                 ElevatedButton(
                   onPressed: () async {
+                    await clickAudioPlayer.stop();
+                    await clickAudioPlayer.play(AssetSource('audios/click_audio.mp3'));
                     // HomePage'e geçiş yapan animasyon gösterme kodu
                     await showGeneralDialog(
                       context: context,
@@ -156,7 +161,9 @@ void showNextLevelDialog(
                   ),
                 ),
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    await clickAudioPlayer.stop();
+                    await clickAudioPlayer.play(AssetSource('audios/click_audio.mp3'));
                     Navigator.of(context).pop();
                     onNextLevel();
                   },
@@ -198,6 +205,8 @@ void showNextLevelDialog(
             // Sadece görselin kendisini buton olarak kullanan GestureDetector
             GestureDetector(
               onTap: () async {
+                await clickAudioPlayer.stop();
+                await clickAudioPlayer.play(AssetSource('audios/click_audio.mp3'));
                 // 1) InAppPurchaseService örneğinizi oluşturun veya elde edin
                 final iapService = InAppPurchaseService();
                 iapService.initialize(); 

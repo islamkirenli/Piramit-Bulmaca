@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:pyramid_puzzle/background_music.dart';
 import 'puzzle_game.dart'; // Oyun sayfası dosyasını dahil edin
@@ -49,6 +50,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   bool isDataLoaded = false;
   late AnimationController _settingsIconController;
   Timer? _timer;
+  AudioPlayer? _clickAudioPlayer;
 
   @override
   void initState() {
@@ -59,6 +61,8 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       duration: Duration(milliseconds: 500),
       vsync: this,
     );
+
+    _clickAudioPlayer = AudioPlayer();
 
     loadGameData().then((_) {
       setState(() {
@@ -81,6 +85,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
 
   @override
   void dispose() {
+    _clickAudioPlayer?.dispose();
     _timer?.cancel();
     _settingsIconController.dispose(); // Animasyon denetleyicisini temizle
     super.dispose();
@@ -129,6 +134,8 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                     return GestureDetector(
                       onTap: remainingLives > 0
                           ? () async {
+                              await _clickAudioPlayer?.stop();
+                              await _clickAudioPlayer?.play(AssetSource('audios/click_audio.mp3'));
                               // Lottie animasyon ekranını tam ekran ve merkezde göster
                               await showGeneralDialog(
                                 context: context,
@@ -196,7 +203,9 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                 Padding(
                   padding: const EdgeInsets.only(left: 60.0),
                   child: GestureDetector(
-                    onTap: () {
+                    onTap: () async{
+                      await _clickAudioPlayer?.stop();
+                      await _clickAudioPlayer?.play(AssetSource('audios/click_audio.mp3'));
                       _settingsIconController.forward(from: 0); // Animasyonu başlat
                       showDialog(
                         context: context,
@@ -215,7 +224,9 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                 Padding(
                   padding: const EdgeInsets.only(right: 30.0),
                   child: GestureDetector(
-                    onTap: () {
+                    onTap: () async{
+                      await _clickAudioPlayer?.stop();
+                      await _clickAudioPlayer?.play(AssetSource('audios/click_audio.mp3'));
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => SectionsPage()),

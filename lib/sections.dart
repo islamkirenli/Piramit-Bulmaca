@@ -3,6 +3,7 @@ import 'puzzle_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'puzzle_game.dart';
 import 'global_properties.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 /// --- Değiştirmeden kullanabilirsiniz ---
 Future<Set<String>> getCompletedSections() async {
@@ -20,8 +21,28 @@ Future<void> markSectionAsCompleted(String sectionKey) async {
   }
 }
 
+
+class SectionsPage extends StatefulWidget {
+  @override
+  _SectionsPageState createState() => _SectionsPageState();
+}
+
 /// --- ANA BÖLÜMLER ---
-class SectionsPage extends StatelessWidget {
+class _SectionsPageState extends State<SectionsPage> {
+  AudioPlayer? _clickAudioPlayer; // YENİ: Ses çalar tanımı
+
+  @override
+  void initState() {
+    super.initState();
+    _clickAudioPlayer = AudioPlayer(); // AudioPlayer örneği oluştur
+  }
+
+  @override
+  void dispose() {
+    _clickAudioPlayer?.dispose(); // AudioPlayer'ı serbest bırak
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,7 +71,11 @@ class SectionsPage extends StatelessWidget {
 
               return GestureDetector(
                 onTap: isUnlocked
-                    ? () {
+                    ? () async{
+                        await _clickAudioPlayer?.stop();
+                        await _clickAudioPlayer?.play(
+                          AssetSource('audios/click_audio.mp3'),
+                        );
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -111,11 +136,20 @@ class SubSectionsPage extends StatefulWidget {
 
 class _SubSectionsPageState extends State<SubSectionsPage> {
   late Future<Set<String>> _completedSectionsFuture;
+  AudioPlayer? _clickAudioPlayer;
 
   @override
   void initState() {
     super.initState();
     _completedSectionsFuture = getCompletedSections();
+    _clickAudioPlayer = AudioPlayer();
+  }
+
+  @override
+  void dispose() {
+    _clickAudioPlayer?.dispose();
+
+    super.dispose();
   }
 
   @override
@@ -162,6 +196,10 @@ class _SubSectionsPageState extends State<SubSectionsPage> {
                   return GestureDetector(
                     onTap: isUnlocked && remainingLives > 0
                         ? () async {
+                            await _clickAudioPlayer?.stop();
+                            await _clickAudioPlayer?.play(
+                              AssetSource('audios/click_audio.mp3'),
+                            );
                             // Oyun sayfasına git
                             await Navigator.push(
                               context,

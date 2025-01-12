@@ -5,6 +5,7 @@ import 'global_properties.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'show_coin_popup.dart'; // Coin pop-up
 import 'show_lives_popup.dart'; // Remaining lives pop-up
+import 'package:audioplayers/audioplayers.dart'; 
 
 class AppBarStats extends StatefulWidget {
   final VoidCallback onTimerEnd; // Sayaç bittiğinde çağrılacak fonksiyon
@@ -20,10 +21,12 @@ class AppBarStats extends StatefulWidget {
 
 class _AppBarStatsState extends State<AppBarStats> {
   Timer? countdownTimer;
+  AudioPlayer? _clickAudioPlayer;
 
   @override
   void initState() {
     super.initState();
+    _clickAudioPlayer = AudioPlayer();
     if (GlobalProperties.remainingLives.value == 0 &&
         GlobalProperties.countdownSeconds.value > 0 &&
         !GlobalProperties.isTimerRunning.value) {
@@ -54,6 +57,7 @@ class _AppBarStatsState extends State<AppBarStats> {
 
   @override
   void dispose() {
+    _clickAudioPlayer?.dispose();
     countdownTimer?.cancel();
     countdownTimer = null;
     GlobalProperties.isTimerRunning.value = false;
@@ -126,7 +130,14 @@ class _AppBarStatsState extends State<AppBarStats> {
       children: [
         // Skor gösterimi
         GestureDetector(
-          onTap: () => showCoinPopup(context), // Coin kapsülüne tıklanıldığında
+          onTap: () async {
+            // YENİ EKLENDİ
+            await _clickAudioPlayer?.stop();
+            await _clickAudioPlayer?.play(AssetSource('audios/click_audio.mp3'));
+            
+            // Ardından coin pop-up
+            showCoinPopup(context);
+          },
           child: Stack(
             clipBehavior: Clip.none,
             children: [
@@ -190,7 +201,14 @@ class _AppBarStatsState extends State<AppBarStats> {
         const SizedBox(width: 10),
         // Kalan haklar
         GestureDetector(
-          onTap: () => showLivesPopup(context), // Remaining Lives kapsülüne tıklanıldığında
+          onTap: () async {
+            // YENİ EKLENDİ
+            await _clickAudioPlayer?.stop();
+            await _clickAudioPlayer?.play(AssetSource('audios/click_audio.mp3'));
+
+            // Ardından lives pop-up
+            showLivesPopup(context);
+          },
           child: Stack(
             clipBehavior: Clip.none,
             children: [

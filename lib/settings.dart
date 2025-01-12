@@ -5,6 +5,7 @@ import 'main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lottie/lottie.dart';
 import 'in_app_purchase_service.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class SettingsDialog extends StatefulWidget {
   final String sourcePage; // Hangi sayfadan çağrıldığını belirten parametre
@@ -19,11 +20,19 @@ class _SettingsDialogState extends State<SettingsDialog> {
   bool isSoundOn = true; // Ses durumu
   bool isMusicOn = true; // Müzik durumu
   bool isVibrationOn = true; // Titreşim durumu
+  AudioPlayer? _clickAudioPlayer;
 
   @override
   void initState() {
     super.initState();
     _loadSettings(); // Ayarları yükle
+    _clickAudioPlayer = AudioPlayer();
+  }
+
+  @override
+  void dispose() {
+    _clickAudioPlayer?.dispose();
+    super.dispose();
   }
 
   Future<void> _loadSettings() async {
@@ -79,7 +88,11 @@ class _SettingsDialogState extends State<SettingsDialog> {
             right: 0,
             child: IconButton(
               icon: Icon(Icons.close), // Çarpı ikonu
-              onPressed: () {
+              onPressed: () async{
+                await _clickAudioPlayer?.stop();
+                await _clickAudioPlayer?.play(
+                  AssetSource('audios/click_audio.mp3'),
+                );
                 Navigator.of(context).pop(); // Pop-up'ı kapat
               },
             ),
@@ -104,6 +117,10 @@ class _SettingsDialogState extends State<SettingsDialog> {
           label: 'Menü',
           color: Colors.blue,
           onPressed: () async {
+            await _clickAudioPlayer?.stop();
+            await _clickAudioPlayer?.play(
+              AssetSource('audios/click_audio.mp3'),
+            );
             // Lottie animasyon ekranını göster
             await showGeneralDialog(
               context: context,
@@ -167,7 +184,11 @@ class _SettingsDialogState extends State<SettingsDialog> {
           icon: isSoundOn ? Icons.volume_up : Icons.volume_off,
           label: 'Ses',
           color: isSoundOn ? Colors.green : Colors.grey,
-          onPressed: () {
+          onPressed: () async{
+            await _clickAudioPlayer?.stop();
+            await _clickAudioPlayer?.play(
+              AssetSource('audios/click_audio.mp3'),
+            );
             setState(() {
               isSoundOn = !isSoundOn; // Durumu değiştir
             });
@@ -179,7 +200,11 @@ class _SettingsDialogState extends State<SettingsDialog> {
           icon: isMusicOn ? Icons.music_note : Icons.music_off,
           label: 'Müzik',
           color: isMusicOn ? Colors.orange : Colors.grey,
-          onPressed: () {
+          onPressed: () async{
+            await _clickAudioPlayer?.stop();
+            await _clickAudioPlayer?.play(
+              AssetSource('audios/click_audio.mp3'),
+            );
             setState(() {
               isMusicOn = !isMusicOn; // Durumu değiştir
             });
@@ -204,7 +229,11 @@ class _SettingsDialogState extends State<SettingsDialog> {
               icon: isMusicOn ? Icons.music_note : Icons.music_off,
               label: 'Müzik',
               color: isMusicOn ? Colors.orange : Colors.grey,
-              onPressed: () {
+              onPressed: () async{
+                await _clickAudioPlayer?.stop();
+                await _clickAudioPlayer?.play(
+                  AssetSource('audios/click_audio.mp3'),
+                );
                 setState(() {
                   isMusicOn = !isMusicOn; // Durumu değiştir
                 });
@@ -217,7 +246,11 @@ class _SettingsDialogState extends State<SettingsDialog> {
               icon: isSoundOn ? Icons.volume_up : Icons.volume_off,
               label: 'Ses',
               color: isSoundOn ? Colors.green : Colors.grey,
-              onPressed: () {
+              onPressed: () async{
+                await _clickAudioPlayer?.stop();
+                await _clickAudioPlayer?.play(
+                  AssetSource('audios/click_audio.mp3'),
+                );
                 setState(() {
                   isSoundOn = !isSoundOn; // Durumu değiştir
                 });
@@ -229,7 +262,11 @@ class _SettingsDialogState extends State<SettingsDialog> {
               icon: isVibrationOn ? Icons.vibration : Icons.smartphone,
               label: 'Titreşim',
               color: isVibrationOn ? Colors.blue : Colors.grey,
-              onPressed: () {
+              onPressed: () async{
+                await _clickAudioPlayer?.stop();
+                await _clickAudioPlayer?.play(
+                  AssetSource('audios/click_audio.mp3'),
+                );
                 setState(() {
                   isVibrationOn = !isVibrationOn; // Durumu değiştir
                 });
@@ -246,7 +283,11 @@ class _SettingsDialogState extends State<SettingsDialog> {
         ),
         SizedBox(height: 16), // Separator ile yardım butonu arasına boşluk
         ElevatedButton.icon(
-          onPressed: () {
+          onPressed: () async{
+            await _clickAudioPlayer?.stop();
+            await _clickAudioPlayer?.play(
+              AssetSource('audios/click_audio.mp3'),
+            );
             // Yardım butonuna basıldığında yapılacak işlemler
           },
           icon: Icon(Icons.mail, color: Colors.white), // Mail ikonu
@@ -265,7 +306,11 @@ class _SettingsDialogState extends State<SettingsDialog> {
         SizedBox(
             height: 16), // Yardım butonu ile takip et butonu arasına boşluk
         ElevatedButton.icon(
-          onPressed: () {
+          onPressed: () async{
+            await _clickAudioPlayer?.stop();
+            await _clickAudioPlayer?.play(
+              AssetSource('audios/click_audio.mp3'),
+            );
             // Takip et butonuna basıldığında yapılacak işlemler
           },
           icon: Icon(Icons.star, color: Colors.white), // Takip ikonu
@@ -305,6 +350,10 @@ class _SettingsDialogState extends State<SettingsDialog> {
         // Sadece görselin kendisini buton olarak kullanan GestureDetector
         GestureDetector(
           onTap: () async {
+            await _clickAudioPlayer?.stop();
+            await _clickAudioPlayer?.play(
+              AssetSource('audios/click_audio.mp3'),
+            );
             // 1) InAppPurchaseService örneğinizi oluşturun veya elde edin
             final iapService = InAppPurchaseService();
             iapService.initialize();

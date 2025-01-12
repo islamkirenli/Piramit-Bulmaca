@@ -3,9 +3,11 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'global_properties.dart';
 import 'in_app_purchase_service.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 Future<void> showCoinPopup(BuildContext context) async {
   RewardedAd? _rewardedAd;
+  AudioPlayer? _clickAudioPlayer = AudioPlayer();
 
   // Reklamı yükleme fonksiyonu
   void loadRewardedAd() {
@@ -97,7 +99,13 @@ Future<void> showCoinPopup(BuildContext context) async {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                  onPressed: showRewardedAd,
+                  onPressed: () async{
+                    await _clickAudioPlayer.stop();
+                    await _clickAudioPlayer.play(
+                      AssetSource('audios/click_audio.mp3'),
+                    );
+                    showRewardedAd();
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.indigo,
                     shape: const CircleBorder(),
@@ -122,6 +130,10 @@ Future<void> showCoinPopup(BuildContext context) async {
               '100 Coin - \$1.99',
               Icons.monetization_on,
               onTap: () async {
+                await _clickAudioPlayer.stop();
+                await _clickAudioPlayer.play(
+                  AssetSource('audios/click_audio.mp3'),
+                );
                 // 100 Coin satın alma tıklandı
                 final product = inAppPurchaseService.products.firstWhere(
                   (element) => element.id == InAppPurchaseService.coin100ProductId,
@@ -138,6 +150,10 @@ Future<void> showCoinPopup(BuildContext context) async {
               '500 Coin - \$7.99',
               Icons.monetization_on,
               onTap: () async {
+                await _clickAudioPlayer.stop();
+                await _clickAudioPlayer.play(
+                  AssetSource('audios/click_audio.mp3'),
+                );
                 // 500 Coin satın alma tıklandı
                 final product = inAppPurchaseService.products.firstWhere(
                   (element) => element.id == InAppPurchaseService.coin500ProductId,
@@ -154,6 +170,10 @@ Future<void> showCoinPopup(BuildContext context) async {
               '1000 Coin - \$14.99',
               Icons.monetization_on,
               onTap: () async {
+                await _clickAudioPlayer.stop();
+                await _clickAudioPlayer.play(
+                  AssetSource('audios/click_audio.mp3'),
+                );
                 // 1000 Coin satın alma tıklandı
                 final product = inAppPurchaseService.products.firstWhere(
                   (element) => element.id == InAppPurchaseService.coin1000ProductId,
@@ -167,7 +187,11 @@ Future<void> showCoinPopup(BuildContext context) async {
         actionsPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         actions: [
           TextButton(
-            onPressed: () {
+            onPressed: () async{
+              await _clickAudioPlayer.stop();
+              await _clickAudioPlayer.play(
+                AssetSource('audios/click_audio.mp3'),
+              );
               Navigator.of(context).pop();
             },
             style: TextButton.styleFrom(
@@ -179,7 +203,9 @@ Future<void> showCoinPopup(BuildContext context) async {
         ],
       );
     },
-  );
+  ).then((_) {
+    _clickAudioPlayer.dispose();
+  });
 }
 
 
