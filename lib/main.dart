@@ -118,6 +118,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                SizedBox(height: 200),
                 ValueListenableBuilder<int>(
                   valueListenable: GlobalProperties.remainingLives,
                   builder: (context, remainingLives, _) {

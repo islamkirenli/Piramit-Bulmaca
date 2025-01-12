@@ -82,6 +82,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
   bool shouldShowAds = false;
   Timer? _wrongChoiceTimer;        // Yanlış seçim sonrası beklemeyi yöneten Timer
   bool _isWrongChoiceWaiting = false; // Yanlış seçim temizlenmeyi bekliyor mu?
+  bool isWordHintActive = false; 
 
 
   late AnimationController _settingsIconController;
@@ -1190,6 +1191,14 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
   }
 
   Future<void> showWordHint() async {
+    if (isWordHintActive) {
+      return; // Animasyon hâlâ çalışıyorsa tekrar tıklanmayı engelle
+    }
+    
+    setState(() {
+      isWordHintActive = true; // Animasyon başladı
+    });
+
     // 1) Coin kontrolü
     String currentWord =
         puzzleSections[currentMainSection]![currentSubSection]![currentIndex]['word']!;
@@ -1284,6 +1293,10 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
     // 6) Animasyonu kapat
     setState(() {
       showWordHintAnimation = false;
+    });
+
+    setState(() {
+      isWordHintActive = false; // Animasyon bitti
     });
   }
 
