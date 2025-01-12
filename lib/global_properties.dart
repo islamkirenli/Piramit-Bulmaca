@@ -17,7 +17,7 @@ class GlobalProperties {
     Color color = Colors.black,
     double letterSpacing = 0,
   }) {
-    return GoogleFonts.varelaRound(
+    return GoogleFonts.asap(
       textStyle: TextStyle(
         fontSize: fontSize,
         fontWeight: fontWeight,

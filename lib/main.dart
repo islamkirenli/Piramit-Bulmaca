@@ -14,7 +14,14 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   MobileAds.instance.initialize();
-  runApp(MyApp());
+  runApp(
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Bulmaca Oyunu',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: IntroAnimationScreen(), // <<< Burada MyApp yerine IntroAnimationScreen
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -291,5 +298,57 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       GlobalProperties.countdownSeconds.value = remainingSecs > 0 ? remainingSecs : 0;
       GlobalProperties.isTimerRunning.value = true;
     }
+  }
+}
+
+/// Uygulama ilk açıldığında tam ekran animasyon gösterecek sayfa
+class IntroAnimationScreen extends StatefulWidget {
+  const IntroAnimationScreen({Key? key}) : super(key: key);
+
+  @override
+  _IntroAnimationScreenState createState() => _IntroAnimationScreenState();
+}
+
+class _IntroAnimationScreenState extends State<IntroAnimationScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.transparent, 
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Center(
+              child: Transform.scale(
+                scale: 1,
+                child: Transform.translate(
+                  offset: const Offset(0, 0),
+                  child: Lottie.asset(
+                    'assets/animations/screen_transition_animation.json',
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
+                    fit: BoxFit.fill,
+                    repeat: false,
+                    onLoaded: (composition) {
+                      // Animasyon süresi dolunca HomePage'e geç
+                      Future.delayed(
+                        composition.duration,
+                        () {
+                          /// IntroAnimationScreen yerine HomePage açılsın
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => HomePage(),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
