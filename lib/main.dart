@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pyramid_puzzle/background_music.dart';
 import 'puzzle_game.dart'; // Oyun sayfası dosyasını dahil edin
 import 'settings.dart';
 import 'sections.dart';
@@ -11,15 +12,18 @@ import 'package:lottie/lottie.dart';
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   MobileAds.instance.initialize();
   runApp(
-    MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Bulmaca Oyunu',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: IntroAnimationScreen(), // <<< Burada MyApp yerine IntroAnimationScreen
+    MusicBackground(
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Bulmaca Oyunu',
+        theme: ThemeData(primarySwatch: Colors.blue),
+        home: IntroAnimationScreen(),
+      ),
     ),
   );
 }

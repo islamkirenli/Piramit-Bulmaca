@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pyramid_puzzle/background_music.dart';
 import 'package:pyramid_puzzle/global_properties.dart';
 import 'main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -183,6 +184,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
               isMusicOn = !isMusicOn; // Durumu değiştir
             });
             _saveSettings(); // Değişikliği kaydet
+            MusicBackground.of(context)?.setMusicOn(isMusicOn);
           },
         ),
       ],
@@ -207,6 +209,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
                   isMusicOn = !isMusicOn; // Durumu değiştir
                 });
                 _saveSettings(); // Değişikliği kaydet
+                MusicBackground.of(context)?.setMusicOn(isMusicOn);
               },
             ),
             _buildButtonWithLabel(
