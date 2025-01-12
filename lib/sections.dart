@@ -44,12 +44,9 @@ class SectionsPage extends StatelessWidget {
             itemBuilder: (context, index) {
               String sectionName = allSections[index];
 
-              /// --- DEĞİŞİKLİK 1 ---
-              /// Bir ana bölümün kilidi:
-              /// - index == 0 (ilk ana bölüm) ise açık,
-              /// - veya bir önceki ana bölüm "MAIN:<previousSection>" şeklinde tamamlanmışsa açık.
               bool isUnlocked = (index == 0) ||
-                  completedSections.contains("MAIN:${allSections[index - 1]}");
+                  completedSections.contains("MAIN:${allSections[index - 1]}") ||
+                  completedSections.contains("${allSections[index - 1]}-20");
 
               return GestureDetector(
                 onTap: isUnlocked
@@ -178,25 +175,6 @@ class _SubSectionsPageState extends State<SubSectionsPage> {
 
                             // Geri dönünce bu alt bölümü completedSections'a ekle
                             await markSectionAsCompleted(fullKey);
-
-                            /// --- DEĞİŞİKLİK 2 ---
-                            /// Eğer bu oynanan alt bölüm "20" ise (örn. "20". alt bölüm),
-                            /// bir sonraki ana bölümü ("MAIN:<sonraki bölüm>") açalım.
-                            if (subSectionKey == "20") {
-                              // puzzleSections içerisinden tüm ana bölümleri alalım
-                              List<String> allMainSections =
-                                  puzzleSections.keys.toList();
-                              // Mevcut ana bölümün index'ini bulalım
-                              int currentIndex = allMainSections
-                                  .indexOf(widget.sectionName);
-                              // Sonraki ana bölüm var mı (out of range olmazsa)
-                              if (currentIndex >= 0 &&
-                                  currentIndex < allMainSections.length - 1) {
-                                String nextSection =
-                                    allMainSections[currentIndex + 1];
-                                await markSectionAsCompleted("MAIN:$nextSection");
-                              }
-                            }
 
                             // SharedPreferences'ı yeniden oku ve sayfayı güncelle
                             setState(() {
