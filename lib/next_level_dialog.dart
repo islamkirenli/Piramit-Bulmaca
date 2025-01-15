@@ -102,8 +102,12 @@ void showNextLevelDialog(
               children: [
                 ElevatedButton(
                   onPressed: () async {
-                    await clickAudioPlayer.stop();
-                    await clickAudioPlayer.play(AssetSource('audios/click_audio.mp3'));
+                    if (GlobalProperties.isSoundOn) {
+                      await clickAudioPlayer.stop();
+                      await clickAudioPlayer.play(
+                        AssetSource('audios/click_audio.mp3'),
+                      );
+                    }
                     // HomePage'e geçiş yapan animasyon gösterme kodu
                     await showGeneralDialog(
                       context: context,
@@ -162,8 +166,12 @@ void showNextLevelDialog(
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    await clickAudioPlayer.stop();
-                    await clickAudioPlayer.play(AssetSource('audios/click_audio.mp3'));
+                    if (GlobalProperties.isSoundOn) {
+                      await clickAudioPlayer.stop();
+                      await clickAudioPlayer.play(
+                        AssetSource('audios/click_audio.mp3'),
+                      );
+                    }
                     Navigator.of(context).pop();
                     onNextLevel();
                   },
@@ -205,8 +213,12 @@ void showNextLevelDialog(
             // Sadece görselin kendisini buton olarak kullanan GestureDetector
             GestureDetector(
               onTap: () async {
-                await clickAudioPlayer.stop();
-                await clickAudioPlayer.play(AssetSource('audios/click_audio.mp3'));
+                if (GlobalProperties.isSoundOn) {
+                  await clickAudioPlayer.stop();
+                  await clickAudioPlayer.play(
+                    AssetSource('audios/click_audio.mp3'),
+                  );
+                }
                 // 1) InAppPurchaseService örneğinizi oluşturun veya elde edin
                 final iapService = InAppPurchaseService();
                 iapService.initialize(); 

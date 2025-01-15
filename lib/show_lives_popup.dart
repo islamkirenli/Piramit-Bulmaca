@@ -103,10 +103,12 @@ Future<void> showLivesPopup(BuildContext context) async {
               children: [
                 ElevatedButton(
                   onPressed: () async{
-                    await _clickAudioPlayer.stop();
-                    await _clickAudioPlayer.play(
-                      AssetSource('audios/click_audio.mp3'),
-                    );
+                    if (GlobalProperties.isSoundOn) {
+                      await _clickAudioPlayer.stop();
+                      await _clickAudioPlayer.play(
+                        AssetSource('audios/click_audio.mp3'),
+                      );
+                    }
                     showRewardedAd();
                   },
                   style: ElevatedButton.styleFrom(
@@ -139,10 +141,12 @@ Future<void> showLivesPopup(BuildContext context) async {
               '1 Hak - \$0.99',
               Icons.favorite,
               onTap: () async {
-                await _clickAudioPlayer.stop();
-                await _clickAudioPlayer.play(
-                  AssetSource('audios/click_audio.mp3'),
-                );
+                if (GlobalProperties.isSoundOn) {
+                  await _clickAudioPlayer.stop();
+                  await _clickAudioPlayer.play(
+                    AssetSource('audios/click_audio.mp3'),
+                  );
+                }
                 final product = inAppPurchaseService.products.firstWhere(
                   (element) => element.id == InAppPurchaseService.oneLifeProductId,
                   orElse: () => throw Exception('Ürün bulunamadı, 1 hak'),
@@ -156,10 +160,12 @@ Future<void> showLivesPopup(BuildContext context) async {
               '5 Hak - \$4.49',
               Icons.favorite,
               onTap: () async {
-                await _clickAudioPlayer.stop();
-                await _clickAudioPlayer.play(
-                  AssetSource('audios/click_audio.mp3'),
-                );
+                if (GlobalProperties.isSoundOn) {
+                  await _clickAudioPlayer.stop();
+                  await _clickAudioPlayer.play(
+                    AssetSource('audios/click_audio.mp3'),
+                  );
+                }
                 final product = inAppPurchaseService.products.firstWhere(
                   (element) => element.id == InAppPurchaseService.fiveLivesProductId,
                   orElse: () => throw Exception('Ürün bulunamadı, 5 hak'),
@@ -173,10 +179,12 @@ Future<void> showLivesPopup(BuildContext context) async {
               '10 Hak - \$7.99',
               Icons.favorite,
               onTap: () async {
-                await _clickAudioPlayer.stop();
-                await _clickAudioPlayer.play(
-                  AssetSource('audios/click_audio.mp3'),
-                );
+                if (GlobalProperties.isSoundOn) {
+                  await _clickAudioPlayer.stop();
+                  await _clickAudioPlayer.play(
+                    AssetSource('audios/click_audio.mp3'),
+                  );
+                }
                 final product = inAppPurchaseService.products.firstWhere(
                   (element) => element.id == InAppPurchaseService.tenLivesProductId,
                   orElse: () => throw Exception('Ürün bulunamadı, 10 hak'),
@@ -190,10 +198,12 @@ Future<void> showLivesPopup(BuildContext context) async {
         actions: [
           TextButton(
             onPressed: () async{
-              await _clickAudioPlayer.stop();
-              await _clickAudioPlayer.play(
-                AssetSource('audios/click_audio.mp3'),
-              );
+              if (GlobalProperties.isSoundOn) {
+                await _clickAudioPlayer.stop();
+                await _clickAudioPlayer.play(
+                  AssetSource('audios/click_audio.mp3'),
+                );
+              }
               Navigator.of(context).pop();
               inAppPurchaseService.dispose();
             },

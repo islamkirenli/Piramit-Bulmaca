@@ -147,8 +147,12 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                     return GestureDetector(
                       onTap: remainingLives > 0
                           ? () async {
-                              await _clickAudioPlayer?.stop();
-                              await _clickAudioPlayer?.play(AssetSource('audios/click_audio.mp3'));
+                              if (GlobalProperties.isSoundOn) {
+                                await _clickAudioPlayer?.stop();
+                                await _clickAudioPlayer?.play(
+                                  AssetSource('audios/click_audio.mp3'),
+                                );
+                              }
                               // Lottie animasyon ekranını tam ekran ve merkezde göster
                               await showGeneralDialog(
                                 context: context,
@@ -217,8 +221,12 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                   padding: const EdgeInsets.only(left: 60.0),
                   child: GestureDetector(
                     onTap: () async{
-                      await _clickAudioPlayer?.stop();
-                      await _clickAudioPlayer?.play(AssetSource('audios/click_audio.mp3'));
+                      if (GlobalProperties.isSoundOn) {
+                        await _clickAudioPlayer?.stop();
+                        await _clickAudioPlayer?.play(
+                          AssetSource('audios/click_audio.mp3'),
+                        );
+                      }
                       _settingsIconController.forward(from: 0); // Animasyonu başlat
                       showDialog(
                         context: context,
@@ -238,8 +246,12 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                   padding: const EdgeInsets.only(right: 30.0),
                   child: GestureDetector(
                     onTap: () async{
-                      await _clickAudioPlayer?.stop();
-                      await _clickAudioPlayer?.play(AssetSource('audios/click_audio.mp3'));
+                      if (GlobalProperties.isSoundOn) {
+                        await _clickAudioPlayer?.stop();
+                        await _clickAudioPlayer?.play(
+                          AssetSource('audios/click_audio.mp3'),
+                        );
+                      }
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => SectionsPage()),
@@ -315,6 +327,8 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     GlobalProperties.countdownSeconds.value = prefs.getInt('countdownSeconds') ?? 15;
     GlobalProperties.isTimerRunning.value = prefs.getBool('isTimerRunning') ?? false;
     GlobalProperties.deadlineTimestamp = prefs.getInt('deadlineTimestamp') ?? 0;
+    GlobalProperties.isSoundOn = prefs.getBool('isSoundOn') ?? true;
+    GlobalProperties.isVibrationOn = prefs.getBool('isVibrationOn') ?? true;
     final now = DateTime.now().millisecondsSinceEpoch;
 
     if (GlobalProperties.deadlineTimestamp != 0 &&

@@ -41,8 +41,12 @@ void showGameOverDialog(BuildContext context, VoidCallback onRestart, VoidCallba
             children: [
               ElevatedButton(
                 onPressed: () async {
-                  await clickAudioPlayer.stop();
-                  await clickAudioPlayer.play(AssetSource('audios/click_audio.mp3'));
+                  if (GlobalProperties.isSoundOn) {
+                    await clickAudioPlayer.stop();
+                    await clickAudioPlayer.play(
+                      AssetSource('audios/click_audio.mp3'),
+                    );
+                  }
                   // Lottie animasyon ekranını göster
                   await showGeneralDialog(
                     context: context,
@@ -101,8 +105,12 @@ void showGameOverDialog(BuildContext context, VoidCallback onRestart, VoidCallba
               ),
               ElevatedButton(
                 onPressed: () async{
-                  await clickAudioPlayer.stop();
-                  await clickAudioPlayer.play(AssetSource('audios/click_audio.mp3'));
+                  if (GlobalProperties.isSoundOn) {
+                    await clickAudioPlayer.stop();
+                    await clickAudioPlayer.play(
+                      AssetSource('audios/click_audio.mp3'),
+                    );
+                  }
                   Navigator.of(context).pop(); // Pop-up'ı kapat
                   onGainLife(); // Kullanıcıya bir hak daha ver
                 },

@@ -72,10 +72,12 @@ class _SectionsPageState extends State<SectionsPage> {
               return GestureDetector(
                 onTap: isUnlocked
                     ? () async{
-                        await _clickAudioPlayer?.stop();
-                        await _clickAudioPlayer?.play(
-                          AssetSource('audios/click_audio.mp3'),
-                        );
+                        if (GlobalProperties.isSoundOn) {
+                          await _clickAudioPlayer?.stop();
+                          await _clickAudioPlayer?.play(
+                            AssetSource('audios/click_audio.mp3'),
+                          );
+                        }
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -196,10 +198,12 @@ class _SubSectionsPageState extends State<SubSectionsPage> {
                   return GestureDetector(
                     onTap: isUnlocked && remainingLives > 0
                         ? () async {
-                            await _clickAudioPlayer?.stop();
-                            await _clickAudioPlayer?.play(
-                              AssetSource('audios/click_audio.mp3'),
-                            );
+                            if (GlobalProperties.isSoundOn) {
+                              await _clickAudioPlayer?.stop();
+                              await _clickAudioPlayer?.play(
+                                AssetSource('audios/click_audio.mp3'),
+                              );
+                            }
                             // Oyun sayfasına git
                             await Navigator.push(
                               context,

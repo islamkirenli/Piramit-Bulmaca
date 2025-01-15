@@ -131,9 +131,12 @@ class _AppBarStatsState extends State<AppBarStats> {
         // Skor gösterimi
         GestureDetector(
           onTap: () async {
-            // YENİ EKLENDİ
-            await _clickAudioPlayer?.stop();
-            await _clickAudioPlayer?.play(AssetSource('audios/click_audio.mp3'));
+            if (GlobalProperties.isSoundOn) {
+              await _clickAudioPlayer?.stop();
+              await _clickAudioPlayer?.play(
+                AssetSource('audios/click_audio.mp3'),
+              );
+            }
             
             // Ardından coin pop-up
             showCoinPopup(context);
@@ -202,9 +205,12 @@ class _AppBarStatsState extends State<AppBarStats> {
         // Kalan haklar
         GestureDetector(
           onTap: () async {
-            // YENİ EKLENDİ
-            await _clickAudioPlayer?.stop();
-            await _clickAudioPlayer?.play(AssetSource('audios/click_audio.mp3'));
+            if (GlobalProperties.isSoundOn) {
+              await _clickAudioPlayer?.stop();
+              await _clickAudioPlayer?.play(
+                AssetSource('audios/click_audio.mp3'),
+              );
+            }
 
             // Ardından lives pop-up
             showLivesPopup(context);

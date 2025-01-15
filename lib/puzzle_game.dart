@@ -235,8 +235,12 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                     child: Icon(Icons.settings, size: 28), // Ayarlar simgesi
                   ),
                   onPressed: () async{
-                    await _clickAudioPlayer?.stop();
-                    await _clickAudioPlayer?.play(AssetSource('audios/click_audio.mp3'));
+                    if (GlobalProperties.isSoundOn) {
+                      await _clickAudioPlayer?.stop();
+                      await _clickAudioPlayer?.play(
+                        AssetSource('audios/click_audio.mp3'),
+                      );
+                    }
                     _settingsIconController.forward(from: 0); // Animasyonu başlat
 
                     showDialog(
@@ -1092,15 +1096,13 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
     }
   }
 
-  void showSingleHint() async {
-    // 1) Durdur
-    await _audioPlayerForHints?.stop();
-
-    // 2) Baştan başlat
-    await _audioPlayerForHints?.play(
-      AssetSource('audios/hint_audio.mp3'),
-    );
-    
+  void showSingleHint() async{
+    if (GlobalProperties.isSoundOn && GlobalProperties.coin.value > 100){
+      await _audioPlayerForHints?.stop();
+      await _audioPlayerForHints?.play(
+        AssetSource('audios/hint_audio.mp3'),
+      );
+    }
     setState(() {
       // Önce coin kontrolü yapıyoruz
       if (GlobalProperties.coin.value < 100) {
@@ -1197,18 +1199,6 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
     if (isWordHintActive) {
       return; // Animasyon hâlâ çalışıyorsa tekrar tıklanmayı engelle
     }
-    
-    // 1) Önce durdur (stop) - eğer oynuyorsa durdurur
-    await _audioPlayerForHints?.stop(); 
-
-    // 2) Sonra yeniden başlat (play) - her seferinde baştan çalar
-    await _audioPlayerForHints?.play(
-      AssetSource('audios/magic_wand_audio.mp3'),
-    );
-
-    setState(() {
-      isWordHintActive = true; // Animasyon başladı
-    });
 
     // 1) Coin kontrolü
     String currentWord =
@@ -1218,6 +1208,17 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
     if (GlobalProperties.coin.value < cost) {
       showCoinPopup(context);
       return;
+    }
+
+    setState(() {
+      isWordHintActive = true; // Animasyon başladı
+    });
+
+    if (GlobalProperties.isSoundOn){
+      await _audioPlayerForHints?.stop(); 
+      await _audioPlayerForHints?.play(
+        AssetSource('audios/magic_wand_audio.mp3'),
+      );
     }
     
     // Coin yeterliyse düş

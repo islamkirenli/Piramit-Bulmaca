@@ -10,6 +10,10 @@ class GlobalProperties {
   static int deadlineTimestamp = 0;
   static bool isTimeCompletedWhileAppClosed = false;
 
+  static bool isSoundOn = true;      // <-- Ses durumu
+  static bool isMusicOn = true;      // <-- Müzik durumu
+  static bool isVibrationOn = true;  // <-- Titreşim durumu
+
   static TextStyle globalTextStyle({
     double fontSize = 14,
     FontWeight fontWeight = FontWeight.normal,
