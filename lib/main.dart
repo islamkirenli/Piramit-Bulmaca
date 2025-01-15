@@ -1,6 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:pyramid_puzzle/background_music.dart';
+import 'package:video_player/video_player.dart';
 import 'puzzle_game.dart'; // Oyun sayfası dosyasını dahil edin
 import 'settings.dart';
 import 'sections.dart';
@@ -51,11 +52,19 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   late AnimationController _settingsIconController;
   Timer? _timer;
   AudioPlayer? _clickAudioPlayer;
+  late VideoPlayerController _videoController;
 
   @override
   void initState() {
     super.initState();
     requestAppTrackingPermission();
+
+    _videoController = VideoPlayerController.asset('assets/videos/dongu.mp4')
+    ..setLooping(true)
+    ..initialize().then((_) {
+      setState(() {});
+      _videoController.play();
+    });
 
     _settingsIconController = AnimationController(
       duration: Duration(milliseconds: 500),
@@ -85,6 +94,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
 
   @override
   void dispose() {
+    _videoController.dispose();
     _clickAudioPlayer?.dispose();
     _timer?.cancel();
     _settingsIconController.dispose(); // Animasyon denetleyicisini temizle
@@ -101,14 +111,17 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
 
     return Stack(
       children: [
-        // Arka plan görseli
-        Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/images/piramit_background.jpg'),
-              fit: BoxFit.cover, // Görsel tüm alanı kaplar
+        // Arka plan videosu
+        if (_videoController.value.isInitialized)
+          SizedBox.expand(
+            child: FittedBox(
+              fit: BoxFit.cover,
+              child: SizedBox(
+                width: _videoController.value.size.width,
+                height: _videoController.value.size.height,
+                child: VideoPlayer(_videoController),
+              ),
             ),
-          ),
         ),
         // İçerik
         Scaffold(
@@ -368,3 +381,4 @@ class _IntroAnimationScreenState extends State<IntroAnimationScreen> {
     );
   }
 }
+

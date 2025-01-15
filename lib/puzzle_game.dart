@@ -206,7 +206,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
           // Arka plan görseli
           Positioned.fill(
             child: Image.asset(
-              'assets/images/piramit_background.jpg',
+              'assets/images/game_background/keops.jpg',
               fit: BoxFit.cover, // Tüm ekranı kaplayacak şekilde ayarlıyoruz
             ),
           ),
