@@ -13,6 +13,7 @@ import 'dart:async'; // <<< Timer için ekle
 import 'package:lottie/lottie.dart';
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'daily_puzzle_game.dart';
 
 
 void main() {
@@ -53,6 +54,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   Timer? _timer;
   AudioPlayer? _clickAudioPlayer;
   late VideoPlayerController _videoController;
+  bool isNewDailyPuzzle = false; // Yeni günlük bulmaca var mı?
 
   @override
   void initState() {
@@ -135,82 +137,143 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
               },
             ),
           ),
-          body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(height: 200),
-                ValueListenableBuilder<int>(
-                  valueListenable: GlobalProperties.remainingLives,
-                  builder: (context, remainingLives, _) {
-                    return GestureDetector(
-                      onTap: remainingLives > 0
-                          ? () async {
-                              if (GlobalProperties.isSoundOn) {
-                                await _clickAudioPlayer?.stop();
-                                await _clickAudioPlayer?.play(
-                                  AssetSource('audios/click_audio.mp3'),
-                                );
-                              }
-                              // Lottie animasyon ekranını tam ekran ve merkezde göster
-                              await showGeneralDialog(
-                                context: context,
-                                barrierDismissible: false, // Kullanıcı animasyonu kapatamaz
-                                barrierColor: Colors.transparent, // Hafif siyah arka plan
-                                pageBuilder: (context, _, __) {
-                                  return Scaffold(
-                                    backgroundColor: Colors.transparent,
-                                    body: Stack(
-                                      children: [
-                                        Positioned.fill(
-                                          child: Center(
-                                            child: Transform.scale(
-                                              scale: 1,
-                                              child: Transform.translate(
-                                                offset: Offset(0, 0),
-                                                child: Lottie.asset(
-                                                  'assets/animations/screen_transition_animation.json',
-                                                  width: MediaQuery.of(context).size.width,
-                                                  height: MediaQuery.of(context).size.height,
-                                                  fit: BoxFit.fill,
-                                                  repeat: false,
-                                                  onLoaded: (composition) {
-                                                    Future.delayed(
-                                                      composition.duration,
-                                                      () {
-                                                        Navigator.of(context).pop();
-                                                        Navigator.of(context).pushAndRemoveUntil(
-                                                          MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  PuzzleGame()),
-                                                          (route) => false,
-                                                        );
-                                                      },
-                                                    );
-                                                  },
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                              );
-                            }
-                          : null,
-                      child: Image.asset(
-                        'assets/images/buttons/play_button.png', // Buton yerine kullanılacak görsel
-                        width: 120,
-                        height: 120,
-                      ),
+          body: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 40), // AppBar ile buton arasına boşluk ekler
+              Center(
+                child: ElevatedButton(
+                  onPressed: () async{
+                    if (GlobalProperties.isSoundOn) {
+                      await _clickAudioPlayer?.stop();
+                      await _clickAudioPlayer?.play(
+                        AssetSource('audios/click_audio.mp3'),
+                      );
+                    }
+
+                    setState(() {
+                      isNewDailyPuzzle = false;
+                    });
+                    
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => DailyPuzzleGame()),
                     );
                   },
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      // Asıl buton metni
+                      Text("Yeni Buton"),
+
+                      // Eğer yeni günlük bulmaca varsa, küçük kırmızı çember içinde '!' işareti
+                      if (isNewDailyPuzzle)
+                        Positioned(
+                          top: -17,
+                          right: -25,
+                          child: Container(
+                            width: 18,
+                            height: 18,
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Center(
+                              child: Text(
+                                '!',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
                 ),
-              ],
-            ),
+              ),
+              Expanded(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(height: 100),
+                      ValueListenableBuilder<int>(
+                        valueListenable: GlobalProperties.remainingLives,
+                        builder: (context, remainingLives, _) {
+                          return GestureDetector(
+                            onTap: remainingLives > 0
+                                ? () async {
+                                    if (GlobalProperties.isSoundOn) {
+                                      await _clickAudioPlayer?.stop();
+                                      await _clickAudioPlayer?.play(
+                                        AssetSource('audios/click_audio.mp3'),
+                                      );
+                                    }
+                                    await showGeneralDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      barrierColor: Colors.transparent,
+                                      pageBuilder: (context, _, __) {
+                                        return Scaffold(
+                                          backgroundColor: Colors.transparent,
+                                          body: Stack(
+                                            children: [
+                                              Positioned.fill(
+                                                child: Center(
+                                                  child: Transform.scale(
+                                                    scale: 1,
+                                                    child: Transform.translate(
+                                                      offset: Offset(0, 0),
+                                                      child: Lottie.asset(
+                                                        'assets/animations/screen_transition_animation.json',
+                                                        width: MediaQuery.of(context).size.width,
+                                                        height: MediaQuery.of(context).size.height,
+                                                        fit: BoxFit.fill,
+                                                        repeat: false,
+                                                        onLoaded: (composition) {
+                                                          Future.delayed(
+                                                            composition.duration,
+                                                            () {
+                                                              Navigator.of(context).pop();
+                                                              Navigator.of(context)
+                                                                  .pushAndRemoveUntil(
+                                                                MaterialPageRoute(
+                                                                    builder: (context) =>
+                                                                        PuzzleGame()),
+                                                                (route) => false,
+                                                              );
+                                                            },
+                                                          );
+                                                        },
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  }
+                                : null,
+                            child: Image.asset(
+                              'assets/images/buttons/play_button.png',
+                              width: 120,
+                              height: 120,
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
           floatingActionButton: Padding(
             padding: const EdgeInsets.only(bottom: 60.0),
@@ -322,6 +385,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
 
   Future<void> loadGameData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+
     GlobalProperties.coin.value = prefs.getInt('coin') ?? 0;
     GlobalProperties.remainingLives.value = prefs.getInt('remainingLives') ?? 3;
     GlobalProperties.countdownSeconds.value = prefs.getInt('countdownSeconds') ?? 15;
@@ -329,14 +393,35 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     GlobalProperties.deadlineTimestamp = prefs.getInt('deadlineTimestamp') ?? 0;
     GlobalProperties.isSoundOn = prefs.getBool('isSoundOn') ?? true;
     GlobalProperties.isVibrationOn = prefs.getBool('isVibrationOn') ?? true;
-    final now = DateTime.now().millisecondsSinceEpoch;
+    
+    // Bugün ve son kaydedilen tarih
+    String? savedDate = prefs.getString('lastPuzzleDate');
+    final now = DateTime.now();
+    final nowMS = now.millisecondsSinceEpoch;
+
+    // "yyyyMMdd" formatında bugünün tarihi (Örn: 20250120)
+    final todayString = '${now.year}'
+        '${now.month.toString().padLeft(2, '0')}'
+        '${now.day.toString().padLeft(2, '0')}';
+
+    // Gün değişmişse -> Yeni günlük bulmaca var
+    if (savedDate != null && savedDate != todayString) {
+      isNewDailyPuzzle = true;
+      await prefs.setString('lastPuzzleDate', todayString);
+    } else {
+      // İlk defa giriyorsa veya gün değişmemişse
+      isNewDailyPuzzle = false;
+      if (savedDate == null) {
+        await prefs.setString('lastPuzzleDate', todayString);
+      }
+    }
 
     if (GlobalProperties.deadlineTimestamp != 0 &&
-        GlobalProperties.deadlineTimestamp <= now) {
+        GlobalProperties.deadlineTimestamp <= nowMS) {
       GlobalProperties.isTimeCompletedWhileAppClosed = true;
       await saveGameData();
     } else if (GlobalProperties.deadlineTimestamp != 0) {
-      final remainingMillis = GlobalProperties.deadlineTimestamp - now;
+      final remainingMillis = GlobalProperties.deadlineTimestamp - nowMS;
       final remainingSecs = (remainingMillis / 1000).ceil();
       GlobalProperties.countdownSeconds.value = remainingSecs > 0 ? remainingSecs : 0;
       GlobalProperties.isTimerRunning.value = true;
