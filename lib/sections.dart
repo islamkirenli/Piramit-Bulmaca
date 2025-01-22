@@ -4,8 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'puzzle_game.dart';
 import 'global_properties.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'dart:ui';
 
-/// --- Değiştirmeden kullanabilirsiniz ---
 Future<Set<String>> getCompletedSections() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   List<String> completedSections = prefs.getStringList('completedSections') ?? [];
@@ -21,6 +21,20 @@ Future<void> markSectionAsCompleted(String sectionKey) async {
   }
 }
 
+String displaySectionName(String originalName) {
+  final Map<String, String> sectionNames = {
+    'Ana Bölüm 1': 'KEOPS PİRAMİDİ',
+    'Ana Bölüm 2': 'KHAFRE PİRAMİDİ',
+    'Ana Bölüm 3': 'MENKAURE PİRAMİDİ',
+    'Ana Bölüm 4': 'DJOSER PİRAMİDİ',
+    'Ana Bölüm 5': 'BENT PİRAMİT',
+    'Ana Bölüm 6': 'MEİDUM PİRAMİDİ',
+    'Ana Bölüm 7': 'MEİDUM PİRAMİDİ',
+
+  };
+  return sectionNames[originalName] ?? originalName;
+}
+
 
 class SectionsPage extends StatefulWidget {
   @override
@@ -30,6 +44,16 @@ class SectionsPage extends StatefulWidget {
 /// --- ANA BÖLÜMLER ---
 class _SectionsPageState extends State<SectionsPage> {
   AudioPlayer? _clickAudioPlayer; // YENİ: Ses çalar tanımı
+
+  final List<String> imageList = [
+    'assets/images/button_images/keops_button.jpg',
+    'assets/images/button_images/khafre_button.jpg',
+    'assets/images/button_images/menkaure_button.jpg',
+    'assets/images/button_images/djoser_button.jpg',
+    'assets/images/button_images/bent_button.jpg',
+    'assets/images/button_images/meidum_button.jpg',
+    'assets/images/button_images/meroe_button.jpg',
+  ];
 
   @override
   void initState() {
@@ -46,77 +70,137 @@ class _SectionsPageState extends State<SectionsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      backgroundColor: Colors.transparent,
+
       appBar: AppBar(
-        title: Text("Bölümler", style: GlobalProperties.globalTextStyle(),),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: Text(
+          "BÖLÜMLER",
+          style: GlobalProperties.globalTextStyle(),
+        ),
       ),
-      body: FutureBuilder<Set<String>>(
-        future: getCompletedSections(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          }
 
-          Set<String> completedSections = snapshot.data ?? {};
-          // puzzleSections.keys => Ana bölüm isimleri (ör. ["Bölüm 1", "Bölüm 2", ...])
-          List<String> allSections = puzzleSections.keys.toList();
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Image.asset(
+              'assets/images/piramit_background.jpg',
+              fit: BoxFit.cover,
+            ),
+          ), 
+          Positioned.fill(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(
+                sigmaX: 5, // Yatay blur miktarı
+                sigmaY: 5, // Dikey blur miktarı
+              ),
+              // Renk katmanı (opaklığı 0 bırakırsanız sadece blur uygulanır)
+              child: Container(color: Colors.black.withOpacity(0)),
+            ),
+          ),
+          FutureBuilder<Set<String>>(
+            future: getCompletedSections(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              }
 
-          return ListView.builder(
-            itemCount: allSections.length,
-            itemBuilder: (context, index) {
-              String sectionName = allSections[index];
+              Set<String> completedSections = snapshot.data ?? {};
+              List<String> allSections = puzzleSections.keys.toList();
 
-              bool isUnlocked = (index == 0) ||
-                  completedSections.contains("MAIN:${allSections[index - 1]}") ||
-                  completedSections.contains("${allSections[index - 1]}-20");
+              return ListView.builder(
+                itemCount: allSections.length,
+                itemBuilder: (context, index) {
+                  String sectionName = allSections[index];
 
-              return GestureDetector(
-                onTap: isUnlocked
-                    ? () async{
-                        if (GlobalProperties.isSoundOn) {
-                          await _clickAudioPlayer?.stop();
-                          await _clickAudioPlayer?.play(
-                            AssetSource('audios/click_audio.mp3'),
-                          );
-                        }
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SubSectionsPage(
-                              sectionName: sectionName,
-                              subSections: puzzleSections[sectionName]!,
+                  bool isUnlocked = (index == 0) ||
+                      completedSections.contains("MAIN:${allSections[index - 1]}") ||
+                      completedSections.contains("${allSections[index - 1]}-20");
+                  
+                  String imagePath = imageList[index % imageList.length];
+
+                  return GestureDetector(
+                    onTap: isUnlocked
+                        ? () async {
+                            if (GlobalProperties.isSoundOn) {
+                              await _clickAudioPlayer?.stop();
+                              await _clickAudioPlayer?.play(
+                                AssetSource('audios/click_audio.mp3'),
+                              );
+                            }
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SubSectionsPage(
+                                  sectionName: sectionName,
+                                  subSections: puzzleSections[sectionName]!,
+                                ),
+                              ),
+                            );
+                          }
+                        : null,
+                    child: Stack(
+                      children: [
+                        // Görsel arka plan
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                          height: 80,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all( // Kenar çizgisi ekleme
+                              color: Colors.white, // Çizgi rengi
+                              width: 2.0, // Çizgi kalınlığı
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.3), // Gölge rengi
+                                offset: Offset(4, 4), // Gölgenin x ve y eksenindeki uzaklığı
+                                blurRadius: 8, // Gölgenin bulanıklık derecesi
+                                spreadRadius: 1, // Gölgenin yayılma derecesi
+                              ),
+                            ],
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: SizedBox.expand(
+                              child: FittedBox(
+                                fit: BoxFit.fill,
+                                child: Image.asset(
+                                  imagePath,
+                                ),
+                              ),
                             ),
                           ),
-                        );
-                      }
-                    : null,
-                child: Container(
-                  margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                  height: 80,
-                  decoration: BoxDecoration(
-                    color: isUnlocked ? Colors.blueAccent : Colors.grey,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Center(
-                    child: isUnlocked
-                        ? Text(
-                            sectionName,
+                        ),
+                        // Metin veya saydam katman
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                          height: 80,
+                          decoration: BoxDecoration(
+                            color: isUnlocked ? Colors.transparent : Colors.black.withOpacity(0.4),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          alignment: Alignment.center,
+                          child: Text(
+                            displaySectionName(sectionName),
                             style: GlobalProperties.globalTextStyle(
                               color: Colors.white,
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                             ),
-                          )
-                        : Icon(
-                            Icons.lock,
-                            color: Colors.white,
-                            size: 30,
+                            textAlign: TextAlign.center,
                           ),
-                  ),
-                ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
               );
             },
-          );
-        },
+          ),
+        ],
       ),
     );
   }
@@ -157,102 +241,130 @@ class _SubSectionsPageState extends State<SubSectionsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      backgroundColor: Colors.transparent,
       appBar: AppBar(
-        title: Text(widget.sectionName, style: GlobalProperties.globalTextStyle(),),
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: Text(
+          widget.sectionName,
+          style: GlobalProperties.globalTextStyle(),
+        ),
       ),
-      body: FutureBuilder<Set<String>>(
-        future: _completedSectionsFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          }
+      body: Stack(
+        children: [
+          // Arka planı tüm ekrana yerleştiriyoruz
+          Positioned.fill(
+            child: Image.asset(
+              'assets/images/piramit_background.jpg',
+              fit: BoxFit.cover,
+            ),
+          ),
+          Positioned.fill(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(
+                sigmaX: 5, // Yatay blur miktarı
+                sigmaY: 5, // Dikey blur miktarı
+              ),
+              // Renk katmanı (opaklığı 0 bırakırsanız sadece blur uygulanır)
+              child: Container(color: Colors.black.withOpacity(0)),
+            ),
+          ), 
+          // İçeriği SafeArea ile sarıyoruz
+          SafeArea(
+            child: FutureBuilder<Set<String>>(
+              future: _completedSectionsFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                }
 
-          Set<String> completedSections = snapshot.data ?? {};
-          List<String> allSubSections = widget.subSections.keys.toList();
+                Set<String> completedSections = snapshot.data ?? {};
+                List<String> allSubSections = widget.subSections.keys.toList();
 
-          return ValueListenableBuilder<int>(
-            valueListenable: GlobalProperties.remainingLives,
-            builder: (context, remainingLives, _) {
-              return GridView.builder(
-                padding: EdgeInsets.all(10),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                  childAspectRatio: 1,
-                ),
-                itemCount: allSubSections.length,
-                itemBuilder: (context, index) {
-                  String subSectionKey = allSubSections[index];
-                  String fullKey = "${widget.sectionName}-$subSectionKey";
+                return ValueListenableBuilder<int>(
+                  valueListenable: GlobalProperties.remainingLives,
+                  builder: (context, remainingLives, _) {
+                    return GridView.builder(
+                      padding: EdgeInsets.all(10),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 4,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 10,
+                        childAspectRatio: 1,
+                      ),
+                      itemCount: allSubSections.length,
+                      itemBuilder: (context, index) {
+                        String subSectionKey = allSubSections[index];
+                        String fullKey = "${widget.sectionName}-$subSectionKey";
 
-                  // Örnek: İlk 3 alt bölüm direkt açık, sonrakiler bir önceki tamamlandıysa açık.
-                  bool isUnlocked = (index < 3) ||
-                      completedSections.contains(
-                        "${widget.sectionName}-${allSubSections[index - 1]}",
-                      );
-
-                  bool isCompleted = completedSections.contains(fullKey);
-
-                  return GestureDetector(
-                    onTap: isUnlocked && remainingLives > 0
-                        ? () async {
-                            if (GlobalProperties.isSoundOn) {
-                              await _clickAudioPlayer?.stop();
-                              await _clickAudioPlayer?.play(
-                                AssetSource('audios/click_audio.mp3'),
-                              );
-                            }
-                            // Oyun sayfasına git
-                            await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => PuzzleGame(
-                                  initialMainSection: widget.sectionName,
-                                  initialSubSection: subSectionKey,
-                                ),
-                              ),
+                        bool isUnlocked = (index < 3) ||
+                            completedSections.contains(
+                              "${widget.sectionName}-${allSubSections[index - 1]}",
                             );
+                        bool isCompleted = completedSections.contains(fullKey);
 
-                            // Geri dönünce bu alt bölümü completedSections'a ekle
-                            await markSectionAsCompleted(fullKey);
+                        return GestureDetector(
+                          onTap: isUnlocked && remainingLives > 0
+                              ? () async {
+                                  if (GlobalProperties.isSoundOn) {
+                                    await _clickAudioPlayer?.stop();
+                                    await _clickAudioPlayer?.play(
+                                      AssetSource('audios/click_audio.mp3'),
+                                    );
+                                  }
+                                  // Oyun sayfasına git
+                                  await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => PuzzleGame(
+                                        initialMainSection: widget.sectionName,
+                                        initialSubSection: subSectionKey,
+                                      ),
+                                    ),
+                                  );
 
-                            // SharedPreferences'ı yeniden oku ve sayfayı güncelle
-                            setState(() {
-                              _completedSectionsFuture = getCompletedSections();
-                            });
-                          }
-                        : null,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: isUnlocked
-                            ? (isCompleted ? Colors.green : Colors.blueAccent)
-                            : Colors.grey,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Center(
-                        child: isUnlocked
-                            ? Text(
-                                subSectionKey,
-                                textAlign: TextAlign.center,
-                                style: GlobalProperties.globalTextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              )
-                            : Icon(
-                                Icons.lock,
-                                color: Colors.white,
-                              ),
-                      ),
-                    ),
-                  );
-                },
-              );
-            },
-          );
-        },
+                                  // Geri dönünce bu alt bölümü completedSections'a ekle
+                                  await markSectionAsCompleted(fullKey);
+
+                                  // SharedPreferences'ı yeniden oku ve sayfayı güncelle
+                                  setState(() {
+                                    _completedSectionsFuture = getCompletedSections();
+                                  });
+                                }
+                              : null,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: isUnlocked
+                                  ? (isCompleted ? Colors.green : Colors.blueAccent)
+                                  : Colors.grey,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Center(
+                              child: isUnlocked
+                                  ? Text(
+                                      subSectionKey,
+                                      textAlign: TextAlign.center,
+                                      style: GlobalProperties.globalTextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    )
+                                  : Icon(
+                                      Icons.lock,
+                                      color: Colors.white,
+                                    ),
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

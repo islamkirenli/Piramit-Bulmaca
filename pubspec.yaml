@@ -93,6 +93,13 @@ flutter:
   - assets/images/correct_guess/correct_guess2.png
   - assets/images/correct_guess/correct_guess3.png
   - assets/images/correct_guess/correct_guess4.png
+  - assets/images/button_images/keops_button.jpg
+  - assets/images/button_images/khafre_button.jpg
+  - assets/images/button_images/menkaure_button.jpg
+  - assets/images/button_images/djoser_button.jpg
+  - assets/images/button_images/bent_button.jpg
+  - assets/images/button_images/meidum_button.jpg
+  - assets/images/button_images/meroe_button.jpg
   - assets/audios/background_music.mp3
   - assets/audios/hint_audio.mp3
   - assets/audios/magic_wand_audio.mp3
