@@ -30,6 +30,12 @@ String displaySectionName(String originalName) {
     'Ana Bölüm 5': 'BENT PİRAMİT',
     'Ana Bölüm 6': 'MEİDUM PİRAMİDİ',
     'Ana Bölüm 7': 'MEİDUM PİRAMİDİ',
+    'Ana Bölüm 8': 'GÜNEŞ PİRAMİDİ',
+    'Ana Bölüm 9': 'TİKAL PİRAMİDİ',
+    'Ana Bölüm 10': 'PALENQUE PİRAMİDİ',
+    'Ana Bölüm 11': 'CALAKMUL PİRAMİDİ',
+    'Ana Bölüm 12': 'EL CASTİLLO',
+    'Ana Bölüm 13': 'CESTİUS PİRAMİDİ',
 
   };
   return sectionNames[originalName] ?? originalName;
@@ -43,7 +49,7 @@ class SectionsPage extends StatefulWidget {
 
 /// --- ANA BÖLÜMLER ---
 class _SectionsPageState extends State<SectionsPage> {
-  AudioPlayer? _clickAudioPlayer; // YENİ: Ses çalar tanımı
+  AudioPlayer? _clickAudioPlayer;
 
   final List<String> imageList = [
     'assets/images/button_images/keops_button.jpg',
@@ -53,6 +59,13 @@ class _SectionsPageState extends State<SectionsPage> {
     'assets/images/button_images/bent_button.jpg',
     'assets/images/button_images/meidum_button.jpg',
     'assets/images/button_images/meroe_button.jpg',
+    'assets/images/button_images/gunes_button.jpg',
+    'assets/images/button_images/tikal_button.jpg',
+    'assets/images/button_images/palenque_button.jpg',
+    'assets/images/button_images/calakmul_button.jpg',
+    'assets/images/button_images/elcastillo_button.jpg',
+    'assets/images/button_images/cestius_button.jpg',
+
   ];
 
   @override
@@ -78,7 +91,11 @@ class _SectionsPageState extends State<SectionsPage> {
         elevation: 0,
         title: Text(
           "BÖLÜMLER",
-          style: GlobalProperties.globalTextStyle(),
+          style: GlobalProperties.globalTextStyle(
+            color: Colors.black,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
 
@@ -100,105 +117,107 @@ class _SectionsPageState extends State<SectionsPage> {
               child: Container(color: Colors.black.withOpacity(0)),
             ),
           ),
-          FutureBuilder<Set<String>>(
-            future: getCompletedSections(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
-              }
+          SafeArea(
+            child: FutureBuilder<Set<String>>(
+              future: getCompletedSections(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                }
 
-              Set<String> completedSections = snapshot.data ?? {};
-              List<String> allSections = puzzleSections.keys.toList();
+                Set<String> completedSections = snapshot.data ?? {};
+                List<String> allSections = puzzleSections.keys.toList();
 
-              return ListView.builder(
-                itemCount: allSections.length,
-                itemBuilder: (context, index) {
-                  String sectionName = allSections[index];
+                return ListView.builder(
+                  itemCount: allSections.length,
+                  itemBuilder: (context, index) {
+                    String sectionName = allSections[index];
 
-                  bool isUnlocked = (index == 0) ||
-                      completedSections.contains("MAIN:${allSections[index - 1]}") ||
-                      completedSections.contains("${allSections[index - 1]}-20");
-                  
-                  String imagePath = imageList[index % imageList.length];
+                    bool isUnlocked = (index == 0) ||
+                        completedSections.contains("MAIN:${allSections[index - 1]}") ||
+                        completedSections.contains("${allSections[index - 1]}-20");
+                    
+                    String imagePath = imageList[index % imageList.length];
 
-                  return GestureDetector(
-                    onTap: isUnlocked
-                        ? () async {
-                            if (GlobalProperties.isSoundOn) {
-                              await _clickAudioPlayer?.stop();
-                              await _clickAudioPlayer?.play(
-                                AssetSource('audios/click_audio.mp3'),
+                    return GestureDetector(
+                      onTap: isUnlocked
+                          ? () async {
+                              if (GlobalProperties.isSoundOn) {
+                                await _clickAudioPlayer?.stop();
+                                await _clickAudioPlayer?.play(
+                                  AssetSource('audios/click_audio.mp3'),
+                                );
+                              }
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SubSectionsPage(
+                                    sectionName: sectionName,
+                                    subSections: puzzleSections[sectionName]!,
+                                  ),
+                                ),
                               );
                             }
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SubSectionsPage(
-                                  sectionName: sectionName,
-                                  subSections: puzzleSections[sectionName]!,
+                          : null,
+                      child: Stack(
+                        children: [
+                          // Görsel arka plan
+                          Container(
+                            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                            height: 80,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all( // Kenar çizgisi ekleme
+                                color: Colors.white, // Çizgi rengi
+                                width: 2.0, // Çizgi kalınlığı
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.3), // Gölge rengi
+                                  offset: Offset(4, 4), // Gölgenin x ve y eksenindeki uzaklığı
+                                  blurRadius: 8, // Gölgenin bulanıklık derecesi
+                                  spreadRadius: 1, // Gölgenin yayılma derecesi
                                 ),
-                              ),
-                            );
-                          }
-                        : null,
-                    child: Stack(
-                      children: [
-                        // Görsel arka plan
-                        Container(
-                          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                          height: 80,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all( // Kenar çizgisi ekleme
-                              color: Colors.white, // Çizgi rengi
-                              width: 2.0, // Çizgi kalınlığı
+                              ],
                             ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.3), // Gölge rengi
-                                offset: Offset(4, 4), // Gölgenin x ve y eksenindeki uzaklığı
-                                blurRadius: 8, // Gölgenin bulanıklık derecesi
-                                spreadRadius: 1, // Gölgenin yayılma derecesi
-                              ),
-                            ],
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: SizedBox.expand(
-                              child: FittedBox(
-                                fit: BoxFit.fill,
-                                child: Image.asset(
-                                  imagePath,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: SizedBox.expand(
+                                child: FittedBox(
+                                  fit: BoxFit.fill,
+                                  child: Image.asset(
+                                    imagePath,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                        // Metin veya saydam katman
-                        Container(
-                          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                          height: 80,
-                          decoration: BoxDecoration(
-                            color: isUnlocked ? Colors.transparent : Colors.black.withOpacity(0.4),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          alignment: Alignment.center,
-                          child: Text(
-                            displaySectionName(sectionName),
-                            style: GlobalProperties.globalTextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
+                          // Metin veya saydam katman
+                          Container(
+                            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                            height: 80,
+                            decoration: BoxDecoration(
+                              color: isUnlocked ? Colors.transparent : Colors.black.withOpacity(0.4),
+                              borderRadius: BorderRadius.circular(8),
                             ),
-                            textAlign: TextAlign.center,
+                            alignment: Alignment.center,
+                            child: Text(
+                              displaySectionName(sectionName),
+                              style: GlobalProperties.globalTextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              );
-            },
+                        ],
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
           ),
         ],
       ),
@@ -247,8 +266,12 @@ class _SubSectionsPageState extends State<SubSectionsPage> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Text(
-          widget.sectionName,
-          style: GlobalProperties.globalTextStyle(),
+          displaySectionName(widget.sectionName),
+          style: GlobalProperties.globalTextStyle(
+            color: Colors.black,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
       body: Stack(

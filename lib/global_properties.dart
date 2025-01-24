@@ -1,4 +1,3 @@
-import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 
 
@@ -20,13 +19,13 @@ class GlobalProperties {
     Color color = Colors.black,
     double letterSpacing = 0,
   }) {
-    return GoogleFonts.asap(
-      textStyle: TextStyle(
+    return TextStyle(
+        fontFamily: "Asap",
         fontSize: fontSize,
         fontWeight: fontWeight,
         color: color,
         letterSpacing: letterSpacing,
-      ),
-    );
+      );
   }
 }
+

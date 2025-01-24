@@ -332,5 +332,45 @@ final Map<String, Map<String, List<Map<String, String>>>> puzzleSections = {
       {'hint': 'Halk dilinde ağabey', 'word': 'AKA'}
     ],
   },
+  // MARK: ANA BÖLÜM-10
+  'Ana Bölüm 10': {
+    '1': [
+      {'hint': 'Rimel', 'word': 'MASKARA'},
+      {'hint': 'Üzerinde iplik, tel gibi şeyler sarılan ortası delik silindir', 'word': 'MAKARA'},
+      {'hint': 'Sayıları göstermek için kullanılan işaretlerin her biri', 'word': 'RAKAM'},
+      {'hint': 'Ucu sivri iki ağzı da keskin bıçak', 'word': 'KAMA'},
+      {'hint': 'Halk dilinde ağabey', 'word': 'AKA'}
+    ],
+  },
+  // MARK: ANA BÖLÜM-11
+  'Ana Bölüm 11': {
+    '1': [
+      {'hint': 'Rimel', 'word': 'MASKARA'},
+      {'hint': 'Üzerinde iplik, tel gibi şeyler sarılan ortası delik silindir', 'word': 'MAKARA'},
+      {'hint': 'Sayıları göstermek için kullanılan işaretlerin her biri', 'word': 'RAKAM'},
+      {'hint': 'Ucu sivri iki ağzı da keskin bıçak', 'word': 'KAMA'},
+      {'hint': 'Halk dilinde ağabey', 'word': 'AKA'}
+    ],
+  },
+  // MARK: ANA BÖLÜM-12
+  'Ana Bölüm 12': {
+    '1': [
+      {'hint': 'Rimel', 'word': 'MASKARA'},
+      {'hint': 'Üzerinde iplik, tel gibi şeyler sarılan ortası delik silindir', 'word': 'MAKARA'},
+      {'hint': 'Sayıları göstermek için kullanılan işaretlerin her biri', 'word': 'RAKAM'},
+      {'hint': 'Ucu sivri iki ağzı da keskin bıçak', 'word': 'KAMA'},
+      {'hint': 'Halk dilinde ağabey', 'word': 'AKA'}
+    ],
+  },
+  // MARK: ANA BÖLÜM-13
+  'Ana Bölüm 13': {
+    '1': [
+      {'hint': 'Rimel', 'word': 'MASKARA'},
+      {'hint': 'Üzerinde iplik, tel gibi şeyler sarılan ortası delik silindir', 'word': 'MAKARA'},
+      {'hint': 'Sayıları göstermek için kullanılan işaretlerin her biri', 'word': 'RAKAM'},
+      {'hint': 'Ucu sivri iki ağzı da keskin bıçak', 'word': 'KAMA'},
+      {'hint': 'Halk dilinde ağabey', 'word': 'AKA'}
+    ],
+  },
 };
 
