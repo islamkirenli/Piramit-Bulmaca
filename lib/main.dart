@@ -480,4 +480,3 @@ class _IntroAnimationScreenState extends State<IntroAnimationScreen> {
     );
   }
 }
-

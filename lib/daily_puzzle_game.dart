@@ -901,10 +901,15 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
           nextPuzzleSeconds--;
         });
       } else {
-        // Sayaç bittiğinde (geceyarısı oldu):
         timer.cancel();
-        // Bir sonraki puzzle yükleme mantığı zaten loadGameData() içinde gün/tarih kontrolüyle yapılıyor.
-        // Eğer istersek burada loadGameData() çağırabiliriz veya sayfayı yeniden yükleyebiliriz.
+
+        setState(() {
+          nextPuzzleSeconds = 0;
+          puzzleForTodayCompleted = false;
+        });
+        
+        loadGameData();
+        saveGameData();
       }
     });
   }
