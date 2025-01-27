@@ -82,6 +82,8 @@ flutter:
   - assets/animations/single_hint_animation.json
   - assets/animations/word_hint_animation.json
   - assets/animations/screen_transition_animation.json
+  - assets/animations/birthday_animation.json
+  - assets/animations/party_animation.json
   - assets/images/piramit_background.jpg
   - assets/images/game_background/keops.jpg
   - assets/images/game_background/elcastillo.jpg

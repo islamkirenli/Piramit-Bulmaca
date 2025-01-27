@@ -783,7 +783,9 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
           }
         }
       } else {
-        GlobalProperties.remainingLives.value = max(0, GlobalProperties.remainingLives.value - 1);
+        if (!(DateTime.now().month == 4 && DateTime.now().day == 19)) {
+          GlobalProperties.remainingLives.value = max(0, GlobalProperties.remainingLives.value - 1);
+        }
         saveGameData();
         triggerShakeEffect();
         _isWrongChoiceWaiting = true;
@@ -859,7 +861,9 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
       });
     } else {
       setState(() {
-        GlobalProperties.remainingLives.value = max(0, GlobalProperties.remainingLives.value - 1); // Sıfırın altına düşmesine izin verme
+        if (!(DateTime.now().month == 4 && DateTime.now().day == 19)) {
+          GlobalProperties.remainingLives.value = max(0, GlobalProperties.remainingLives.value - 1);
+        }
         saveGameData();
       });
 

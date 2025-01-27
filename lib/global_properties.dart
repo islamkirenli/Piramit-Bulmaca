@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class GlobalProperties {
   static final ValueNotifier<int> remainingLives = ValueNotifier<int>(3);
   static final ValueNotifier<int> coin = ValueNotifier<int>(0);
@@ -27,5 +26,11 @@ class GlobalProperties {
         letterSpacing: letterSpacing,
       );
   }
-}
 
+  static bool isSpecialDate = false;
+
+  static void updateSpecialDateStatus() {
+    final now = DateTime.now();
+    isSpecialDate = (now.month == 4 && now.day == 19);
+  }
+}

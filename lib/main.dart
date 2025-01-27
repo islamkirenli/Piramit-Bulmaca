@@ -14,6 +14,7 @@ import 'package:lottie/lottie.dart';
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'daily_puzzle_game.dart';
+import 'special_day_popup.dart';
 
 
 void main() {
@@ -82,6 +83,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       if (GlobalProperties.isTimerRunning.value) {
         handleCountdownLogic();
       }
+      checkSpecialDay();
     });
   }
 
@@ -425,6 +427,74 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       final remainingSecs = (remainingMillis / 1000).ceil();
       GlobalProperties.countdownSeconds.value = remainingSecs > 0 ? remainingSecs : 0;
       GlobalProperties.isTimerRunning.value = true;
+    }
+  }
+
+  Future<void> checkSpecialDay() async {
+    final now = DateTime.now();
+    if (now.month == 4 && now.day == 19) { // Özel tarih kontrolü
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      bool isPopupShown = prefs.getBool('specialDayPopupShown') ?? false;
+
+      if (!isPopupShown) {
+        Future.delayed(Duration.zero, () {
+          showDialog(
+            context: context,
+            barrierDismissible: false, // Kullanıcı kapatmadan devam edemez
+            builder: (context) {
+              final screenWidth = MediaQuery.of(context).size.width;
+              final screenHeight = MediaQuery.of(context).size.height;
+
+              return StatefulBuilder(
+                builder: (context, setState) {
+                  bool isAnimationVisible = true; // Animasyon görünürlüğünü kontrol eder
+
+                  return Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      // Pop-up Widget'ı
+                      Center(
+                        child: SpecialDayPopup(
+                          onClose: () async {
+                            // Pop-up'ı kapat ve gösterildiğini kaydet
+                            await prefs.setBool('specialDayPopupShown', true);
+                            Navigator.of(context).pop(); // Pop-up'ı kapat
+                          },
+                        ),
+                      ),
+                      // Animasyon Pop-up'ın Önünde
+                      if (isAnimationVisible)
+                        IgnorePointer(
+                          ignoring: true, // Etkileşimi devre dışı bırakır
+                          child: SizedBox(
+                            width: screenWidth,
+                            height: screenHeight,
+                            child: Lottie.asset(
+                              'assets/animations/party_animation.json',
+                              fit: BoxFit.cover,
+                              repeat: false,
+                              onLoaded: (composition) {
+                                // Animasyon tamamlandığında görünürlüğü kaldır
+                                Future.delayed(composition.duration, () {
+                                  setState(() {
+                                    isAnimationVisible = false;
+                                  });
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                    ],
+                  );
+                },
+              );
+            },
+          );
+        });
+      }
+    } else {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('specialDayPopupShown', false);
     }
   }
 }

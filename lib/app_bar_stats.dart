@@ -27,6 +27,9 @@ class _AppBarStatsState extends State<AppBarStats> {
   void initState() {
     super.initState();
     _clickAudioPlayer = AudioPlayer();
+
+    GlobalProperties.updateSpecialDateStatus();
+
     if (GlobalProperties.remainingLives.value == 0 &&
         GlobalProperties.countdownSeconds.value > 0 &&
         !GlobalProperties.isTimerRunning.value) {
@@ -243,13 +246,23 @@ class _AppBarStatsState extends State<AppBarStats> {
                         animate: true,
                       ),
                     ),
-                    Text(
-                      '  ${GlobalProperties.remainingLives.value}',
-                      style: GlobalProperties.globalTextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
+                    Row(
+                      children: [
+                        GlobalProperties.isSpecialDate
+                            ? const Icon(
+                                Icons.all_inclusive,
+                                size: 20, // İkon boyutu
+                                color: Colors.black, // İkon rengi
+                              )
+                            : Text(
+                                '  ${GlobalProperties.remainingLives.value}', // Normal gösterim
+                                style: GlobalProperties.globalTextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
+                              ),
+                      ],
                     ),
                   ],
                 ),
