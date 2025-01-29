@@ -92,7 +92,7 @@ class _SectionsPageState extends State<SectionsPage> {
         title: Text(
           "BÖLÜMLER",
           style: GlobalProperties.globalTextStyle(
-            color: Colors.black,
+            color: Colors.white,
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
@@ -268,7 +268,7 @@ class _SubSectionsPageState extends State<SubSectionsPage> {
         title: Text(
           displaySectionName(widget.sectionName),
           style: GlobalProperties.globalTextStyle(
-            color: Colors.black,
+            color: Colors.white,
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
