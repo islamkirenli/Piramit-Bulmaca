@@ -39,8 +39,13 @@ class MyApp extends StatelessWidget {
 class PuzzleGame extends StatefulWidget {
   final String? initialMainSection; // Başlangıç ana bölümü
   final String? initialSubSection; // Başlangıç alt bölümü
+  final bool isCompleted;
 
-  PuzzleGame({this.initialMainSection, this.initialSubSection});
+  PuzzleGame({
+    this.initialMainSection,
+    this.initialSubSection,
+    this.isCompleted = false, // Varsayılan olarak tamamlanmamış kabul edilir
+  });
 
   @override
   _PuzzleGameState createState() => _PuzzleGameState();
@@ -100,6 +105,13 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
   @override
   void initState() {
     super.initState();
+    if (widget.isCompleted) {
+      // Eğer bölüm tamamlanmışsa, tüm kelimeleri aç
+      correctWords = puzzleSections[widget.initialMainSection]![widget.initialSubSection]!
+          .map((wordData) => wordData['word']!)
+          .toList();
+    }
+
     // Görsel dosyalarının listesini doldurun
     correctGuessImages = [
       'assets/images/correct_guess/correct_guess1.png',
@@ -324,7 +336,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                               mainAxisSize: MainAxisSize.min,
                               children: List.generate(word.length, (charIndex) {
                                 // Harf açık mı?
-                                bool isRevealed = correctWords.contains(word) ||
+                                bool isRevealed = correctWords.contains(word) || widget.isCompleted ||
                                     (index == currentIndex && revealedIndexesForCurrentWord.contains(charIndex));
 
                                 return AnimatedSwitcher(
@@ -390,9 +402,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                     Padding(
                       padding: const EdgeInsets.only(left: 16.0, bottom: 1.0),
                       child: GestureDetector(
-                        onTap: () {
-                          showWordHint();
-                        },
+                        onTap: widget.isCompleted ? null : showWordHint,
                         child: Container(
                           width: 50,
                           height: 50,
@@ -472,9 +482,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                     Padding(
                       padding: const EdgeInsets.only(right: 16.0, bottom: 1.0),
                       child: GestureDetector(
-                        onTap: () {
-                          showSingleHint();
-                        },
+                        onTap: widget.isCompleted ? null : showSingleHint,
                         child: Container(
                           width: 50,
                           height: 50,
@@ -561,7 +569,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                           ),
                         Positioned(
                           child: GestureDetector(
-                            onTap: shuffleLetters,
+                            onTap: widget.isCompleted ? null : shuffleLetters,
                             child: Container(
                               width: 50,
                               height: 50,
@@ -637,6 +645,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
   }
 
   void onLetterDrag(Offset position) {
+    if (widget.isCompleted) return;
     // Eğer yanlış bir seçim beklemesi varsa, ekrana dokunulduğunda hemen iptal et
     if (_isWrongChoiceWaiting) {
       _wrongChoiceTimer?.cancel(); // Timer'ı iptal et

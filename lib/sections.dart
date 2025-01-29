@@ -343,6 +343,7 @@ class _SubSectionsPageState extends State<SubSectionsPage> {
                                       builder: (context) => PuzzleGame(
                                         initialMainSection: widget.sectionName,
                                         initialSubSection: subSectionKey,
+                                        isCompleted: isCompleted,
                                       ),
                                     ),
                                   );
