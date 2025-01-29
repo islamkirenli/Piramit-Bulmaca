@@ -84,6 +84,8 @@ flutter:
   - assets/animations/screen_transition_animation.json
   - assets/animations/birthday_animation.json
   - assets/animations/party_animation.json
+  - assets/animations/chest_animation.json
+  - assets/animations/chest_spotlight_animation.json
   - assets/images/piramit_background.jpg
   - assets/images/game_background/keops.jpg
   - assets/images/game_background/elcastillo.jpg

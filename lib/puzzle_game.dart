@@ -16,7 +16,7 @@ import 'package:lottie/lottie.dart';
 import 'show_coin_popup.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/services.dart';
-
+import 'level_complete_dialog.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -698,6 +698,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
       String selectedWord = selectedLetters.join('');
       String correctWord =
           puzzleSections[currentMainSection]![currentSubSection]![currentIndex]['word']!;
+      int currentSubSectionNumber = int.tryParse(currentSubSection) ?? 1;
 
       if (selectedLetters.length < correctWord.length) {
         triggerShakeEffect();
@@ -780,6 +781,9 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
               incrementScore,
               saveGameData,
             );
+            if (currentSubSectionNumber % 10 == 0) {
+              showLevelCompleteDialog(context);
+            }
           }
         }
       } else {
@@ -1128,6 +1132,8 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
       // Mevcut ipucu mekanizması
       String currentWord =
           puzzleSections[currentMainSection]![currentSubSection]![currentIndex]['word']!;
+      
+      int currentSubSectionNumber = int.tryParse(currentSubSection) ?? 1;
 
       List<int> unopenedIndexes = List.generate(currentWord.length, (i) => i)
           .where((i) => !revealedIndexesForCurrentWord.contains(i))
@@ -1199,6 +1205,9 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
               incrementScore,
               saveGameData,
             );
+            if (currentSubSectionNumber % 10 == 0) {
+              showLevelCompleteDialog(context);
+            }
           }
         }
       }
@@ -1258,6 +1267,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
     // 4) Tüm harfler açıldıktan sonra "Doğru tahmin" akışını başlat
     setState(() {
       feedbackMessage = "Doğru tahmin!";
+      int currentSubSectionNumber = int.tryParse(currentSubSection) ?? 1;
 
       if (!correctWords.contains(currentWord)) {
         correctWords.add(currentWord);
@@ -1305,6 +1315,9 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
             incrementScore,
             saveGameData,
           );
+          if (currentSubSectionNumber % 10 == 0) {
+            showLevelCompleteDialog(context);
+          }
         }
       }
     });
