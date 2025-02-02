@@ -49,13 +49,19 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   bool isDataLoaded = false;
   late AnimationController _settingsIconController;
   Timer? _timer;
   AudioPlayer? _clickAudioPlayer;
   late VideoPlayerController _videoController;
   bool isNewDailyPuzzle = false; // Yeni günlük bulmaca var mı?
+  bool _isPressed = false;
+  bool _isSettingsPressed = false;
+  bool _isSectionsPressed = false;
+  bool _isDailyPuzzlePressed = false;
+
+  late AnimationController _rippleController;
 
   @override
   void initState() {
@@ -85,6 +91,12 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       }
       checkSpecialDay();
     });
+
+    _rippleController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 1500),
+    );
+    _rippleController.repeat();
   }
 
   Future<void> requestAppTrackingPermission() async {
@@ -102,6 +114,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     _clickAudioPlayer?.dispose();
     _timer?.cancel();
     _settingsIconController.dispose(); // Animasyon denetleyicisini temizle
+    _rippleController.dispose();
     super.dispose();
   }
 
@@ -142,57 +155,114 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 40), // AppBar ile buton arasına boşluk ekler
+              SizedBox(height: 60), // AppBar ile buton arasına boşluk ekler
               Center(
-                child: ElevatedButton(
-                  onPressed: () async{
+                child: GestureDetector(
+                  onTapDown: (_) {
+                    setState(() {
+                      _isDailyPuzzlePressed = true;
+                    });
+                  },
+                  onTapUp: (_) {
+                    setState(() {
+                      _isDailyPuzzlePressed = false;
+                    });
+                  },
+                  onTapCancel: () {
+                    setState(() {
+                      _isDailyPuzzlePressed = false;
+                    });
+                  },
+                  onTap: () async {
                     if (GlobalProperties.isSoundOn) {
                       await _clickAudioPlayer?.stop();
                       await _clickAudioPlayer?.play(
                         AssetSource('audios/click_audio.mp3'),
                       );
                     }
-
                     setState(() {
                       isNewDailyPuzzle = false;
                     });
-                    
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => DailyPuzzleGame()),
                     );
                   },
-                  child: Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      // Asıl buton metni
-                      Text("Yeni Buton"),
-
-                      // Eğer yeni günlük bulmaca varsa, küçük kırmızı çember içinde '!' işareti
-                      if (isNewDailyPuzzle)
-                        Positioned(
-                          top: -17,
-                          right: -25,
-                          child: Container(
-                            width: 18,
-                            height: 18,
-                            decoration: BoxDecoration(
-                              color: Colors.red,
-                              shape: BoxShape.circle,
+                  child: AnimatedScale(
+                    scale: _isDailyPuzzlePressed ? 0.95 : 1.0,
+                    duration: Duration(milliseconds: 100),
+                    child: Container(
+                      width: 200, // Buton genişliği
+                      height: 40, // Buton yüksekliği
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(25), // Yüksekliğin yarısı kadar yuvarlatıldı, kapsül görünümü için
+                        gradient: LinearGradient(
+                          colors: [
+                            Color(0xFFFFC107), // Açık, parlak turuncu (biraz altın sarısı)
+                            Color(0xFFFF9800), // Orta ton
+                            Color(0xFFF57C00), // Daha koyu ve sıcak turuncu
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.4),
+                            offset: Offset(4, 4),
+                            blurRadius: 8,
+                          ),
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.8),
+                            offset: Offset(-4, -4),
+                            blurRadius: 8,
+                          ),
+                        ],
+                      ),
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        alignment: Alignment.center,
+                        children: [
+                          Text(
+                            "Günlük Bulmaca",
+                            style: GlobalProperties.globalTextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
                             ),
-                            child: Center(
-                              child: Text(
-                                '!',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
+                          ),
+                          if (isNewDailyPuzzle)
+                            Positioned(
+                              top: -17,
+                              right: -25,
+                              child: Container(
+                                width: 18,
+                                height: 18,
+                                decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  shape: BoxShape.circle,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.4),
+                                      offset: Offset(2, 2),
+                                      blurRadius: 4,
+                                    ),
+                                  ],
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    '!',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ),
-                    ],
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -207,6 +277,21 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                         valueListenable: GlobalProperties.remainingLives,
                         builder: (context, remainingLives, _) {
                           return GestureDetector(
+                            onTapDown: (details) {
+                              setState(() {
+                                _isPressed = true;
+                              });
+                            },
+                            onTapUp: (details) {
+                              setState(() {
+                                _isPressed = false;
+                              });
+                            },
+                            onTapCancel: () {
+                              setState(() {
+                                _isPressed = false;
+                              });
+                            },
                             onTap: remainingLives > 0
                                 ? () async {
                                     if (GlobalProperties.isSoundOn) {
@@ -263,10 +348,78 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                                     );
                                   }
                                 : null,
-                            child: Image.asset(
-                              'assets/images/buttons/play_button.png',
-                              width: 120,
-                              height: 120,
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                // Ripple (dalgalanma) efekti
+                                AnimatedBuilder(
+                                  animation: _rippleController,
+                                  builder: (context, child) {
+                                    // Controller değeri 0-1 arasında; bunu scale ve opacity'ye dönüştürelim
+                                    double scaleFactor = 1 + _rippleController.value * 0.3; // Örneğin %30 büyüme
+                                    double opacity = (1 - _rippleController.value).clamp(0.0, 1.0);
+                                    return Container(
+                                      width: 120 * scaleFactor,
+                                      height: 120 * scaleFactor,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white.withOpacity(opacity * 0.2), // Opaklık ayarlanabilir
+                                      ),
+                                    );
+                                  },
+                                ),
+                                // Mevcut play butonunuz
+                                AnimatedScale(
+                                  scale: _isPressed ? 0.95 : 1.0,
+                                  duration: Duration(milliseconds: 100),
+                                  child: Container(
+                                    width: 120,
+                                    height: 120,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          Color(0xFF0194D7), // Daha açık ve canlı mavi
+                                          Color(0xFF0172B9), // Ana renk
+                                          Color(0xFF015C8E), // Biraz daha koyu ve doygun mavi
+                                        ],
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.4),
+                                          offset: Offset(4, 4),
+                                          blurRadius: 10,
+                                        ),
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.8),
+                                          offset: Offset(-4, -4),
+                                          blurRadius: 10,
+                                        ),
+                                      ],
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        String.fromCharCode(Icons.play_arrow.codePoint),
+                                        style: TextStyle(
+                                          fontFamily: Icons.play_arrow.fontFamily,
+                                          package: Icons.play_arrow.fontPackage,
+                                          fontSize: 60,
+                                          color: Colors.white,
+                                          shadows: [
+                                            Shadow(
+                                              offset: Offset(2, 2),
+                                              blurRadius: 4,
+                                              color: Colors.black.withOpacity(0.5),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           );
                         },
@@ -285,32 +438,105 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                 Padding(
                   padding: const EdgeInsets.only(left: 60.0),
                   child: GestureDetector(
-                    onTap: () async{
+                    onTapDown: (_) {
+                      setState(() {
+                        _isSettingsPressed = true;
+                      });
+                    },
+                    onTapUp: (_) {
+                      setState(() {
+                        _isSettingsPressed = false;
+                      });
+                    },
+                    onTapCancel: () {
+                      setState(() {
+                        _isSettingsPressed = false;
+                      });
+                    },
+                    onTap: () async {
                       if (GlobalProperties.isSoundOn) {
                         await _clickAudioPlayer?.stop();
                         await _clickAudioPlayer?.play(
                           AssetSource('audios/click_audio.mp3'),
                         );
                       }
-                      _settingsIconController.forward(from: 0); // Animasyonu başlat
+                      _settingsIconController.forward(from: 0);
                       showDialog(
                         context: context,
                         builder: (context) => SettingsDialog(sourcePage: 'main'),
                       ).then((_) {
-                        _settingsIconController.reverse(); // Animasyonu geri al
+                        _settingsIconController.reverse();
                       });
                     },
-                    child: Image.asset(
-                      'assets/images/buttons/settings_button.png', // Ayarlar butonu görseli
-                      width: 80,
-                      height: 80,
+                    child: AnimatedScale(
+                      scale: _isSettingsPressed ? 0.95 : 1.0,
+                      duration: Duration(milliseconds: 100),
+                      child: Container(
+                        width: 80,
+                        height: 80,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: LinearGradient(
+                            colors: [
+                              Color(0xFF0180C8), // Orta-açık mavi
+                              Color(0xFF015C8E), // Temel teal-mavi (daha koyu)
+                              Color(0xFF013F62), // En koyu ton (derin mavi)
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          boxShadow: [
+                            // Alt sağa doğru koyu gölge
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.4),
+                              offset: Offset(4, 4),
+                              blurRadius: 8,
+                            ),
+                            // Üst sola doğru çıkan aydınlık gölge
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.8),
+                              offset: Offset(-4, -4),
+                              blurRadius: 8,
+                            ),
+                          ],
+                        ),
+                        child: Center(
+                          child: Icon(
+                            Icons.settings,
+                            color: Colors.white,
+                            size: 40,
+                            shadows: [
+                              Shadow(
+                                offset: Offset(2, 2),
+                                blurRadius: 4,
+                                color: Colors.black.withOpacity(0.5),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(right: 30.0),
                   child: GestureDetector(
-                    onTap: () async{
+                    onTapDown: (_) {
+                      setState(() {
+                        _isSectionsPressed = true;
+                      });
+                    },
+                    onTapUp: (_) {
+                      setState(() {
+                        _isSectionsPressed = false;
+                      });
+                    },
+                    onTapCancel: () {
+                      setState(() {
+                        _isSectionsPressed = false;
+                      });
+                    },
+                    onTap: () async {
                       if (GlobalProperties.isSoundOn) {
                         await _clickAudioPlayer?.stop();
                         await _clickAudioPlayer?.play(
@@ -322,10 +548,53 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                         MaterialPageRoute(builder: (context) => SectionsPage()),
                       );
                     },
-                    child: Image.asset(
-                      'assets/images/buttons/levels_button.png', // Bölümler butonu görseli
-                      width: 80,
-                      height: 80,
+                    child: AnimatedScale(
+                      scale: _isSectionsPressed ? 0.95 : 1.0,
+                      duration: Duration(milliseconds: 100),
+                      child: Container(
+                        width: 80,
+                        height: 80,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: LinearGradient(
+                            colors: [
+                              Color(0xFF0180C8), // Orta-açık mavi
+                              Color(0xFF015C8E), // Temel teal-mavi (daha koyu)
+                              Color(0xFF013F62), // En koyu ton (derin mavi)
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          boxShadow: [
+                            // Alt sağa doğru koyu gölge
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.4),
+                              offset: Offset(4, 4),
+                              blurRadius: 8,
+                            ),
+                            // Üst sola doğru çıkan aydınlık gölge
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.8),
+                              offset: Offset(-4, -4),
+                              blurRadius: 8,
+                            ),
+                          ],
+                        ),
+                        child: Center(
+                          child: Icon(
+                            Icons.format_list_bulleted, // İkon tercihinize göre değiştirilebilir
+                            color: Colors.white,
+                            size: 40,
+                            shadows: [
+                              Shadow(
+                                offset: Offset(2, 2),
+                                blurRadius: 4,
+                                color: Colors.black.withOpacity(0.5),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),
