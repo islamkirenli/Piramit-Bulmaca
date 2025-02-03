@@ -12,6 +12,9 @@ class GlobalProperties {
   static bool isMusicOn = true;      // <-- Müzik durumu
   static bool isVibrationOn = true;  // <-- Titreşim durumu
 
+  static ValueNotifier<int> wordHintCount = ValueNotifier<int>(5);
+  static ValueNotifier<int> singleHintCount = ValueNotifier<int>(5);
+
   static TextStyle globalTextStyle({
     double fontSize = 14,
     FontWeight fontWeight = FontWeight.normal,

@@ -38,6 +38,8 @@ class _LevelCompleteDialogState extends State<LevelCompleteDialog> with TickerPr
 
           GlobalProperties.remainingLives.value += 3;
           GlobalProperties.coin.value += 100;
+          GlobalProperties.wordHintCount.value += 2;   
+          GlobalProperties.singleHintCount.value += 2;
           saveGameData();
         });
         _slideController.forward();
@@ -104,59 +106,121 @@ class _LevelCompleteDialogState extends State<LevelCompleteDialog> with TickerPr
         child: Stack(
           children: [
             if (showRewardAnimations) ...[
-              Positioned(
-                top: MediaQuery.of(context).size.height * 0.19, // Konum yukarıda
-                left: MediaQuery.of(context).size.width * 0.40,
-                child: SlideTransition(
-                  position: _slideAnimation,
-                  child: Row(
-                    children: [
-                      Lottie.asset(
-                        'assets/animations/coin_flip_animation.json',
-                        width: 50,
-                        height: 50,
-                        controller: _coinFlipController,
-                      ),
-                      SizedBox(width: 8),
-                      Text(
-                        "+100",
-                        style: GlobalProperties.globalTextStyle(
-                          color: Colors.yellow,
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
+  Positioned(
+    top: MediaQuery.of(context).size.height * 0.19,
+    left: MediaQuery.of(context).size.width * 0.25,
+    child: SlideTransition(
+      position: _slideAnimation,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // İlk satır: Coin ve Can ödülleri
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              // Coin ödülü
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Lottie.asset(
+                    'assets/animations/coin_flip_animation.json',
+                    width: 50,
+                    height: 50,
+                    controller: _coinFlipController,
                   ),
-                ),
+                  SizedBox(width: 8),
+                  Text(
+                    "+100",
+                    style: GlobalProperties.globalTextStyle(
+                      color: Colors.yellow,
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
-              Positioned(
-                top: MediaQuery.of(context).size.height * 0.25,
-                left: MediaQuery.of(context).size.width * 0.40,
-                child: SlideTransition(
-                  position: _slideAnimation,
-                  child: Row(
-                    children: [
-                      Lottie.asset(
-                        'assets/animations/heart_beat_animation.json',
-                        width: 50,
-                        height: 50,
-                        controller: _heartBeatController,
-                      ),
-                      SizedBox(width: 8),
-                      Text(
-                        "+3",
-                        style: GlobalProperties.globalTextStyle(
-                          color: Colors.red,
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
+              SizedBox(width: 20), // İki ödül arasında ek boşluk (isteğe bağlı)
+              // Can ödülü
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Lottie.asset(
+                    'assets/animations/heart_beat_animation.json',
+                    width: 50,
+                    height: 50,
+                    controller: _heartBeatController,
                   ),
-                ),
+                  SizedBox(width: 8),
+                  Text(
+                    "+3",
+                    style: GlobalProperties.globalTextStyle(
+                      color: Colors.red,
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
             ],
+          ),
+          SizedBox(height: 30), // Satırlar arası dikey boşluk
+          // İkinci satır: Kelime ipucu ve Tek ipucu ödülleri
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              // Kelime ipucu ödülü (Icons.auto_fix_high)
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.auto_fix_high,
+                    color: Colors.white,
+                    size: 50,
+                  ),
+                  SizedBox(width: 8),
+                  Text(
+                    "+2",
+                    style: GlobalProperties.globalTextStyle(
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(width: 30), // İki ödül arasında ek boşluk (isteğe bağlı)
+              // Tek ipucu ödülü (Icons.lightbulb)
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.lightbulb,
+                    color: Colors.white,
+                    size: 50,
+                  ),
+                  SizedBox(width: 8),
+                  Text(
+                    "+2",
+                    style: GlobalProperties.globalTextStyle(
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+    ),
+  ),
+],
+
             Center(
               child: Lottie.asset(
                 'assets/animations/chest_spotlight_animation.json',
@@ -219,6 +283,8 @@ class _LevelCompleteDialogState extends State<LevelCompleteDialog> with TickerPr
     await prefs.setInt('countdownSeconds', GlobalProperties.countdownSeconds.value);
     await prefs.setBool('isTimerRunning', GlobalProperties.isTimerRunning.value);
     await prefs.setInt('deadlineTimestamp', GlobalProperties.deadlineTimestamp);
+    await prefs.setInt('wordHintCount', GlobalProperties.wordHintCount.value);
+    await prefs.setInt('singleHintCount', GlobalProperties.singleHintCount.value);
   }
 }
 

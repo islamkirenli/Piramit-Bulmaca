@@ -402,52 +402,98 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                     Padding(
                       padding: const EdgeInsets.only(left: 16.0, bottom: 1.0),
                       child: GestureDetector(
-                        onTap: widget.isCompleted ? null : showWordHint,
-                        child: Container(
-                          width: 50,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(0.6),
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: Colors.white,
-                              width: 2,
-                            ),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.auto_fix_high,
-                                color: Colors.white,
-                                size: 25,
+                        onTap: widget.isCompleted || isWordHintActive
+                            ? null
+                            : () {
+                                showWordHint();
+                              },
+                        child: Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            Container(
+                              width: 50,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.6),
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: Colors.white,
+                                  width: 2,
+                                ),
                               ),
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  SizedBox(
-                                    height: 10,
-                                    width: 10,
-                                    child: Lottie.asset(
-                                      'assets/animations/coin_flip_animation.json',
-                                      repeat: true,
-                                      animate: true,
-                                    ),
+                                  Icon(
+                                    Icons.auto_fix_high,
+                                    color: Colors.white,
+                                    size: 25,
                                   ),
-                                  const SizedBox(width: 2),
-                                  Text(
-                                    // Kelimenin harf sayısı x 100
-                                    '${(puzzleSections[currentMainSection]![currentSubSection]![currentIndex]['word']!.length-1) * 100}',
-                                    style: GlobalProperties.globalTextStyle(
-                                      color: Colors.white,
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                  // Coin animasyonu ve metin sadece count sıfırsa gösterilsin:
+                                  ValueListenableBuilder<int>(
+                                    valueListenable: GlobalProperties.wordHintCount,
+                                    builder: (context, value, child) {
+                                      if (value == 0) {
+                                        return Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            SizedBox(
+                                              height: 10,
+                                              width: 10,
+                                              child: Lottie.asset(
+                                                'assets/animations/coin_flip_animation.json',
+                                                repeat: true,
+                                                animate: true,
+                                              ),
+                                            ),
+                                            const SizedBox(width: 2),
+                                            Text(
+                                              '${(puzzleSections[currentMainSection]![currentSubSection]![currentIndex]['word']!.length-1) * 100}',
+                                              style: GlobalProperties.globalTextStyle(
+                                                color: Colors.white,
+                                                fontSize: 10,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      } else {
+                                        return SizedBox.shrink();
+                                      }
+                                    },
                                   ),
                                 ],
                               ),
-                            ],
-                          ),
+                            ),
+                            // Kırmızı etiket (badge) ekliyoruz:
+                            Positioned(
+                              top: -5,
+                              right: 35,
+                              child: Container(
+                                width: 20,
+                                height: 20,
+                                decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Center(
+                                  child: ValueListenableBuilder<int>(
+                                    valueListenable: GlobalProperties.wordHintCount,
+                                    builder: (context, value, child) {
+                                      return Text(
+                                        '$value',
+                                        style: GlobalProperties.globalTextStyle(
+                                          color: Colors.white,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -482,51 +528,97 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                     Padding(
                       padding: const EdgeInsets.only(right: 16.0, bottom: 1.0),
                       child: GestureDetector(
-                        onTap: widget.isCompleted ? null : showSingleHint,
-                        child: Container(
-                          width: 50,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(0.6),
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: Colors.white,
-                              width: 2,
-                            ),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.lightbulb,
-                                color: Colors.white,
-                                size: 25,
+                        onTap: widget.isCompleted
+                            ? null
+                            : () {
+                                showSingleHint();
+                              },
+                        child: Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            Container(
+                              width: 50,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.6),
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: Colors.white,
+                                  width: 2,
+                                ),
                               ),
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  SizedBox(
-                                    height: 10,
-                                    width: 10,
-                                    child: Lottie.asset(
-                                      'assets/animations/coin_flip_animation.json',
-                                      repeat: true,
-                                      animate: true,
-                                    ),
+                                  Icon(
+                                    Icons.lightbulb,
+                                    color: Colors.white,
+                                    size: 25,
                                   ),
-                                  const SizedBox(width: 2),
-                                  Text(
-                                    '100',
-                                    style: GlobalProperties.globalTextStyle(
-                                      color: Colors.white,
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                  ValueListenableBuilder<int>(
+                                    valueListenable: GlobalProperties.singleHintCount,
+                                    builder: (context, value, child) {
+                                      if (value == 0) {
+                                        return Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            SizedBox(
+                                              height: 10,
+                                              width: 10,
+                                              child: Lottie.asset(
+                                                'assets/animations/coin_flip_animation.json',
+                                                repeat: true,
+                                                animate: true,
+                                              ),
+                                            ),
+                                            const SizedBox(width: 2),
+                                            Text(
+                                              '100',
+                                              style: GlobalProperties.globalTextStyle(
+                                                color: Colors.white,
+                                                fontSize: 10,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      } else {
+                                        return SizedBox.shrink();
+                                      }
+                                    },
                                   ),
                                 ],
                               ),
-                            ],
-                          ),
+                            ),
+                            // Kırmızı etiket (badge) ekliyoruz:
+                            Positioned(
+                              top: -5,
+                              right: -5,
+                              child: Container(
+                                width: 20,
+                                height: 20,
+                                decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Center(
+                                  child: ValueListenableBuilder<int>(
+                                    valueListenable: GlobalProperties.singleHintCount,
+                                    builder: (context, value, child) {
+                                      return Text(
+                                        '$value',
+                                        style: GlobalProperties.globalTextStyle(
+                                          color: Colors.white,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -1082,6 +1174,8 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
     await prefs.setInt('countdownSeconds', GlobalProperties.countdownSeconds.value);
     await prefs.setBool('isTimerRunning', GlobalProperties.isTimerRunning.value);
     await prefs.setInt('deadlineTimestamp', GlobalProperties.deadlineTimestamp);
+    await prefs.setInt('wordHintCount', GlobalProperties.wordHintCount.value);
+    await prefs.setInt('singleHintCount', GlobalProperties.singleHintCount.value);
   }
 
   Future<void> loadGameData() async {
@@ -1091,6 +1185,8 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
     GlobalProperties.remainingLives.value = prefs.getInt('remainingLives') ?? 3;
     GlobalProperties.countdownSeconds.value = prefs.getInt('countdownSeconds') ?? 15;
     GlobalProperties.isTimerRunning.value = prefs.getBool('isTimerRunning') ?? false;
+    GlobalProperties.wordHintCount.value = prefs.getInt('wordHintCount') ?? 5;
+    GlobalProperties.singleHintCount.value = prefs.getInt('singleHintCount') ?? 5;
 
     // deadlineTimestamp'i yükle
     GlobalProperties.deadlineTimestamp = prefs.getInt('deadlineTimestamp') ?? 0;
@@ -1127,15 +1223,19 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
       );
     }
     setState(() {
-      // Önce coin kontrolü yapıyoruz
-      if (GlobalProperties.coin.value < 100) {
-        // Coin 100'den az ise uyarı popup gösteriliyor
-        showCoinPopup(context);
-        return; // Popup gösterdikten sonra fonksiyonu sonlandır
-      } else {
-        // Coin yeterliyse 100 düşür
-        GlobalProperties.coin.value -= 100;
+      // Ücretsiz single ipucu varsa, onu kullan:
+      if (GlobalProperties.singleHintCount.value > 0) {
+        GlobalProperties.singleHintCount.value--;
         saveGameData();
+      } else {
+        // Ücretsiz ipucu kalmadıysa, coin kontrolü yap:
+        if (GlobalProperties.coin.value < 100) {
+          showCoinPopup(context);
+          return;
+        } else {
+          GlobalProperties.coin.value -= 100;
+          saveGameData();
+        }
       }
 
       // Mevcut ipucu mekanizması
@@ -1233,14 +1333,27 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
         puzzleSections[currentMainSection]![currentSubSection]![currentIndex]['word']!;
     int cost = (currentWord.length - 1) * 100;
 
-    if (GlobalProperties.coin.value < cost) {
-      showCoinPopup(context);
-      return;
-    }
-
     setState(() {
       isWordHintActive = true; // Animasyon başladı
     });
+
+    if (GlobalProperties.wordHintCount.value > 0) {
+      setState(() {
+        GlobalProperties.wordHintCount.value--;
+      });
+      saveGameData();
+    } else {
+      // Ücretsiz ipucu kalmadıysa coin kontrolü yap
+      if (GlobalProperties.coin.value < cost) {
+        showCoinPopup(context);
+        return;
+      } else {
+        setState(() {
+          GlobalProperties.coin.value -= cost;
+        });
+        saveGameData();
+      }
+    }
 
     if (GlobalProperties.isSoundOn){
       await _audioPlayerForHints?.stop(); 
@@ -1248,21 +1361,13 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
         AssetSource('audios/magic_wand_audio.mp3'),
       );
     }
-    
-    // Coin yeterliyse düş
-    GlobalProperties.coin.value -= cost;
-    saveGameData();
 
-    // 2) Animasyonu görünür hale getir
     setState(() {
       showWordHintAnimation = true; // Lottie animasyonu başlıyor
     });
 
-    // >>> DEĞİŞİKLİK - Lottie animasyonu tamamlanana kadar beklemek için bir gecikme ekleyin:
-    // İsterseniz 2 saniye yerine animasyonun süresine uyacak başka bir değeri kullanabilirsiniz.
     await Future.delayed(const Duration(seconds: 2));
 
-    // 3) Harfleri teker teker açma - animasyon bittikten sonra başlatıyoruz
     revealedIndexesForCurrentWord.clear(); // Önce sıfırla (daha önce açık harfler varsa)
 
     for (int i = 0; i < currentWord.length; i++) {
@@ -1273,7 +1378,6 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
       await Future.delayed(const Duration(milliseconds: 300));
     }
 
-    // 4) Tüm harfler açıldıktan sonra "Doğru tahmin" akışını başlat
     setState(() {
       feedbackMessage = "Doğru tahmin!";
       int currentSubSectionNumber = int.tryParse(currentSubSection) ?? 1;
@@ -1331,16 +1435,11 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
       }
     });
 
-    // 5) Bir süre daha animasyon gözüksün (opsiyonel)
     await Future.delayed(const Duration(seconds: 1));
 
-    // 6) Animasyonu kapat
     setState(() {
       showWordHintAnimation = false;
-    });
-
-    setState(() {
-      isWordHintActive = false; // Animasyon bitti
+      isWordHintActive = false; 
     });
   }
 
