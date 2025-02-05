@@ -232,8 +232,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           ),
                           if (isNewDailyPuzzle)
                             Positioned(
-                              top: -17,
-                              right: -25,
+                              top: -10,
+                              right: 0,
                               child: Container(
                                 width: 18,
                                 height: 18,
