@@ -417,8 +417,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                     double scaleFactor = 1 + _rippleController.value * 0.3; // Örneğin %30 büyüme
                                     double opacity = (1 - _rippleController.value).clamp(0.0, 1.0);
                                     return Container(
-                                      width: 120 * scaleFactor,
-                                      height: 120 * scaleFactor,
+                                      width: 150 * scaleFactor,
+                                      height: 150 * scaleFactor,
                                       decoration: BoxDecoration(
                                         shape: BoxShape.circle,
                                         color: Colors.white.withOpacity(opacity * 0.2), // Opaklık ayarlanabilir
@@ -431,8 +431,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   scale: _isPressed ? 0.95 : 1.0,
                                   duration: Duration(milliseconds: 100),
                                   child: Container(
-                                    width: 120,
-                                    height: 120,
+                                    width: 150,
+                                    height: 150,
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
                                       gradient: LinearGradient(
