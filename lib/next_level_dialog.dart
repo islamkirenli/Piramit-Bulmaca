@@ -21,6 +21,14 @@ void showNextLevelDialog(
   // Tamamlanan bölümü kaydet
   updateCompletionStatus(mainSection, subSection);
 
+  bool showRemoveAds = true;
+  if (mainSection == "Ana Bölüm 1") {
+    int subSecNumber = int.tryParse(subSection) ?? 0;
+    if (subSecNumber <= 10) {
+      showRemoveAds = false;
+    }
+  }
+
   showDialog(
     context: context,
     barrierDismissible: false, // Kullanıcı dışına tıklayarak kapatamaz
@@ -189,63 +197,51 @@ void showNextLevelDialog(
               ],
             ),
 
-            // EKLENEN KISIMLAR BAŞLANGICI
-            const SizedBox(height: 16),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Divider(
-                color: Colors.grey,
-                thickness: 1,
+            if (showRemoveAds) ...[
+              const SizedBox(height: 16),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Divider(
+                  color: Colors.grey,
+                  thickness: 1,
+                ),
               ),
-            ),
-            const SizedBox(height: 8),
-
-            // Üst tarafa kısa bir açıklama metni
-            Text(
-              'Reklamları Kaldır',
-              textAlign: TextAlign.center,
-              style: GlobalProperties.globalTextStyle(
-                fontWeight: FontWeight.bold,
+              const SizedBox(height: 8),
+              Text(
+                'Reklamları Kaldır',
+                textAlign: TextAlign.center,
+                style: GlobalProperties.globalTextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            const SizedBox(height: 8),
+              const SizedBox(height: 8),
+              GestureDetector(
+                onTap: () async {
+                  if (GlobalProperties.isSoundOn) {
+                    await clickAudioPlayer.stop();
+                    await clickAudioPlayer.play(
+                      AssetSource('audios/click_audio.mp3'),
+                    );
+                  }
+                  final iapService = InAppPurchaseService();
+                  iapService.initialize();
+                  await iapService.loadProducts();
+                  final candidates = iapService.products.where((p) => p.id == 'remove_ads');
+                  final removeAdsProduct = candidates.isNotEmpty ? candidates.first : null;
 
-            // Sadece görselin kendisini buton olarak kullanan GestureDetector
-            GestureDetector(
-              onTap: () async {
-                if (GlobalProperties.isSoundOn) {
-                  await clickAudioPlayer.stop();
-                  await clickAudioPlayer.play(
-                    AssetSource('audios/click_audio.mp3'),
-                  );
-                }
-                // 1) InAppPurchaseService örneğinizi oluşturun veya elde edin
-                final iapService = InAppPurchaseService();
-                iapService.initialize(); 
-                  // Eğer uygulamanızda bu service daha önce initialize edildiyse,
-                  // tekrar initialize etmeye gerek olmayabilir.
-
-                // 2) Ürünleri yükle (remove_ads ürününü de sorgular)
-                await iapService.loadProducts();
-
-                // 3) remove_ads product'ını bul
-                final candidates = iapService.products.where((p) => p.id == 'remove_ads');
-                final removeAdsProduct = candidates.isNotEmpty ? candidates.first : null;
-
-                if (removeAdsProduct != null) {
-                  // Ürünü satın alma işlemini başlat
-                  await iapService.purchaseProduct(removeAdsProduct);
-                } else {
-                  debugPrint("remove_ads ürünü bulunamadı veya yüklenemedi.");
-                }
-              },
-              child: Image.asset(
-                'assets/images/ads_block.png',
-                width: 80,
-                height: 80,
+                  if (removeAdsProduct != null) {
+                    await iapService.purchaseProduct(removeAdsProduct);
+                  } else {
+                    debugPrint("remove_ads ürünü bulunamadı veya yüklenemedi.");
+                  }
+                },
+                child: Image.asset(
+                  'assets/images/ads_block.png',
+                  width: 80,
+                  height: 80,
+                ),
               ),
-            ),
-            // EKLENEN KISIMLAR SONU
+            ],
 
             const SizedBox(height: 16),
           ],
