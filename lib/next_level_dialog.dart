@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'dart:async';
+import 'dart:math'; // Rastgele seçim için
 import 'package:shared_preferences/shared_preferences.dart';
 import 'main.dart';
 import 'in_app_purchase_service.dart';
 import 'global_properties.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'info_messages.dart'; // Dictionary'nin bulunduğu dosya
 
 void showNextLevelDialog(
   BuildContext context,
@@ -13,7 +15,7 @@ void showNextLevelDialog(
   String subSection,
   VoidCallback onNextLevel,
   VoidCallback onGoHome,
-  Function(int, VoidCallback) incrementScore, // Skor artırma fonksiyonu parametre olarak ekleniyor
+  Function(int, VoidCallback) incrementScore, // Skor artırma fonksiyonu
   saveGameData
 ) {
   AudioPlayer? clickAudioPlayer = AudioPlayer();
@@ -33,6 +35,14 @@ void showNextLevelDialog(
     context: context,
     barrierDismissible: false, // Kullanıcı dışına tıklayarak kapatamaz
     builder: (BuildContext context) {
+      // Ana bölüme göre ilgili mesaj listesini alıyoruz.
+      final random = Random();
+      final messagesForSection = infoMessages[mainSection] ?? [];
+      // Eğer ilgili ana bölümde mesaj yoksa varsayılan bir mesaj kullanıyoruz.
+      final infoMessage = messagesForSection.isNotEmpty
+          ? messagesForSection[random.nextInt(messagesForSection.length)]
+          : "Varsayılan bilgi mesajı.";
+
       Future.delayed(const Duration(seconds: 1), () {
         final overlay = Overlay.of(context);
         // overlayEntry'yi önce tanımlayın
@@ -70,7 +80,7 @@ void showNextLevelDialog(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
-        backgroundColor: const Color(0xFFfef7ff), 
+        backgroundColor: const Color(0xFFfef7ff),
         titlePadding: EdgeInsets.zero,
         contentPadding: EdgeInsets.zero,
         content: Column(
@@ -84,7 +94,7 @@ void showNextLevelDialog(
               fit: BoxFit.contain,
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               child: Column(
                 children: [
                   Text(
@@ -95,11 +105,29 @@ void showNextLevelDialog(
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Text(
                     'Bölümü başarıyla tamamladınız!',
                     style: GlobalProperties.globalTextStyle(),
                     textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 50),
+                  RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      text: 'Bilgi: ',
+                      style: GlobalProperties.globalTextStyle(
+                        fontWeight: FontWeight.bold, // Sadece "Bilgi:" kalın
+                      ),
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: infoMessage,
+                          style: GlobalProperties.globalTextStyle(
+                            fontWeight: FontWeight.normal, // Geri kalan normal font
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -196,7 +224,6 @@ void showNextLevelDialog(
                 ),
               ],
             ),
-
             if (showRemoveAds) ...[
               const SizedBox(height: 16),
               Padding(
@@ -242,7 +269,6 @@ void showNextLevelDialog(
                 ),
               ),
             ],
-
             const SizedBox(height: 16),
           ],
         ),
@@ -252,12 +278,12 @@ void showNextLevelDialog(
 }
 
 Future<void> updateCompletionStatus(String mainSection, String subSection) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> completedSections = prefs.getStringList('completedSections') ?? [];
-    String completedKey = "$mainSection-$subSection";
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  List<String> completedSections = prefs.getStringList('completedSections') ?? [];
+  String completedKey = "$mainSection-$subSection";
 
-    if (!completedSections.contains(completedKey)) {
-      completedSections.add(completedKey);
-      await prefs.setStringList('completedSections', completedSections);
-    }
+  if (!completedSections.contains(completedKey)) {
+    completedSections.add(completedKey);
+    await prefs.setStringList('completedSections', completedSections);
+  }
 }
