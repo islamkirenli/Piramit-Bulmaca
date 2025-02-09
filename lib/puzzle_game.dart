@@ -686,7 +686,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                   ),
                 ),
                 SizedBox(height: 5), // Reklamın en altta görünmesi için Spacer ekleniyor
-                if (shouldShowAds && _isBannerAdReady)
+                if (checkIfShouldShowAds(currentMainSection, currentSubSection) && _isBannerAdReady)
                   Container(
                     height: _bannerAd.size.height.toDouble(),
                     width: _bannerAd.size.width.toDouble(),
@@ -1488,7 +1488,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
 
   // Interstitial reklamı gösteren fonksiyon
   void showInterstitialAd() {
-    if (shouldShowAds && _isInterstitialAdReady) {
+    if (checkIfShouldShowAds(currentMainSection, currentSubSection) && _isInterstitialAdReady) {
       _interstitialAd.show();
       _isInterstitialAdReady = false;
       loadInterstitialAd(); // Reklamı tekrar yükle
