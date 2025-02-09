@@ -157,7 +157,6 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
       setState(() {
         isDataLoaded = true;
 
-        // *** YENİ *** Reklam gösterecek miyiz?
         shouldShowAds = checkIfShouldShowAds(currentMainSection, currentSubSection);
 
         // Eğer reklam göstermemiz gerekiyorsa Banner ve Interstitial yüklüyoruz.
@@ -297,102 +296,106 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                 ),
                 SizedBox(height: 10),
                 Expanded(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: List.generate(
-                      puzzleSections[currentMainSection]![currentSubSection]!.length,
-                      (index) {
-                        bool isLongestWord = puzzleSections[currentMainSection]![currentSubSection]![index]['word'] ==
-                            puzzleSections[currentMainSection]![currentSubSection]!
-                                .map((e) => e['word']!)
-                                .reduce((a, b) => a.length > b.length ? a : b);
+                  child: Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: List.generate(
+                        puzzleSections[currentMainSection]![currentSubSection]!.length,
+                        (index) {
+                          bool isLongestWord = puzzleSections[currentMainSection]![currentSubSection]![index]['word'] ==
+                              puzzleSections[currentMainSection]![currentSubSection]!
+                                  .map((e) => e['word']!)
+                                  .reduce((a, b) => a.length > b.length ? a : b);
 
-                        Color insideColor = sectionColors[currentMainSection]?['inside'] ?? Colors.grey;
-                        Color borderColor = sectionColors[currentMainSection]?['border'] ?? Colors.black;
+                          Color insideColor = sectionColors[currentMainSection]?['inside'] ?? Colors.grey;
+                          Color borderColor = sectionColors[currentMainSection]?['border'] ?? Colors.black;
 
-                        String word = puzzleSections[currentMainSection]![currentSubSection]![index]['word']!;
-                        
-                        return GestureDetector(
-                          child: Container(
-                            width: 50.0 * word.length,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              color: insideColor,
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                topRight: Radius.circular(10),
-                                bottomLeft: isLongestWord ? Radius.circular(10) : Radius.zero,
-                                bottomRight: isLongestWord ? Radius.circular(10) : Radius.zero,
+                          String word = puzzleSections[currentMainSection]![currentSubSection]![index]['word']!;
+                          
+                          return GestureDetector(
+                            child: Container(
+                              width: 50.0 * word.length,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                color: insideColor,
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(10),
+                                  topRight: Radius.circular(10),
+                                  bottomLeft: isLongestWord ? Radius.circular(10) : Radius.zero,
+                                  bottomRight: isLongestWord ? Radius.circular(10) : Radius.zero,
+                                ),
+                                border: Border(
+                                  top: BorderSide(color: borderColor, width: 2.0),
+                                  left: BorderSide(color: borderColor, width: 2.0),
+                                  right: BorderSide(color: borderColor, width: 2.0),
+                                  bottom: isLongestWord
+                                      ? BorderSide(color: borderColor, width: 2.0)
+                                      : BorderSide.none,
+                                ),
                               ),
-                              border: Border(
-                                top: BorderSide(color: borderColor, width: 2.0),
-                                left: BorderSide(color: borderColor, width: 2.0),
-                                right: BorderSide(color: borderColor, width: 2.0),
-                                bottom: isLongestWord
-                                    ? BorderSide(color: borderColor, width: 2.0)
-                                    : BorderSide.none,
-                              ),
-                            ),
-                            alignment: Alignment.center,
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: List.generate(word.length, (charIndex) {
-                                // Harf açık mı?
-                                bool isRevealed = correctWords.contains(word) || widget.isCompleted ||
-                                    (index == currentIndex && revealedIndexesForCurrentWord.contains(charIndex));
+                              alignment: Alignment.center,
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: List.generate(word.length, (charIndex) {
+                                  // Harf açık mı?
+                                  bool isRevealed = correctWords.contains(word) || widget.isCompleted ||
+                                      (index == currentIndex && revealedIndexesForCurrentWord.contains(charIndex));
 
-                                return AnimatedSwitcher(
-                                  duration: Duration(milliseconds: 400),
-                                  transitionBuilder: (child, animation) {
-                                    return ScaleTransition(scale: animation, child: child);
-                                  },
-                                  // Eğer harf açılmışsa (isRevealed), Lottie animasyonlu Stack göster
-                                  // Aksi halde '_' yaz
-                                  child: isRevealed
-                                      ? Stack(
-                                          alignment: Alignment.center,
-                                          key: ValueKey('stack-$index-$charIndex'),
-                                          children: [
-                                            Text(
-                                              ' ${word[charIndex]} ',
-                                              style: GlobalProperties.globalTextStyle(
-                                                fontSize: 20,
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                                letterSpacing: 7,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 35,
-                                              height: 35,
-                                              child: Transform.scale(
-                                                scale: 6.0, // Animasyonu içeride büyütmek için
-                                                child: Lottie.asset(
-                                                  'assets/animations/single_hint_animation.json',
-                                                  repeat: false,
-                                                  animate: true,
+                                  return AnimatedSwitcher(
+                                    duration: Duration(milliseconds: 400),
+                                    transitionBuilder: (child, animation) {
+                                      return ScaleTransition(scale: animation, child: child);
+                                    },
+                                    // Eğer harf açılmışsa (isRevealed), Lottie animasyonlu Stack göster
+                                    // Aksi halde '_' yaz
+                                    child: isRevealed
+                                        ? Stack(
+                                            alignment: Alignment.center,
+                                            key: ValueKey('stack-$index-$charIndex'),
+                                            children: [
+                                              Text(
+                                                ' ${word[charIndex]} ',
+                                                style: GlobalProperties.globalTextStyle(
+                                                  fontSize: 20,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  letterSpacing: 7,
                                                 ),
                                               ),
+                                              SizedBox(
+                                                width: 35,
+                                                height: 35,
+                                                child: Transform.scale(
+                                                  scale: 6.0, // Animasyonu içeride büyütmek için
+                                                  child: Lottie.asset(
+                                                    'assets/animations/single_hint_animation.json',
+                                                    repeat: false,
+                                                    animate: true,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        : Text(
+                                            ' _ ',
+                                            key: ValueKey('hidden-$index-$charIndex'),
+                                            style: GlobalProperties.globalTextStyle(
+                                              fontSize: 20,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              letterSpacing: 7,
                                             ),
-                                          ],
-                                        )
-                                      : Text(
-                                          ' _ ',
-                                          key: ValueKey('hidden-$index-$charIndex'),
-                                          style: GlobalProperties.globalTextStyle(
-                                            fontSize: 20,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            letterSpacing: 7,
                                           ),
-                                        ),
-                                );
-                              }),
+                                  );
+                                }),
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                    ).reversed.toList(),
+                          );
+                        },
+                      ).reversed.toList(),
+                    ),
                   ),
                 ),
                 // İpucu Butonu
