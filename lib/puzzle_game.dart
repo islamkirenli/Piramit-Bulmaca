@@ -17,6 +17,7 @@ import 'show_coin_popup.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/services.dart';
 import 'level_complete_dialog.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -281,16 +282,17 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                   ),
                   padding: const EdgeInsets.all(16.0),
                   alignment: Alignment.center,
-                  child: SingleChildScrollView(
-                    child: Text(
-                      puzzleSections[currentMainSection]![currentSubSection]![currentIndex]['hint']!,
-                      style: GlobalProperties.globalTextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
+                  child: AutoSizeText(
+                    puzzleSections[currentMainSection]![currentSubSection]![currentIndex]['hint']!,
+                    style: GlobalProperties.globalTextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
                     ),
+                    textAlign: TextAlign.center,
+                    maxLines: 3,        // İstediğiniz maksimum satır sayısını belirleyin
+                    minFontSize: 10,    // Metin çok uzun olduğunda kullanılacak en küçük font boyutu
+                    overflow: TextOverflow.ellipsis, // Gerekirse sonuna "..." ekler
                   ),
                 ),
                 SizedBox(height: 10),
