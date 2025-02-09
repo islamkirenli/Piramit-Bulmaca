@@ -26,7 +26,7 @@ void main() {
         debugShowCheckedModeBanner: false,
         title: 'Bulmaca Oyunu',
         theme: ThemeData(primarySwatch: Colors.blue),
-        home: IntroAnimationScreen(),
+        home: HomePage(),
       ),
     ),
   );
