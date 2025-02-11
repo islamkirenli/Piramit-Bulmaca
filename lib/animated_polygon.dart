@@ -11,7 +11,7 @@ class AnimatedPolygonWidget extends StatefulWidget {
   final List<int> selectedIndexes; // Seçilen harflerin indeksleri
   final List<Offset> linePoints;
   final Offset? temporaryLineEnd;
-  final Animation<double> letterShuffleAnimation; // Yeni: Harf animasyonu
+  final Animation<double> letterShuffleAnimation; // Harf animasyonu
 
   const AnimatedPolygonWidget({
     Key? key,
@@ -22,7 +22,7 @@ class AnimatedPolygonWidget extends StatefulWidget {
     required this.selectedIndexes,
     required this.linePoints,
     this.temporaryLineEnd,
-    required this.letterShuffleAnimation, // Parametre eklendi
+    required this.letterShuffleAnimation,
   }) : super(key: key);
 
   @override
@@ -101,7 +101,7 @@ class AnimatedPolygonWidgetState extends State<AnimatedPolygonWidget>
             selectedIndexes: widget.selectedIndexes,
             linePoints: widget.linePoints,
             temporaryLineEnd: widget.temporaryLineEnd,
-            letterShuffleAnimation: widget.letterShuffleAnimation, // Animasyon parametresi aktarılıyor
+            letterShuffleAnimation: widget.letterShuffleAnimation,
           ),
         );
       },
@@ -116,7 +116,7 @@ class PolygonPainter extends CustomPainter {
   final List<int> selectedIndexes; // Seçilen harflerin indeksleri
   final List<Offset> linePoints;
   final Offset? temporaryLineEnd;
-  final Animation<double> letterShuffleAnimation; // Yeni: Harf animasyonu alanı
+  final Animation<double> letterShuffleAnimation; // Harf animasyonu
 
   PolygonPainter({
     required this.sides,
@@ -125,11 +125,12 @@ class PolygonPainter extends CustomPainter {
     required this.selectedIndexes,
     required this.linePoints,
     this.temporaryLineEnd,
-    required this.letterShuffleAnimation, // Yeni parametre
+    required this.letterShuffleAnimation,
   }) : super(repaint: letterShuffleAnimation); // Animasyon değeri değişince repaint olsun
 
   @override
   void paint(Canvas canvas, Size size) {
+    // Dolgu için Paint
     final Paint paint = Paint()
       ..color = color
       ..style = PaintingStyle.fill;
@@ -138,7 +139,7 @@ class PolygonPainter extends CustomPainter {
     final double radius = min(size.width, size.height) / 2;
     final Offset center = Offset(size.width / 2, size.height / 2);
 
-    // Çokgenin kenarlarını çizelim
+    // Çokgenin kenarlarını oluşturuyoruz
     for (int i = 0; i < sides; i++) {
       final double angle = (i * 2 * pi / sides) - (pi / 2);
       final double x = center.dx + radius * cos(angle);
@@ -150,10 +151,18 @@ class PolygonPainter extends CustomPainter {
       }
     }
     path.close();
+    // Dolgu rengiyle çokgeni çiziyoruz
     canvas.drawPath(path, paint);
 
-    // Çizgi boyama için
-    final linePaint = Paint()
+    // Kenar çizgilerini eklemek için yeni bir Paint nesnesi oluşturuyoruz
+    final Paint borderPaint = Paint()
+      ..color = Colors.black // Kenar çizgilerinin rengi (isteğe göre değiştirilebilir)
+      ..strokeWidth = 2.0   // Kenar çizgilerinin kalınlığı
+      ..style = PaintingStyle.stroke;
+    canvas.drawPath(path, borderPaint);
+
+    // Harfler arası çizgiler için Paint
+    final Paint linePaint = Paint()
       ..color = Colors.red
       ..strokeWidth = 2.0
       ..style = PaintingStyle.stroke;
@@ -188,7 +197,7 @@ class PolygonPainter extends CustomPainter {
       canvas.drawCircle(linePoints[i], circleRadius, circlePaintStroke);
     }
 
-    // Harfleri çizelim (her harfi animasyon ile ölçeklendiriyoruz)
+    // Harfleri çiziyoruz; her harfi animasyon ile ölçeklendiriyoruz
     final TextPainter textPainter = TextPainter(
       textAlign: TextAlign.center,
       textDirection: TextDirection.ltr,
@@ -211,12 +220,12 @@ class PolygonPainter extends CustomPainter {
       if (i < letters.length) {
         // Harf animasyonunu uygulamak için canvas'ı kaydedip, dönüştürme yapıyoruz:
         canvas.save();
-        // Harfin merkezine git
+        // Harfin merkezine gitmek için translate
         canvas.translate(letterPosition.dx, letterPosition.dy);
-        // Harf animasyonundan gelen scale değeri uygulansın (örneğin, 0.0'dan 1.0'a)
+        // Animasyon ölçek değeri (örneğin 0.0'dan 1.0'a)
         double scale = letterShuffleAnimation.value;
         canvas.scale(scale, scale);
-        // Artık (0,0) harfin merkezi oluyor; harfi ortalamak için offset hesaplıyoruz:
+        // Artık (0,0) harfin merkezi; harfi ortalamak için offset hesaplıyoruz:
         textPainter.text = TextSpan(
           text: letters[i],
           style: GlobalProperties.globalTextStyle(
@@ -244,3 +253,4 @@ class PolygonPainter extends CustomPainter {
     return true;
   }
 }
+

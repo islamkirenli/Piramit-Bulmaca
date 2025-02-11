@@ -5,7 +5,6 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'game_over_dialog.dart'; // Pop-up için ayrı dosya
 import 'puzzle_data.dart'; // puzzleData'yı içe aktar
 import 'next_level_dialog.dart';
-import 'section_colors.dart'; // Renk haritası dosyasını dahil edin
 import 'package:shared_preferences/shared_preferences.dart';
 import 'app_bar_stats.dart'; // AppBarStats bileşenini dahil edin
 import 'settings.dart';
@@ -294,9 +293,9 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                   margin: EdgeInsets.symmetric(horizontal: 16.0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    color: sectionColors[currentMainSection]?['inside'] ?? Colors.grey,
+                    color: Colors.black54,
                     border: Border.all(
-                      color: sectionColors[currentMainSection]?['border'] ?? Colors.black,
+                      color: Colors.black,
                       width: 2.0,
                     ),
                   ),
@@ -330,8 +329,8 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                                   .map((e) => e['word']!)
                                   .reduce((a, b) => a.length > b.length ? a : b);
 
-                          Color insideColor = sectionColors[currentMainSection]?['inside'] ?? Colors.grey;
-                          Color borderColor = sectionColors[currentMainSection]?['border'] ?? Colors.black;
+                          Color insideColor = Colors.black54;
+                          Color borderColor = Colors.black;
 
                           String word = puzzleSections[currentMainSection]![currentSubSection]![index]['word']!;
                           
@@ -440,7 +439,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                               width: 50,
                               height: 50,
                               decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(0.6),
+                                color: Colors.black54,
                                 shape: BoxShape.circle,
                                 border: Border.all(
                                   color: Colors.white,
@@ -539,7 +538,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                           width: 15.0 * (selectedLetters.length.clamp(1, double.infinity)),
                           height: 20,
                           decoration: BoxDecoration(
-                            color: sectionColors[currentPuzzle]?['border'] ?? Colors.black,
+                            color: Colors.black,
                             borderRadius: BorderRadius.circular(10),
                           ),
                           alignment: Alignment.center,
@@ -566,7 +565,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                               width: 50,
                               height: 50,
                               decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(0.6),
+                                color: Colors.black54,
                                 shape: BoxShape.circle,
                                 border: Border.all(
                                   color: Colors.white,
@@ -666,7 +665,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                           key: _polygonKey,
                           initialSides: shuffledLetters.length.toDouble(),
                           size: 300,
-                          color: Colors.green,
+                          color: Colors.black54,
                           letters: shuffledLetters,
                           selectedIndexes: visitedIndexes,
                           linePoints: linePoints,
@@ -699,7 +698,13 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                             child: GestureDetector(
                               onTap: widget.isCompleted
                                   ? null
-                                  : () {
+                                  : () async {
+                                      if (GlobalProperties.isSoundOn) {
+                                        await _clickAudioPlayer?.stop();
+                                        await _clickAudioPlayer?.play(
+                                          AssetSource('audios/click_audio.mp3'),
+                                        );
+                                      };
                                       // Animasyonu başlatıp tamamlandığında shuffleLetters() çağırıyoruz
                                       _shuffleButtonController.forward(from: 0).then((_) {
                                         shuffleLetters();

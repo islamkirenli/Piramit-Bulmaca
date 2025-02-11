@@ -33,7 +33,6 @@ class CirclePainterWidgetState extends State<CirclePainterWidget>
   late Animation<double> _sidesAnimation;
   late double _currentSides;
   
-
   @override
   void initState() {
     super.initState();
@@ -79,14 +78,13 @@ class CirclePainterWidgetState extends State<CirclePainterWidget>
       );
     });
   }
-
-
+  
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
@@ -96,7 +94,7 @@ class CirclePainterWidgetState extends State<CirclePainterWidget>
           size: Size(widget.size, widget.size),
           painter: PolygonPainter(
             sides: _sidesAnimation.value, // Güncel kenar sayısı
-            color: widget.color,          // Çokgenin rengi
+            color: widget.color,          // Dairenin dolgu rengi
             letters: widget.letters,
             selectedIndexes: widget.selectedIndexes,
             linePoints: widget.linePoints,
@@ -127,15 +125,25 @@ class PolygonPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    // Dairenin dolgu rengi için Paint
     final Paint paint = Paint()
       ..color = color
       ..style = PaintingStyle.fill;
 
     final double radius = min(size.width, size.height) / 2;
     final Offset center = Offset(size.width / 2, size.height / 2);
+    
+    // Daireyi dolgu rengiyle çiziyoruz
     canvas.drawCircle(center, radius, paint);
 
-    // Çizgi boyama için
+    // Daireye kenar çizgisi eklemek için yeni bir Paint nesnesi oluşturuyoruz
+    final Paint borderPaint = Paint()
+      ..color = Colors.black   // Kenar çizgilerinin rengi (isteğinize göre ayarlayabilirsiniz)
+      ..strokeWidth = 2.0      // Kenar çizgilerinin kalınlığı
+      ..style = PaintingStyle.stroke;
+    canvas.drawCircle(center, radius, borderPaint);
+
+    // Çizgi boyama için (harfler arası çizgiler)
     final linePaint = Paint()
       ..color = Colors.red
       ..strokeWidth = 2.0
@@ -157,24 +165,22 @@ class PolygonPainter extends CustomPainter {
       canvas.drawLine(start, temporaryLineEnd!, linePaint);
     }
 
-    // Seçilen harfler için çemberleri çiz
+    // Seçilen harfler için çemberleri çiziyoruz
     final circlePaintFill = Paint()
-      ..color = const Color.fromARGB(255, 39, 225, 45) // Çokgenin dolgu rengi
+      ..color = const Color.fromARGB(255, 39, 225, 45)
       ..style = PaintingStyle.fill;
 
     final circlePaintStroke = Paint()
-      ..color = const Color.fromARGB(255, 44, 78, 61) // Çokgenin kenar rengi
+      ..color = const Color.fromARGB(255, 44, 78, 61)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2.0;
 
     for (int i = 0; i < linePoints.length; i++) {
-      // Çemberi doldur
       canvas.drawCircle(linePoints[i], circleRadius, circlePaintFill);
-      // Çemberin kenarını çiz
       canvas.drawCircle(linePoints[i], circleRadius, circlePaintStroke);
     }
 
-    // Harfleri çizmek için her köşeye yerleştir
+    // Harfleri yerleştirmek için
     final TextPainter textPainter = TextPainter(
       textAlign: TextAlign.center,
       textDirection: TextDirection.ltr,
@@ -191,17 +197,17 @@ class PolygonPainter extends CustomPainter {
       final double dy = center.dy + letterRadius * sin(angle);
       final letterPosition = Offset(dx, dy);
 
-      // Seçilen harfler için daire çiz
+      // Seçilen harfler için daire çizimi
       if (selectedIndexes.contains(i)) {
         final Paint circlePaint = Paint()
-          ..color = Colors.red.withOpacity(0.5) // Daire rengi
+          ..color = Colors.red.withOpacity(0.5)
           ..style = PaintingStyle.fill;
 
-        canvas.drawCircle(Offset(dx, dy), 25, circlePaint); // Dairenin boyutu
-        selectedPoints.add(Offset(dx, dy)); // Seçilen noktanın pozisyonunu ekle
+        canvas.drawCircle(Offset(dx, dy), 25, circlePaint);
+        selectedPoints.add(Offset(dx, dy));
       }
 
-      if (i < letters.length) { // Kelimenin harflerini sırayla çiz
+      if (i < letters.length) {
         textPainter.text = TextSpan(
           text: letters[i],
           style: GlobalProperties.globalTextStyle(
@@ -213,10 +219,10 @@ class PolygonPainter extends CustomPainter {
 
         textPainter.layout();
         final offset = Offset(
-        letterPosition.dx - textPainter.width / 2,
-        letterPosition.dy - textPainter.height / 2,
-      );
-      textPainter.paint(canvas, offset);
+          letterPosition.dx - textPainter.width / 2,
+          letterPosition.dy - textPainter.height / 2,
+        );
+        textPainter.paint(canvas, offset);
       }
     }
   }

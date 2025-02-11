@@ -396,7 +396,7 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
                             key: _polygonKey,
                             initialSides: shuffledLetters.length.toDouble(),
                             size: 300,
-                            color: Colors.green,
+                            color: Colors.black54,
                             letters: shuffledLetters,
                             selectedIndexes: visitedIndexes,
                             linePoints: linePoints,
