@@ -90,7 +90,10 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
   Timer? _wrongChoiceTimer;        // Yanlış seçim sonrası beklemeyi yöneten Timer
   bool _isWrongChoiceWaiting = false; // Yanlış seçim temizlenmeyi bekliyor mu?
   bool isWordHintActive = false; 
-
+  
+  late AnimationController _shuffleButtonController;
+  late AnimationController _letterShuffleController;
+  late Animation<double> _letterShuffleAnimation;
 
   late AnimationController _settingsIconController;
   late AnimationController _correctGuessController;
@@ -112,6 +115,22 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
           .map((wordData) => wordData['word']!)
           .toList();
     }
+
+    _shuffleButtonController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 500),
+    );
+
+    _letterShuffleController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 500),
+    );
+
+    _letterShuffleController.value = 1.0;
+
+    _letterShuffleAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _letterShuffleController, curve: Curves.easeInOut),
+    );
 
     // Görsel dosyalarının listesini doldurun
     correctGuessImages = [
@@ -198,6 +217,8 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
     saveGameData(); // Oyun kapatıldığında veriyi kaydet
     _audioPlayerForHints?.dispose();
     _clickAudioPlayer?.dispose();
+    _shuffleButtonController.dispose();
+    _letterShuffleController.dispose();
     super.dispose();
   }
 
@@ -647,9 +668,10 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                           size: 300,
                           color: Colors.green,
                           letters: shuffledLetters,
-                          selectedIndexes: visitedIndexes, // Seçilen harflerin indeksleri
+                          selectedIndexes: visitedIndexes,
                           linePoints: linePoints,
                           temporaryLineEnd: temporaryLineEnd,
+                          letterShuffleAnimation: _letterShuffleAnimation, 
                         ),
                          // Doğru cevap görseli ekleniyor
                         if (showCorrectAnswerImage && currentCorrectGuessImage != null)
@@ -665,18 +687,35 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                             ),
                           ),
                         Positioned(
-                          child: GestureDetector(
-                            onTap: widget.isCompleted ? null : shuffleLetters,
-                            child: Container(
-                              width: 50,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                              ),
-                              child: Icon(
-                                Icons.shuffle,
-                                color: Colors.white,
-                                size: 30,
+                          child: AnimatedBuilder(
+                            animation: _shuffleButtonController,
+                            builder: (context, child) {
+                              return Transform.rotate(
+                                // Tam dönüş için controller değeri 0'dan 1'e giderken 2π radian (360°) döner:
+                                angle: _shuffleButtonController.value * 2 * pi,
+                                child: child,
+                              );
+                            },
+                            child: GestureDetector(
+                              onTap: widget.isCompleted
+                                  ? null
+                                  : () {
+                                      // Animasyonu başlatıp tamamlandığında shuffleLetters() çağırıyoruz
+                                      _shuffleButtonController.forward(from: 0).then((_) {
+                                        shuffleLetters();
+                                      });
+                                    },
+                              child: Container(
+                                width: 50,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Icon(
+                                  Icons.shuffle,
+                                  color: Colors.white,
+                                  size: 30,
+                                ),
                               ),
                             ),
                           ),
@@ -731,11 +770,13 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
   }
 
   void shuffleLetters() {
+    // Harf animasyonunu başlat
+    _letterShuffleController.forward(from: 0);
     setState(() {
       shuffledLetters.shuffle();
       selectedLetters.clear();
       visitedLetters.clear();
-      linePoints.clear(); // Çizgileri temizle
+      linePoints.clear();
       temporaryLineEnd = null;
       showSelectedLetters = false;
     });
