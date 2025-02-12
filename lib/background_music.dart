@@ -14,16 +14,16 @@ class MusicBackground extends StatefulWidget {
   _MusicBackgroundState createState() => _MusicBackgroundState();
 }
 
-class _MusicBackgroundState extends State<MusicBackground> {
-  // YENİ: AudioPlayer nesnesi
+class _MusicBackgroundState extends State<MusicBackground> with WidgetsBindingObserver {
   late AudioPlayer _audioPlayer;
-
   bool _isMusicOn = true;
   bool _hasPlayedBefore = false; 
 
   @override
   void initState() {
     super.initState();
+    // Observer ekliyoruz:
+    WidgetsBinding.instance.addObserver(this);
     _audioPlayer = AudioPlayer();
     _loadMusicPreference();
   }
@@ -36,7 +36,7 @@ class _MusicBackgroundState extends State<MusicBackground> {
       _isMusicOn = savedMusicSetting;
     });
 
-    // Eğer açılacaksa müziği başlat
+    // Eğer müzik açıksa başlatıyoruz:
     if (_isMusicOn) {
       _playBackgroundMusic();
     }
@@ -50,14 +50,15 @@ class _MusicBackgroundState extends State<MusicBackground> {
 
   @override
   void dispose() {
-    // Uygulama tamamen kapatıldığında müziği durdur
+    // Observer'ı kaldırıyoruz:
+    WidgetsBinding.instance.removeObserver(this);
     _audioPlayer.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // İçerideki asıl widget (MaterialApp) döndürülüyor
+    // İçerideki asıl widget döndürülüyor.
     return widget.child;
   }
 
@@ -66,12 +67,10 @@ class _MusicBackgroundState extends State<MusicBackground> {
       _isMusicOn = turnOn;
     });
 
-    // SharedPreferences'e kaydet
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('isMusicOn', turnOn);
 
     if (turnOn) {
-      // Eğer daha önce hiç çalmadıysa _playBackgroundMusic() çağır
       if (_hasPlayedBefore) {
         _audioPlayer.resume();
       } else {
@@ -79,6 +78,16 @@ class _MusicBackgroundState extends State<MusicBackground> {
       }
     } else {
       _audioPlayer.pause();
+    }
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // Uygulama arka plana alındığında müziği durdur, geri geldiğinde devam ettiriyoruz.
+    if (state == AppLifecycleState.paused) {
+      _audioPlayer.pause();
+    } else if (state == AppLifecycleState.resumed && _isMusicOn) {
+      _audioPlayer.resume();
     }
   }
 }
