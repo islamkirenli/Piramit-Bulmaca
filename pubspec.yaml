@@ -115,6 +115,7 @@ flutter:
   - assets/audios/hint_audio.mp3
   - assets/audios/magic_wand_audio.mp3
   - assets/audios/click_audio.mp3
+  - assets/audios/transition_sound.mp3
   - assets/videos/dongu.mp4
 
 
