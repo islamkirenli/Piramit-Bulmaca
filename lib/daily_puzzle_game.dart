@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:pyramid_puzzle/circle_painter.dart';
 import 'package:pyramid_puzzle/level_complete_dialog.dart';
 import 'daily_puzzle_data.dart'; // Günlük puzzle verileri (liste)
 import 'app_bar_stats.dart';     // Sayaç, coin vb. AppBar bileşeni
@@ -391,7 +392,7 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
                         alignment: Alignment.center,
                         children: [
                           // Çokgen animasyon widget
-                          AnimatedPolygonWidget(
+                          CirclePainterWidget(
                             key: _polygonKey,
                             initialSides: shuffledLetters.length.toDouble(),
                             size: 300,
@@ -601,7 +602,7 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
   /// Çokgendeki harfin ekrandaki konumunu hesaplar
   Offset _getLetterPosition(int index, double radius, Offset center) {
     final int sides = shuffledLetters.length;
-    final adjustmentFactor = 0.7;
+    final adjustmentFactor = 0.8;
     final angle = -pi / 2 + (2 * pi / sides) * index;
     final dx = center.dx + (radius * adjustmentFactor) * cos(angle);
     final dy = center.dy + (radius * adjustmentFactor) * sin(angle);
