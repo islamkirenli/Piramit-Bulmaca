@@ -68,6 +68,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   late AnimationController _rippleController;
 
+  bool _isTimeDialogShown = false;
+
   @override
   void initState() {
     super.initState();
@@ -665,7 +667,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
 
   void onTimerEnd(BuildContext context) {
+    if (_isTimeDialogShown) return;
+    _isTimeDialogShown = true;
     showTimeCompletedDialog(context, () {
+      _isTimeDialogShown = false;
       setState(() {
         GlobalProperties.remainingLives.value = 3;
         GlobalProperties.countdownSeconds.value = 15;

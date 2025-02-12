@@ -90,7 +90,6 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
   bool _isWrongChoiceWaiting = false; // Yanlış seçim temizlenmeyi bekliyor mu?
   bool isWordHintActive = false; 
   
-  late AnimationController _shuffleButtonController;
   late AnimationController _letterShuffleController;
   late Animation<double> _letterShuffleAnimation;
 
@@ -114,11 +113,6 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
           .map((wordData) => wordData['word']!)
           .toList();
     }
-
-    _shuffleButtonController = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: 500),
-    );
 
     _letterShuffleController = AnimationController(
       vsync: this,
@@ -216,7 +210,6 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
     saveGameData(); // Oyun kapatıldığında veriyi kaydet
     _audioPlayerForHints?.dispose();
     _clickAudioPlayer?.dispose();
-    _shuffleButtonController.dispose();
     _letterShuffleController.dispose();
     super.dispose();
   }
@@ -686,41 +679,29 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                             ),
                           ),
                         Positioned(
-                          child: AnimatedBuilder(
-                            animation: _shuffleButtonController,
-                            builder: (context, child) {
-                              return Transform.rotate(
-                                // Tam dönüş için controller değeri 0'dan 1'e giderken 2π radian (360°) döner:
-                                angle: _shuffleButtonController.value * 2 * pi,
-                                child: child,
-                              );
-                            },
-                            child: GestureDetector(
-                              onTap: widget.isCompleted
-                                  ? null
-                                  : () async {
-                                      if (GlobalProperties.isSoundOn) {
-                                        await _clickAudioPlayer?.stop();
-                                        await _clickAudioPlayer?.play(
-                                          AssetSource('audios/click_audio.mp3'),
-                                        );
-                                      };
-                                      // Animasyonu başlatıp tamamlandığında shuffleLetters() çağırıyoruz
-                                      _shuffleButtonController.forward(from: 0).then((_) {
-                                        shuffleLetters();
-                                      });
-                                    },
-                              child: Container(
-                                width: 50,
-                                height: 50,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Icon(
-                                  Icons.shuffle,
-                                  color: Colors.white,
-                                  size: 30,
-                                ),
+                          child: GestureDetector(
+                            onTap: widget.isCompleted
+                                ? null
+                                : () async {
+                                    if (GlobalProperties.isSoundOn) {
+                                      await _clickAudioPlayer?.stop();
+                                      await _clickAudioPlayer?.play(
+                                        AssetSource('audios/click_audio.mp3'),
+                                      );
+                                    }
+                                    // Sadece harf animasyonu çalışsın
+                                    shuffleLetters();
+                                },
+                            child: Container(
+                              width: 50,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(
+                                Icons.shuffle,
+                                color: Colors.white,
+                                size: 30,
                               ),
                             ),
                           ),

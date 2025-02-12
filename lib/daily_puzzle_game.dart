@@ -83,7 +83,6 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
   late AnimationController _correctGuessController;
   late Animation<double> _correctGuessOpacity;
 
-  late AnimationController _shuffleButtonController;
   late AnimationController _letterShuffleController;
 
   // Data yüklendi mi?
@@ -128,13 +127,6 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
         createAndLoadBannerAd();
       });
     });
-
-    _shuffleButtonController = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: 500),
-    );
-
-    //_shuffleButtonController.value = 1.0;
 
     _letterShuffleController = AnimationController(
       vsync: this,
@@ -181,7 +173,6 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
     _settingsIconController.dispose();
     _clickAudioPlayer?.dispose();
     _nextPuzzleTimer?.cancel();
-    _shuffleButtonController.dispose();
     _letterShuffleController.dispose();
     saveGameData();
     super.dispose();
@@ -450,47 +441,31 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
                             ),
                           // Harfleri karıştırma butonu
                           Positioned(
-                            child: AnimatedBuilder(
-                              animation: _shuffleButtonController,
-                              builder: (context, child) {
-                                return Transform.rotate(
-                                  angle: _shuffleButtonController.value * 2 * pi, // Tam dönüş (360°)
-                                  child: child,
-                                );
+                            child: GestureDetector(
+                              onTap: () async {
+                                if (GlobalProperties.isSoundOn) {
+                                  await _clickAudioPlayer?.stop();
+                                  await _clickAudioPlayer?.play(
+                                    AssetSource('audios/click_audio.mp3'),
+                                  );
+                                }
+                                // Her tıklamada harfleri karıştır ve harf animasyonunu çalıştır
+                                setState(() {
+                                  shuffleLetters();
+                                  _letterShuffleController.value = 0.0;
+                                });
+                                _letterShuffleController.forward(from: 0);
                               },
-                              child: GestureDetector(
-                                onTap: () async {
-                                  if (GlobalProperties.isSoundOn) {
-                                    await _clickAudioPlayer?.stop();
-                                    await _clickAudioPlayer?.play(
-                                      AssetSource('audios/click_audio.mp3'),
-                                    );
-                                  }
-                                  // İlk önce buton animasyonu başlasın
-                                  _shuffleButtonController.forward(from: 0).then((_) {
-                                    // Buton animasyonu tamamlandıktan sonra, 
-                                    // önce yeni harfleri ayarla (shuffleLetters() günceller)
-                                    setState(() {
-                                      shuffleLetters();
-                                      // Harf animasyonunu resetleyip 0.0 yapıyoruz ki yeni harfler
-                                      // önce görünmesin ve sonra scale 0'dan 1'e animasyonla gelsin
-                                      _letterShuffleController.value = 0.0;
-                                    });
-                                    // Ardından harf animasyonu başlasın
-                                    _letterShuffleController.forward(from: 0);
-                                  });
-                                },
-                                child: Container(
-                                  width: 50,
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Icon(
-                                    Icons.shuffle,
-                                    color: Colors.white,
-                                    size: 30,
-                                  ),
+                              child: Container(
+                                width: 50,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Icon(
+                                  Icons.shuffle,
+                                  color: Colors.white,
+                                  size: 30,
                                 ),
                               ),
                             ),
@@ -822,3 +797,4 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
     GlobalProperties.deadlineTimestamp = prefs.getInt('deadlineTimestamp') ?? 0;
   }
 }
+
