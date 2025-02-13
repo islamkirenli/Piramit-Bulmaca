@@ -5,6 +5,7 @@ import 'puzzle_game.dart';
 import 'global_properties.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'dart:ui';
+import 'info_dialog.dart';
 
 Future<Set<String>> getCompletedSections() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -29,7 +30,7 @@ String displaySectionName(String originalName) {
     'Ana Bölüm 4': 'DJOSER PİRAMİDİ',
     'Ana Bölüm 5': 'BENT PİRAMİT',
     'Ana Bölüm 6': 'MEİDUM PİRAMİDİ',
-    'Ana Bölüm 7': 'MEİDUM PİRAMİDİ',
+    'Ana Bölüm 7': 'MEROE PİRAMİDİ',
     'Ana Bölüm 8': 'GÜNEŞ PİRAMİDİ',
     'Ana Bölüm 9': 'TİKAL PİRAMİDİ',
     'Ana Bölüm 10': 'PALENQUE PİRAMİDİ',
@@ -140,25 +141,26 @@ class _SectionsPageState extends State<SectionsPage> {
                     String imagePath = imageList[index % imageList.length];
 
                     return GestureDetector(
-                      onTap: isUnlocked
-                          ? () async {
-                              if (GlobalProperties.isSoundOn) {
-                                await _clickAudioPlayer?.stop();
-                                await _clickAudioPlayer?.play(
-                                  AssetSource('audios/click_audio.mp3'),
-                                );
-                              }
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => SubSectionsPage(
-                                    sectionName: sectionName,
-                                    subSections: puzzleSections[sectionName]!,
-                                  ),
-                                ),
-                              );
-                            }
-                          : null,
+                      // Her durumda tıklanabilir olsun
+                      onTap: () async {
+                        if (GlobalProperties.isSoundOn) {
+                          await _clickAudioPlayer?.stop();
+                          await _clickAudioPlayer?.play(
+                            AssetSource('audios/click_audio.mp3'),
+                          );
+                        }
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SubSectionsPage(
+                              sectionName: sectionName,
+                              subSections: puzzleSections[sectionName]!,
+                              // Ana bölümün kilitli olup olmadığını burada gönderiyoruz
+                              mainSectionUnlocked: isUnlocked,
+                            ),
+                          ),
+                        );
+                      },
                       child: Stack(
                         children: [
                           // Görsel arka plan
@@ -197,7 +199,7 @@ class _SectionsPageState extends State<SectionsPage> {
                             margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                             height: 80,
                             decoration: BoxDecoration(
-                              color: isUnlocked ? Colors.transparent : Colors.black.withOpacity(0.4),
+                              color: isUnlocked ? Colors.transparent : Colors.black87,
                               borderRadius: BorderRadius.circular(8),
                             ),
                             alignment: Alignment.center,
@@ -229,10 +231,12 @@ class _SectionsPageState extends State<SectionsPage> {
 class SubSectionsPage extends StatefulWidget {
   final String sectionName;
   final Map<String, List<Map<String, String>>> subSections;
+  final bool mainSectionUnlocked;
 
   SubSectionsPage({
     required this.sectionName,
     required this.subSections,
+    required this.mainSectionUnlocked,
   });
 
   @override
@@ -273,6 +277,25 @@ class _SubSectionsPageState extends State<SubSectionsPage> {
             fontWeight: FontWeight.bold,
           ),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.info_outline, color: Colors.white),
+            onPressed: () async {
+              if (GlobalProperties.isSoundOn) {
+                  await _clickAudioPlayer?.stop();
+                  await _clickAudioPlayer?.play(
+                  AssetSource('audios/click_audio.mp3'),
+                );
+              }
+              showDialog(
+                context: context,
+                builder: (context) => InfoDialog(
+                  sectionName: widget.sectionName, // Orijinal ana bölüm adını gönderiyoruz
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: Stack(
         children: [
@@ -321,10 +344,15 @@ class _SubSectionsPageState extends State<SubSectionsPage> {
                         String subSectionKey = allSubSections[index];
                         String fullKey = "${widget.sectionName}-$subSectionKey";
 
-                        bool isUnlocked = (index < 3) ||
-                            completedSections.contains(
-                              "${widget.sectionName}-${allSubSections[index - 1]}",
-                            );
+                        bool isUnlocked;
+                        if (!widget.mainSectionUnlocked) {
+                          // Eğer ana bölüm kilitliyse, tüm alt bölümler kilitli görünsün
+                          isUnlocked = false;
+                        } else {
+                          // Ana bölüm açıksa, mevcut koşullara göre belirle
+                          isUnlocked = (index < 3) ||
+                              completedSections.contains("${widget.sectionName}-${allSubSections[index - 1]}");
+                        }
                         bool isCompleted = completedSections.contains(fullKey);
 
                         return GestureDetector(
