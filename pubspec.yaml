@@ -91,9 +91,6 @@ flutter:
   - assets/images/game_background/keops.jpg
   - assets/images/game_background/elcastillo.jpg
   - assets/images/ads_block.png
-  - assets/images/buttons/play_button.png
-  - assets/images/buttons/levels_button.png
-  - assets/images/buttons/settings_button.png
   - assets/images/correct_guess/correct_guess1.png
   - assets/images/correct_guess/correct_guess2.png
   - assets/images/correct_guess/correct_guess3.png
@@ -111,6 +108,7 @@ flutter:
   - assets/images/button_images/calakmul_button.jpg
   - assets/images/button_images/elcastillo_button.jpg
   - assets/images/button_images/cestius_button.jpg
+  - assets/images/button_images/candi_sukuh_button.jpg
   - assets/audios/background_music.mp3
   - assets/audios/hint_audio.mp3
   - assets/audios/magic_wand_audio.mp3

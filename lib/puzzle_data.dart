@@ -372,5 +372,15 @@ final Map<String, Map<String, List<Map<String, String>>>> puzzleSections = {
       {'hint': 'Halk dilinde ağabey', 'word': 'AKA'}
     ],
   },
+  // MARK: ANA BÖLÜM-14
+  'Ana Bölüm 14': {
+    '1': [
+      {'hint': 'Rimel', 'word': 'MASKARA'},
+      {'hint': 'Üzerinde iplik, tel gibi şeyler sarılan ortası delik silindir', 'word': 'MAKARA'},
+      {'hint': 'Sayıları göstermek için kullanılan işaretlerin her biri', 'word': 'RAKAM'},
+      {'hint': 'Ucu sivri iki ağzı da keskin bıçak', 'word': 'KAMA'},
+      {'hint': 'Halk dilinde ağabey', 'word': 'AKA'}
+    ],
+  },
 };
 

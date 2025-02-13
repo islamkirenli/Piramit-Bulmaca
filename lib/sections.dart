@@ -37,7 +37,7 @@ String displaySectionName(String originalName) {
     'Ana Bölüm 11': 'CALAKMUL PİRAMİDİ',
     'Ana Bölüm 12': 'EL CASTİLLO',
     'Ana Bölüm 13': 'CESTİUS PİRAMİDİ',
-
+    'Ana Bölüm 14': 'CANDİ SUKUH PİRAMİDİ',
   };
   return sectionNames[originalName] ?? originalName;
 }
@@ -66,7 +66,7 @@ class _SectionsPageState extends State<SectionsPage> {
     'assets/images/button_images/calakmul_button.jpg',
     'assets/images/button_images/elcastillo_button.jpg',
     'assets/images/button_images/cestius_button.jpg',
-
+    'assets/images/button_images/candi_sukuh_button.jpg',
   ];
 
   @override

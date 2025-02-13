@@ -16,6 +16,7 @@ String displaySectionName(String originalName) {
     'Ana Bölüm 11': 'CALAKMUL PİRAMİDİ',
     'Ana Bölüm 12': 'EL CASTİLLO',
     'Ana Bölüm 13': 'CESTİUS PİRAMİDİ',
+    'Ana Bölüm 14': 'CANDİ SUKUH PİRAMİDİ',
   };
   return sectionNames[originalName] ?? originalName;
 }
@@ -175,6 +176,15 @@ class InfoDialog extends StatelessWidget {
         Piramidin inşasında kullanılan malzemeler, dönemin zorluklarına rağmen yüksek mühendislik becerisini yansıtır; tuğla ve mermerin ustaca bir araya getirilmesiyle ortaya konulan yapı, antik Roma'nın lüks mezar mimarisinin tipik bir örneğidir. Cestius Piramidi, hem görsel etkileyiciliği hem de tarihsel önemiyle, antik Roma'nın ölümsüzlük inancını ve elit kesimin kültürel değerlerini yansıtır. Roma'nın modern kentsel dokusu içinde, diğer antik yapılar arasında adeta bir zaman kapsülü gibi duran bu piramit, ziyaretçilerine geçmişin ihtişamını ve antik dünyanın gizemini hatırlatır.
 
         Bugün Cestius Piramidi, Roma sokaklarında yürürken karşılaşabileceğiniz en etkileyici ve ender görülen anıtlardan biridir. Hem turistlerin hem de tarih ve mimari meraklılarının ilgisini çeken yapı, antik Roma'nın kültürel mirasını ve Doğu-Batı etkileşiminin izlerini günümüze taşıyan eşsiz bir eserdir.""";
+      // MARK: CANDİ SUKUH
+      case "Ana Bölüm 14":
+        return """Candi Sukuh, Endonezya'nın Java Adası'nda, özellikle dağ eteklerinde yer alan ve 15. yüzyılda Majapahit döneminde inşa edildiği düşünülen benzersiz bir tapınaktır. Yerel animistik inançlar ve tantrik öğelerle harmanlanan bu yapı, geleneksel Budist ve Hindu tapınak mimarisinin ötesinde, özgün bir tasarım sunar.
+
+        Piramidal formda yükselen Candi Sukuh, dikdörtgen plana sahip olup, dağ yamacının doğal eğimiyle bütünleşerek çevresiyle uyumlu bir görünüm sergiler. Tapınağın duvarları, erotik figürler, mitolojik semboller ve doğa unsurlarıyla süslenmiş; bu detayların döngüsel yaşam, doğurganlık ve mistik güçler gibi kavramları temsil ettiği düşünülmektedir.
+
+        Bazı akademisyenler, bu görsellerin tapınağın tantrik bir ritüel merkezi olarak işlev gördüğünü ve yerel halkın dini inançlarıyla harmanlanmış özgün bir kültürel sentezi yansıttığını öne sürerken, mimarinin katmanlı yapısı da basamaklı piramit formunu andırarak tapınağa ritüel ve sembolik anlamlar kazandırır.
+
+        Candi Sukuh, hem mimari hem de kültürel açıdan araştırma meraklılarına hitap eden, Endonezya'nın mistik tarihine dair derin ipuçları sunan nadir yapılar arasında yer alır. Turizm ve arkeolojik çalışmalar sayesinde, bu tapınağın gizemli atmosferi günümüzde de ziyaretçilere mistik bir yolculuk deneyimi sunmaktadır.""";
       default:
         return "Bu bölüm hakkında detaylı bilgi.";
     }
