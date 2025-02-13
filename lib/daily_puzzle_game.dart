@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:pyramid_puzzle/main.dart';
+import 'package:pyramid_puzzle/level_complete_dialog.dart';
 import 'daily_puzzle_data.dart'; // Günlük puzzle verileri (liste)
 import 'app_bar_stats.dart';     // Sayaç, coin vb. AppBar bileşeni
 import 'settings.dart';          // Ayarlar diyalogu
@@ -94,8 +94,6 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
   // Ses oynatıcı
   AudioPlayer? _clickAudioPlayer;
 
-  bool puzzleForTodayCompleted = false;
-
   int nextPuzzleSeconds = 0;       // Bir sonraki günlük bulmacaya kalan saniye
   Timer? _nextPuzzleTimer;         // Geri sayımı her saniye güncellemek için timer
 
@@ -151,10 +149,6 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
       setState(() {
         isDataLoaded = true;
       });
-      // Eğer bugünün puzzle'ı çoktan tamamlanmışsa geri sayımı başlat.
-      if (puzzleForTodayCompleted) {
-        _startNextPuzzleCountdown();
-      }
     });
   }
 
@@ -179,8 +173,6 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
       );
     }
 
-    // Eğer puzzleIndex, dailyPuzzleData listesi boyutunu aşarsa
-    // artık oynanacak puzzle kalmamış demektir (uygulama mantığına göre davranın).
     if (puzzleIndex >= dailyPuzzleData.length) {
       return Scaffold(
         body: Center(
@@ -282,8 +274,6 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
 
                 SizedBox(height: 100),
 
-                // Kelimelerin (özellikle birden çok kelime varsa) gösterimi
-                // currentPuzzle listesini tersten çiziyor (örnek kodda öyle yapılmış).
                 Expanded(
                   child: LayoutBuilder(
                     builder: (context, constraints) {
@@ -297,8 +287,6 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
                             String word = currentPuzzle[index]['word']!;
                             bool isRevealed = correctWords.contains(word);
 
-                            // En uzun kelime olabilir vs. (opsiyonel),
-                            // basitçe yükseklik verip çerçeve çizelim
                             double calculatedWidth = 50.0 * word.length;
                             double containerWidth = calculatedWidth > maxWidth
                                 ? maxWidth
@@ -352,7 +340,6 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
                   ),
                 ),
 
-                // Seçilen harfleri (geçici) gösteren satır
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -392,12 +379,9 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
 
                 SizedBox(height: 5),
 
-                // Harfleri çokgen şeklinde gösteren ve sürükleyerek tahmin etmeyi sağlayan bölüm
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: AbsorbPointer(
-                    absorbing: puzzleForTodayCompleted,
-                    child: GestureDetector(
+                  child: GestureDetector(
                       onPanUpdate: (details) {
                         final localPosition = details.localPosition;
                         onLetterDrag(localPosition);
@@ -451,8 +435,7 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
                         ],
                       ),
                     ),
-                  ),  
-                ),
+                  ),
 
                 SizedBox(height: 5),
 
@@ -464,47 +447,6 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
                     child: AdWidget(ad: _bannerAd),
                   ),
               ],
-            ),
-          ),
-          // 2) Puzzle tamamlanmışsa, *üzerine* yarı saydam bir katman ekleyip geri sayımı gösterelim
-          if (puzzleForTodayCompleted)
-          Positioned.fill(
-            child: Container(
-              color: Colors.black87,
-              child: Stack(
-                children: [
-                  // Sağ üstteki çarpı butonu
-                  Positioned(
-                    top: 50,
-                    right: 16,
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(builder: (context) => HomePage()), // HomePage'e yönlendir
-                          (route) => false, // Önceki tüm sayfaları kaldır
-                        );
-                      },
-                      child: Icon(
-                        Icons.close,
-                        color: Colors.white,
-                        size: 32,
-                      ),
-                    ),
-                  ),
-                  // Ortadaki geri sayım metni
-                  Center(
-                    child: Text(
-                      'Yeni bulmaca için kalan süre:\n${_formatTime(nextPuzzleSeconds)}',
-                      textAlign: TextAlign.center,
-                      style: GlobalProperties.globalTextStyle(
-                        color: Colors.white,
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                      ).copyWith(decoration: TextDecoration.none),
-                    ),
-                  ),
-                ],
-              ),
             ),
           ),
         ],
@@ -611,33 +553,11 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
           shuffledLetters = currentPuzzle[currentIndex]['word']!.split('');
           shuffleLetters();
         } else {
-          // Günlük bulmaca (o günün tüm kelimeleri) bitti
-          // Tamamlandı diyebiliriz. Yarın yeni puzzle verilecek.
-          puzzleForTodayCompleted = true;
-          showInterstitialAd();
-
-          // İsterseniz bir diyalog da gösterebilirsiniz:
-          showDialog(
-            context: context,
-            builder: (ctx) {
-              return AlertDialog(
-                title: Text('Tebrikler!'),
-                content: Text('Bugünün bulmacasını tamamladınız.'),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(ctx).pop();
-                    },
-                    child: Text('Kapat'),
-                  ),
-                ],
-              );
-            },
-          );
-
-          // Aynı puzzle kalacak; yarın puzzleIndex artacak.
-          // Yine de bugünün bulmacası tekrar görünmeyecek şekilde
-          // isterseniz currentIndex vb. sıfırlayabilirsiniz.
+          GlobalProperties.puzzleForTodayCompleted.value = true;
+          Timer(Duration(seconds: 1), () {
+            showInterstitialAd();
+            showLevelCompleteDialog(context, sourcePage: 'daily_puzzle_game');
+          });
         }
       }
     });
@@ -749,18 +669,11 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
     }
   }
 
-  /// Verileri kaydet (SharedPreferences):
-  ///  - puzzleIndex
-  ///  - bugünkü tarih
-  ///  - coin, remainingLives, vb.
-  ///  - Sayaç bilgileri
   Future<void> saveGameData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setInt('puzzleIndex', puzzleIndex);
 
-    DateTime now = DateTime.now();
-    String todayString = _dateToString(now);
-    await prefs.setString('lastPuzzleDate', todayString);
+    await prefs.setString('lastOpenDate', DateTime.now().toIso8601String());
 
     // GlobalProperties
     await prefs.setInt('coin', GlobalProperties.coin.value);
@@ -768,47 +681,39 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
     await prefs.setInt('countdownSeconds', GlobalProperties.countdownSeconds.value);
     await prefs.setBool('isTimerRunning', GlobalProperties.isTimerRunning.value);
     await prefs.setInt('deadlineTimestamp', GlobalProperties.deadlineTimestamp);
-
-    await prefs.setBool('puzzleForTodayCompleted', puzzleForTodayCompleted);
+    await prefs.setBool('puzzleForTodayCompleted', GlobalProperties.puzzleForTodayCompleted.value);
   }
 
-  /// Uygulama başlarken verileri yükle:
-  ///  - puzzleIndex
-  ///  - bir önceki gün/tarih
-  ///  - eğer yeni güne geçilmişse puzzleIndex bir artır
-  ///  - Sayaç bilgileri vb.
   Future<void> loadGameData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    puzzleIndex = prefs.getInt('puzzleIndex') ?? 0;
-    String? savedDate = prefs.getString('lastPuzzleDate');
-    lastPuzzleDate = savedDate != null ? _stringToDate(savedDate) : DateTime.now();
-
-    // Bugünün tarihi
+    // Önce mevcut son açılış tarihini alalım.
+    String? lastOpenDateString = prefs.getString('lastOpenDate');
     DateTime now = DateTime.now();
-    String todayString = _dateToString(now);
+    bool dayChanged = false;
 
-    // Yeni güne geçilmiş mi?
-    if (savedDate != null && savedDate != todayString) {
-      // Yeni gün => puzzleIndex artır (eğer verimiz elveriyorsa)
-      if (puzzleIndex < dailyPuzzleData.length - 1) {
-        puzzleIndex++;
+    if (lastOpenDateString != null) {
+      DateTime lastOpenDate = DateTime.parse(lastOpenDateString);
+      // Sadece tarih kısmını karşılaştırıyoruz (yıl, ay, gün)
+      if (lastOpenDate.year != now.year ||
+          lastOpenDate.month != now.month ||
+          lastOpenDate.day != now.day) {
+        dayChanged = true;
       }
-      await prefs.setInt('puzzleIndex', puzzleIndex);
-      await prefs.setString('lastPuzzleDate', todayString);
     }
 
-    // 1. puzzleForTodayCompleted değerini yükle
-    bool storedPuzzleCompleted = prefs.getBool('puzzleForTodayCompleted') ?? false;
-
-    // 2. Eğer gün değişmemişse ve puzzleIndex değişmemişse, kaldığımız yerden devam:
-    if (savedDate == todayString) {
-      puzzleForTodayCompleted = storedPuzzleCompleted;
+    if (dayChanged) {
+      // Gün değişmişse, mevcut puzzleIndex'i artırıyoruz ve kelime sırasını sıfırlıyoruz.
+      puzzleIndex = (prefs.getInt('puzzleIndex') ?? 0) + 1;
+      currentIndex = 0;
+      GlobalProperties.puzzleForTodayCompleted.value = false;
+      await prefs.setBool('puzzleForTodayCompleted', GlobalProperties.puzzleForTodayCompleted.value);
     } else {
-      // Yeni günse veya puzzleIndex değiştiyse, bugünün puzzle'ı henüz tamamlanmamıştır.
-      puzzleForTodayCompleted = false;
-      await prefs.setBool('puzzleForTodayCompleted', false);
+      puzzleIndex = prefs.getInt('puzzleIndex') ?? 0;
     }
+
+    // Bugünün tarihini kaydediyoruz.
+    await prefs.setString('lastOpenDate', now.toIso8601String());
 
     // Mevcut puzzle'ın ilk kelimesinin harflerini karıştır
     if (puzzleIndex < dailyPuzzleData.length) {
@@ -816,13 +721,6 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
           dailyPuzzleData[puzzleIndex][currentIndex]['word'] ?? '';
       shuffledLetters = currentWord.split('');
       shuffledLetters.shuffle();
-
-      // Eğer puzzleForTodayCompleted == true ise, tüm kelimeleri otomatik olarak "doğru" say
-      if (puzzleForTodayCompleted) {
-        correctWords.addAll(
-          dailyPuzzleData[puzzleIndex].map((m) => m['word']!).toList()
-        );
-      }
     }
 
     // GlobalProperties
@@ -830,87 +728,6 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
     GlobalProperties.remainingLives.value = prefs.getInt('remainingLives') ?? 3;
     GlobalProperties.countdownSeconds.value = prefs.getInt('countdownSeconds') ?? 15;
     GlobalProperties.isTimerRunning.value = prefs.getBool('isTimerRunning') ?? false;
-
     GlobalProperties.deadlineTimestamp = prefs.getInt('deadlineTimestamp') ?? 0;
-    final nowMs = now.millisecondsSinceEpoch;
-
-    // Sayaçın bitip bitmediğini kontrol et
-    if (GlobalProperties.deadlineTimestamp != 0 &&
-        GlobalProperties.deadlineTimestamp <= nowMs) {
-      // Süre bitmiş
-      GlobalProperties.isTimeCompletedWhileAppClosed = true;
-      await saveGameData();
-    } else if (GlobalProperties.deadlineTimestamp != 0) {
-      // Devam eden süre varsa, kaç saniye kaldı?
-      final remainingMillis = GlobalProperties.deadlineTimestamp - nowMs;
-      final remainingSecs = (remainingMillis / 1000).ceil();
-
-      GlobalProperties.countdownSeconds.value =
-          remainingSecs > 0 ? remainingSecs : 0;
-      GlobalProperties.isTimerRunning.value = true;
-    }
-
-    // Mevcut puzzle'ın ilk kelimesinin harflerini karıştır
-    if (puzzleIndex < dailyPuzzleData.length) {
-      final currentWord =
-          dailyPuzzleData[puzzleIndex][currentIndex]['word'] ?? '';
-      shuffledLetters = currentWord.split('');
-      shuffledLetters.shuffle();
-    }
-  }
-
-  /// Tarihi string'e çevirme (yyyyMMdd vb.)
-  String _dateToString(DateTime date) {
-    return '${date.year}${date.month.toString().padLeft(2, '0')}${date.day.toString().padLeft(2, '0')}';
-  }
-
-  /// String'i tarihe çevirme
-  DateTime _stringToDate(String dateString) {
-    final year = int.parse(dateString.substring(0, 4));
-    final month = int.parse(dateString.substring(4, 6));
-    final day = int.parse(dateString.substring(6, 8));
-    return DateTime(year, month, day);
-  }
-
-  String _formatTime(int totalSeconds) {
-    final hours = totalSeconds ~/ 3600;
-    final minutes = (totalSeconds % 3600) ~/ 60;
-    final secs = totalSeconds % 60;
-    return '${hours.toString().padLeft(2, '0')}:'
-        '${minutes.toString().padLeft(2, '0')}:'
-        '${secs.toString().padLeft(2, '0')}';
-  }
-
-  void _startNextPuzzleCountdown() {
-    final now = DateTime.now();
-    // Bir sonraki gün geceyarısını bul (yani yarın 00:00)
-    final tomorrowMidnight = DateTime(now.year, now.month, now.day + 1);
-
-    // Şu andan yarın geceyarısına kadar kaç saniye var?
-    final diff = tomorrowMidnight.difference(now).inSeconds;
-
-    setState(() {
-      nextPuzzleSeconds = diff;
-    });
-
-    // Her saniye bir kez geri sayımı azalt
-    _nextPuzzleTimer?.cancel();
-    _nextPuzzleTimer = Timer.periodic(Duration(seconds: 1), (timer) {
-      if (nextPuzzleSeconds > 0) {
-        setState(() {
-          nextPuzzleSeconds--;
-        });
-      } else {
-        timer.cancel();
-
-        setState(() {
-          nextPuzzleSeconds = 0;
-          puzzleForTodayCompleted = false;
-        });
-        
-        loadGameData();
-        saveGameData();
-      }
-    });
   }
 }

@@ -15,6 +15,8 @@ class GlobalProperties {
   static ValueNotifier<int> wordHintCount = ValueNotifier<int>(5);
   static ValueNotifier<int> singleHintCount = ValueNotifier<int>(5);
 
+  static ValueNotifier<bool> puzzleForTodayCompleted = ValueNotifier<bool>(false);
+
   static TextStyle globalTextStyle({
     double fontSize = 14,
     FontWeight fontWeight = FontWeight.normal,

@@ -883,7 +883,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
               saveGameData,
             );
             if (currentSubSectionNumber % 10 == 0) {
-              showLevelCompleteDialog(context);
+              showLevelCompleteDialog(context, sourcePage: 'puzzle_game');
             }
           }
         }
@@ -1315,7 +1315,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
               saveGameData,
             );
             if (currentSubSectionNumber % 10 == 0) {
-              showLevelCompleteDialog(context);
+              showLevelCompleteDialog(context, sourcePage: 'puzzle_game');
             }
           }
         }
@@ -1429,7 +1429,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
             saveGameData,
           );
           if (currentSubSectionNumber % 10 == 0) {
-            showLevelCompleteDialog(context);
+            showLevelCompleteDialog(context, sourcePage: 'puzzle_game');
           }
         }
       }

@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:pyramid_puzzle/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'global_properties.dart';
 
 class LevelCompleteDialog extends StatefulWidget {
+  final String sourcePage; // Hangi ekrandan çağrıldığını belirten parametre
+
+  const LevelCompleteDialog({Key? key, required this.sourcePage}) : super(key: key);
+
   @override
   _LevelCompleteDialogState createState() => _LevelCompleteDialogState();
 }
@@ -36,10 +41,17 @@ class _LevelCompleteDialogState extends State<LevelCompleteDialog> with TickerPr
           isCloseButtonVisible = true; // Animasyon bitince çarpı butonunu göster
           showRewardAnimations = true;
 
-          GlobalProperties.remainingLives.value += 3;
-          GlobalProperties.coin.value += 100;
-          GlobalProperties.wordHintCount.value += 2;   
-          GlobalProperties.singleHintCount.value += 2;
+          if (widget.sourcePage == 'daily_puzzle_game') {
+            GlobalProperties.remainingLives.value += 1;  
+            GlobalProperties.coin.value += 50;           
+            GlobalProperties.wordHintCount.value += 1;     
+            GlobalProperties.singleHintCount.value += 1;     
+          } else {
+            GlobalProperties.remainingLives.value += 3;
+            GlobalProperties.coin.value += 100;
+            GlobalProperties.wordHintCount.value += 2;   
+            GlobalProperties.singleHintCount.value += 2;
+          }
           saveGameData();
         });
         _slideController.forward();
@@ -106,121 +118,120 @@ class _LevelCompleteDialogState extends State<LevelCompleteDialog> with TickerPr
         child: Stack(
           children: [
             if (showRewardAnimations) ...[
-  Positioned(
-    top: MediaQuery.of(context).size.height * 0.19,
-    left: MediaQuery.of(context).size.width * 0.25,
-    child: SlideTransition(
-      position: _slideAnimation,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // İlk satır: Coin ve Can ödülleri
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              // Coin ödülü
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Lottie.asset(
-                    'assets/animations/coin_flip_animation.json',
-                    width: 50,
-                    height: 50,
-                    controller: _coinFlipController,
+              Positioned(
+                top: MediaQuery.of(context).size.height * 0.19,
+                left: MediaQuery.of(context).size.width * 0.25,
+                child: SlideTransition(
+                  position: _slideAnimation,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // İlk satır: Coin ve Can ödülleri
+                     Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          // Coin ödülü
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Lottie.asset(
+                                'assets/animations/coin_flip_animation.json',
+                                width: 50,
+                                height: 50,
+                                controller: _coinFlipController,
+                              ),
+                              SizedBox(width: 8),
+                              Text(
+                                widget.sourcePage == 'daily_puzzle_game' ? "+50" : "+100",
+                                style: GlobalProperties.globalTextStyle(
+                                  color: Colors.yellow,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(width: 20), // İki ödül arasında ek boşluk (isteğe bağlı)
+                          // Can ödülü
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Lottie.asset(
+                                'assets/animations/heart_beat_animation.json',
+                                width: 50,
+                                height: 50,
+                                controller: _heartBeatController,
+                              ),
+                              SizedBox(width: 8),
+                              Text(
+                                widget.sourcePage == 'daily_puzzle_game' ? "+1" : "+3",
+                                style: GlobalProperties.globalTextStyle(
+                                  color: Colors.red,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 30), // Satırlar arası dikey boşluk
+                      // İkinci satır: Kelime ipucu ve Tek ipucu ödülleri
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          // Kelime ipucu ödülü (Icons.auto_fix_high)
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.auto_fix_high,
+                                color: Colors.white,
+                                size: 50,
+                              ),
+                              SizedBox(width: 8),
+                              Text(
+                                widget.sourcePage == 'daily_puzzle_game' ? "+1" : "+2",
+                                style: GlobalProperties.globalTextStyle(
+                                  color: Colors.white,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(width: 30), // İki ödül arasında ek boşluk (isteğe bağlı)
+                          // Tek ipucu ödülü (Icons.lightbulb)
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.lightbulb,
+                                color: Colors.white,
+                                size: 50,
+                              ),
+                              SizedBox(width: 8),
+                              Text(
+                                widget.sourcePage == 'daily_puzzle_game' ? "+1" : "+2",
+                                style: GlobalProperties.globalTextStyle(
+                                  color: Colors.white,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                  SizedBox(width: 8),
-                  Text(
-                    "+100",
-                    style: GlobalProperties.globalTextStyle(
-                      color: Colors.yellow,
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(width: 20), // İki ödül arasında ek boşluk (isteğe bağlı)
-              // Can ödülü
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Lottie.asset(
-                    'assets/animations/heart_beat_animation.json',
-                    width: 50,
-                    height: 50,
-                    controller: _heartBeatController,
-                  ),
-                  SizedBox(width: 8),
-                  Text(
-                    "+3",
-                    style: GlobalProperties.globalTextStyle(
-                      color: Colors.red,
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
+                ),
               ),
             ],
-          ),
-          SizedBox(height: 30), // Satırlar arası dikey boşluk
-          // İkinci satır: Kelime ipucu ve Tek ipucu ödülleri
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              // Kelime ipucu ödülü (Icons.auto_fix_high)
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.auto_fix_high,
-                    color: Colors.white,
-                    size: 50,
-                  ),
-                  SizedBox(width: 8),
-                  Text(
-                    "+2",
-                    style: GlobalProperties.globalTextStyle(
-                      color: Colors.white,
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(width: 30), // İki ödül arasında ek boşluk (isteğe bağlı)
-              // Tek ipucu ödülü (Icons.lightbulb)
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.lightbulb,
-                    color: Colors.white,
-                    size: 50,
-                  ),
-                  SizedBox(width: 8),
-                  Text(
-                    "+2",
-                    style: GlobalProperties.globalTextStyle(
-                      color: Colors.white,
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ],
-      ),
-    ),
-  ),
-],
-
             Center(
               child: Lottie.asset(
                 'assets/animations/chest_spotlight_animation.json',
@@ -248,7 +259,16 @@ class _LevelCompleteDialogState extends State<LevelCompleteDialog> with TickerPr
                 child: IconButton(
                   icon: Icon(Icons.close, color: Colors.white, size: 30),
                   onPressed: () {
-                    Navigator.of(context).pop(); // Dialog'u kapat
+                    if (widget.sourcePage == 'daily_puzzle_game') {
+                      // daily_puzzle_game ekranından çağrıldıysa ana menüye yönlendir
+                      Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (context) => HomePage()),
+                        (route) => false,
+                      );
+                    } else {
+                      // Diğer ekranlar (örneğin puzzle_game) için mevcut davranış
+                      Navigator.of(context).pop();
+                    }
                   },
                 ),
               ),
@@ -289,11 +309,11 @@ class _LevelCompleteDialogState extends State<LevelCompleteDialog> with TickerPr
 }
 
 // Bu fonksiyon, popup'ı çağırmak için kullanılacak
-void showLevelCompleteDialog(BuildContext context) {
+void showLevelCompleteDialog(BuildContext context, {required String sourcePage}) {
   showGeneralDialog(
     context: context,
-    barrierDismissible: false, // Kullanıcı dışarıya tıklayarak kapatamasın
-    barrierColor: Colors.black.withOpacity(0.7), // Arkaplan tam ekran kaplasın
-    pageBuilder: (context, _, __) => LevelCompleteDialog(),
+    barrierDismissible: false,
+    barrierColor: Colors.black.withOpacity(0.7),
+    pageBuilder: (context, _, __) => LevelCompleteDialog(sourcePage: sourcePage),
   );
 }

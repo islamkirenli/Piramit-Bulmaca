@@ -61,6 +61,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   bool _isSectionsPressed = false;
   bool _isDailyPuzzlePressed = false;
 
+  int nextPuzzleSeconds = 0;
+  Timer? _nextPuzzleTimer;
+  String _currentDayString = "";
+  Timer? _dailyCheckTimer;
+
   late AnimationController _rippleController;
 
   @override
@@ -89,7 +94,23 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       if (GlobalProperties.isTimerRunning.value) {
         handleCountdownLogic();
       }
+      if (GlobalProperties.puzzleForTodayCompleted.value) {
+        startNextPuzzleCountdown();
+      }
       checkSpecialDay();
+    });
+
+    _currentDayString = _getTodayString(); // Aşağıda tanımlayacağımız helper fonksiyon
+
+    _dailyCheckTimer = Timer.periodic(Duration(minutes: 1), (timer) {
+      String newTodayString = _getTodayString();
+      if (newTodayString != _currentDayString) {
+        // Yeni gün başladıysa; isNewDailyPuzzle'yi true yap
+        setState(() {
+          isNewDailyPuzzle = true;
+          _currentDayString = newTodayString;
+        });
+      }
     });
 
     _rippleController = AnimationController(
@@ -113,8 +134,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     _videoController.dispose();
     _clickAudioPlayer?.dispose();
     _timer?.cancel();
-    _settingsIconController.dispose(); // Animasyon denetleyicisini temizle
+    _settingsIconController.dispose(); 
     _rippleController.dispose();
+    _nextPuzzleTimer?.cancel();
+    _dailyCheckTimer?.cancel();
     super.dispose();
   }
 
@@ -156,115 +179,150 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(height: 60), // AppBar ile buton arasına boşluk ekler
-              Center(
-                child: GestureDetector(
-                  onTapDown: (_) {
-                    setState(() {
-                      _isDailyPuzzlePressed = true;
-                    });
-                  },
-                  onTapUp: (_) {
-                    setState(() {
-                      _isDailyPuzzlePressed = false;
-                    });
-                  },
-                  onTapCancel: () {
-                    setState(() {
-                      _isDailyPuzzlePressed = false;
-                    });
-                  },
-                  onTap: () async {
-                    if (GlobalProperties.isSoundOn) {
-                      await _clickAudioPlayer?.stop();
-                      await _clickAudioPlayer?.play(
-                        AssetSource('audios/click_audio.mp3'),
-                      );
-                    }
-                    setState(() {
-                      isNewDailyPuzzle = false;
-                    });
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => DailyPuzzleGame()),
-                    );
-                  },
-                  child: AnimatedScale(
-                    scale: _isDailyPuzzlePressed ? 0.95 : 1.0,
-                    duration: Duration(milliseconds: 100),
-                    child: Container(
-                      width: 200, // Buton genişliği
-                      height: 40, // Buton yüksekliği
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(25), // Yüksekliğin yarısı kadar yuvarlatıldı, kapsül görünümü için
-                        gradient: LinearGradient(
-                          colors: [
-                            Color(0xFFFFC107), // Açık, parlak turuncu (biraz altın sarısı)
-                            Color(0xFFFF9800), // Orta ton
-                            Color(0xFFF57C00), // Daha koyu ve sıcak turuncu
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.4),
-                            offset: Offset(4, 4),
-                            blurRadius: 8,
-                          ),
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.8),
-                            offset: Offset(-4, -4),
-                            blurRadius: 8,
-                          ),
-                        ],
-                      ),
-                      child: Stack(
-                        clipBehavior: Clip.none,
-                        alignment: Alignment.center,
-                        children: [
-                          Text(
-                            "Günlük Bulmaca",
-                            style: GlobalProperties.globalTextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          if (isNewDailyPuzzle)
-                            Positioned(
-                              top: -10,
-                              right: 0,
-                              child: Container(
-                                width: 18,
-                                height: 18,
-                                decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  shape: BoxShape.circle,
-                                  boxShadow: [
+              ValueListenableBuilder<bool>(
+                valueListenable: GlobalProperties.puzzleForTodayCompleted,
+                builder: (context, puzzleCompleted, child) {
+                  bool disableButton = puzzleCompleted && !isNewDailyPuzzle;
+                  double buttonHeight = (puzzleCompleted && !isNewDailyPuzzle) ? 70 : 40;
+                  return Center(
+                    child: GestureDetector(
+                      onTapDown: (_) {
+                        if (!disableButton) {
+                          setState(() {
+                            _isDailyPuzzlePressed = true;
+                          });
+                        }
+                      },
+                      onTapUp: (_) {
+                        if (!disableButton) {
+                          setState(() {
+                            _isDailyPuzzlePressed = false;
+                          });
+                        }
+                      },
+                      onTapCancel: () {
+                        if (!disableButton) {
+                          setState(() {
+                            _isDailyPuzzlePressed = false;
+                          });
+                        }
+                      },
+                      onTap: disableButton
+                          ? null
+                          : () async {
+                              if (GlobalProperties.isSoundOn) {
+                                await _clickAudioPlayer?.stop();
+                                await _clickAudioPlayer?.play(
+                                  AssetSource('audios/click_audio.mp3'),
+                                );
+                              }
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => DailyPuzzleGame()),
+                              );
+                            },
+                      child: AnimatedScale(
+                        scale: _isDailyPuzzlePressed ? 0.95 : 1.0,
+                        duration: Duration(milliseconds: 100),
+                        child: Container(
+                          width: 200,
+                          height: buttonHeight,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25),
+                            gradient: disableButton
+                                ? LinearGradient(colors: [Colors.grey, Colors.grey])
+                                : LinearGradient(
+                                    colors: [
+                                      Color(0xFFFFC107),
+                                      Color(0xFFFF9800),
+                                      Color(0xFFF57C00),
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  ),
+                            boxShadow: disableButton
+                                ? []
+                                : [
                                     BoxShadow(
                                       color: Colors.black.withOpacity(0.4),
-                                      offset: Offset(2, 2),
-                                      blurRadius: 4,
+                                      offset: Offset(4, 4),
+                                      blurRadius: 8,
+                                    ),
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.8),
+                                      offset: Offset(-4, -4),
+                                      blurRadius: 8,
                                     ),
                                   ],
+                          ),
+                          child: Stack(
+                            clipBehavior: Clip.none,
+                            children: [
+                              Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "Günlük Bulmaca",
+                                      style: GlobalProperties.globalTextStyle(
+                                        color: disableButton ? Colors.black38 : Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    if (puzzleCompleted && !isNewDailyPuzzle)
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 4.0),
+                                        child: Text(
+                                          _formatTime(nextPuzzleSeconds),
+                                          style: GlobalProperties.globalTextStyle(
+                                            color: Colors.black38,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.normal,
+                                          ),
+                                        ),
+                                      ),
+                                  ],
                                 ),
-                                child: Center(
-                                  child: Text(
-                                    '!',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
+                              ),
+                              // İsteğe bağlı: Yeni günlük bulmaca varsa sağ üst köşeye (!) işareti ekleyebilirsiniz.
+                              if (isNewDailyPuzzle)
+                                Positioned(
+                                  top: -10,
+                                  right: 0,
+                                  child: Container(
+                                    width: 18,
+                                    height: 18,
+                                    decoration: BoxDecoration(
+                                      color: Colors.red,
+                                      shape: BoxShape.circle,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.4),
+                                          offset: Offset(2, 2),
+                                          blurRadius: 4,
+                                        ),
+                                      ],
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        '!',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ),
-                        ],
+                            ],
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
+                  );
+                },
               ),
               Expanded(
                 child: Center(
@@ -665,6 +723,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     GlobalProperties.isSoundOn = prefs.getBool('isSoundOn') ?? true;
     GlobalProperties.isVibrationOn = prefs.getBool('isVibrationOn') ?? true;
     
+    GlobalProperties.puzzleForTodayCompleted.value = prefs.getBool('puzzleForTodayCompleted') ?? false;
+    
     // Bugün ve son kaydedilen tarih
     String? savedDate = prefs.getString('lastPuzzleDate');
     final now = DateTime.now();
@@ -765,6 +825,40 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setBool('specialDayPopupShown', false);
     }
+  }
+
+  void startNextPuzzleCountdown() {
+    DateTime now = DateTime.now();
+    // Yarın gece yarısına kadar geçen süre
+    DateTime tomorrowMidnight = DateTime(now.year, now.month, now.day + 1);
+    setState(() {
+      nextPuzzleSeconds = tomorrowMidnight.difference(now).inSeconds;
+    });
+    _nextPuzzleTimer?.cancel();
+    _nextPuzzleTimer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        if (nextPuzzleSeconds > 0) {
+          nextPuzzleSeconds--;
+        } else {
+          timer.cancel();
+        }
+      });
+    });
+  }
+
+  // Zamanı HH:MM:SS formatında döndüren yardımcı fonksiyon:
+  String _formatTime(int totalSeconds) {
+    int hours = totalSeconds ~/ 3600;
+    int minutes = (totalSeconds % 3600) ~/ 60;
+    int seconds = totalSeconds % 60;
+    return "${hours.toString().padLeft(2, '0')}:"
+          "${minutes.toString().padLeft(2, '0')}:"
+          "${seconds.toString().padLeft(2, '0')}";
+  }
+
+  String _getTodayString() {
+    final now = DateTime.now();
+    return "${now.year}${now.month.toString().padLeft(2, '0')}${now.day.toString().padLeft(2, '0')}";
   }
 }
 
