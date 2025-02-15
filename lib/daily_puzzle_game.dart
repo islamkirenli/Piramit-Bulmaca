@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pyramid_puzzle/circle_painter.dart';
 import 'package:pyramid_puzzle/level_complete_dialog.dart';
 import 'daily_puzzle_data.dart'; // Günlük puzzle verileri (liste)
@@ -87,6 +88,8 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
 
   // Data yüklendi mi?
   bool isDataLoaded = false;
+
+  bool showPartyAnimation = false;
 
   // Gün (tarih) kontrolü için
   late DateTime lastPuzzleDate; // Son oynanan tarih
@@ -328,27 +331,38 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
                                 mainAxisSize: MainAxisSize.min,
                                 children:
                                     List.generate(word.length, (charIndex) {
-                                  return isRevealed
-                                      ? Text(
-                                          ' ${word[charIndex]} ',
-                                          style:
-                                              GlobalProperties.globalTextStyle(
-                                            fontSize: 20,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            letterSpacing: 5,
+                                  return AnimatedSwitcher(
+                                    duration: Duration(milliseconds: 400),
+                                    transitionBuilder: (child, animation) {
+                                      return ScaleTransition(scale: animation, child: child);
+                                    },
+                                    child: isRevealed
+                                        ? Stack(
+                                            key: ValueKey('revealed-$index-$charIndex'),
+                                            alignment: Alignment.center,
+                                            children: [
+                                              Text(
+                                                ' ${word[charIndex]} ',
+                                                style: GlobalProperties.globalTextStyle(
+                                                  fontSize: 20,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  letterSpacing: 5,
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        : Text(
+                                            ' _ ',
+                                            key: ValueKey('hidden-$index-$charIndex'),
+                                            style: GlobalProperties.globalTextStyle(
+                                              fontSize: 20,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              letterSpacing: 5,
+                                            ),
                                           ),
-                                        )
-                                      : Text(
-                                          ' _ ',
-                                          style:
-                                              GlobalProperties.globalTextStyle(
-                                            fontSize: 20,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            letterSpacing: 5,
-                                          ),
-                                        );
+                                  );
                                 }),
                               ),
                             );
@@ -437,50 +451,49 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
                           // Harfleri karıştırma butonu
                           Positioned(
                             child: AnimatedBuilder(
-  animation: _shuffleButtonController,
-  builder: (context, child) {
-    return Transform.rotate(
-      angle: _shuffleButtonController.value * 2 * pi, // Tam dönüş (360°)
-      child: child,
-    );
-  },
-  child: GestureDetector(
-    onTap: () async {
-      if (GlobalProperties.isSoundOn) {
-        await _clickAudioPlayer?.stop();
-        await _clickAudioPlayer?.play(
-          AssetSource('audios/click_audio.mp3'),
-        );
-      }
-      // İlk önce buton animasyonu başlasın
-      _shuffleButtonController.forward(from: 0).then((_) {
-        // Buton animasyonu tamamlandıktan sonra, 
-        // önce yeni harfleri ayarla (shuffleLetters() günceller)
-        setState(() {
-          shuffleLetters();
-          // Harf animasyonunu resetleyip 0.0 yapıyoruz ki yeni harfler
-          // önce görünmesin ve sonra scale 0'dan 1'e animasyonla gelsin
-          _letterShuffleController.value = 0.0;
-        });
-        // Ardından harf animasyonu başlasın
-        _letterShuffleController.forward(from: 0);
-      });
-    },
-    child: Container(
-      width: 50,
-      height: 50,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-      ),
-      child: Icon(
-        Icons.shuffle,
-        color: Colors.white,
-        size: 30,
-      ),
-    ),
-  ),
-),
-
+                              animation: _shuffleButtonController,
+                              builder: (context, child) {
+                                return Transform.rotate(
+                                  angle: _shuffleButtonController.value * 2 * pi, // Tam dönüş (360°)
+                                  child: child,
+                                );
+                              },
+                              child: GestureDetector(
+                                onTap: () async {
+                                  if (GlobalProperties.isSoundOn) {
+                                    await _clickAudioPlayer?.stop();
+                                    await _clickAudioPlayer?.play(
+                                      AssetSource('audios/click_audio.mp3'),
+                                    );
+                                  }
+                                  // İlk önce buton animasyonu başlasın
+                                  _shuffleButtonController.forward(from: 0).then((_) {
+                                    // Buton animasyonu tamamlandıktan sonra, 
+                                    // önce yeni harfleri ayarla (shuffleLetters() günceller)
+                                    setState(() {
+                                      shuffleLetters();
+                                      // Harf animasyonunu resetleyip 0.0 yapıyoruz ki yeni harfler
+                                      // önce görünmesin ve sonra scale 0'dan 1'e animasyonla gelsin
+                                      _letterShuffleController.value = 0.0;
+                                    });
+                                    // Ardından harf animasyonu başlasın
+                                    _letterShuffleController.forward(from: 0);
+                                  });
+                                },
+                                child: Container(
+                                  width: 50,
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Icon(
+                                    Icons.shuffle,
+                                    color: Colors.white,
+                                    size: 30,
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -499,6 +512,22 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
               ],
             ),
           ),
+          if (showPartyAnimation)
+        Positioned.fill(
+          child: Container(
+            color: Colors.black.withOpacity(0.5), // İsteğe bağlı: arka planı karartmak için
+            child: Center(
+              child: Lottie.asset(
+                'assets/animations/party_animation.json',
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                fit: BoxFit.cover,
+                repeat: false,
+                animate: true,
+              ),
+            ),
+          ),
+        ),
         ],
       ),
     );
@@ -593,6 +622,18 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
           correctWords.add(correctWord);
         }
 
+        Timer(Duration(milliseconds: 500), () {
+          setState(() {
+            showPartyAnimation = true;
+          });
+        });
+        // 2 saniye sonra animasyonu gizle
+        Timer(Duration(seconds: 2), () {
+          setState(() {
+            showPartyAnimation = false;
+          });
+        });
+
         // Eğer puzzle içinde birden fazla kelime varsa, sıradaki kelimeye geç
         if (currentIndex < currentPuzzle.length - 1) {
           currentIndex++;
@@ -604,7 +645,7 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
           shuffleLetters();
         } else {
           GlobalProperties.puzzleForTodayCompleted.value = true;
-          Timer(Duration(seconds: 1), () {
+          Timer(Duration(seconds: 2), () {
             showInterstitialAd();
             showLevelCompleteDialog(context, sourcePage: 'daily_puzzle_game');
           });
