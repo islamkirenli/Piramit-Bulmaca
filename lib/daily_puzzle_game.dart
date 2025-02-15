@@ -292,78 +292,78 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
                     builder: (context, constraints) {
                       final double maxWidth = constraints.maxWidth;
 
-                      return Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: List.generate(
-                          currentPuzzle.length,
-                          (index) {
-                            String word = currentPuzzle[index]['word']!;
-                            bool isRevealed = correctWords.contains(word);
+                      return Center( // <-- Center widget ile sarmaladık
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: List.generate(
+                            currentPuzzle.length,
+                            (index) {
+                              String word = currentPuzzle[index]['word']!;
+                              bool isRevealed = correctWords.contains(word);
 
-                            double calculatedWidth = 50.0 * word.length;
-                            double containerWidth = calculatedWidth > maxWidth
-                                ? maxWidth
-                                : calculatedWidth;
+                              double calculatedWidth = 50.0 * word.length;
+                              double containerWidth = calculatedWidth > maxWidth
+                                  ? maxWidth
+                                  : calculatedWidth;
 
-                            return Container(
-                              width: containerWidth,
-                              height: 40,
-                              margin: EdgeInsets.only(bottom: 4),
-                              decoration: BoxDecoration(
-                                color: Colors.black54,
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(
-                                  color: Colors.black,
-                                  width: 2.0,
+                              return Container(
+                                width: containerWidth,
+                                height: 40,
+                                margin: EdgeInsets.only(bottom: 4),
+                                decoration: BoxDecoration(
+                                  color: Colors.black54,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                    color: Colors.black,
+                                    width: 2.0,
+                                  ),
                                 ),
-                              ),
-                              alignment: Alignment.center,
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children:
-                                    List.generate(word.length, (charIndex) {
-                                  return AnimatedSwitcher(
-                                    duration: Duration(milliseconds: 400),
-                                    transitionBuilder: (child, animation) {
-                                      return ScaleTransition(scale: animation, child: child);
-                                    },
-                                    child: isRevealed
-                                        ? Stack(
-                                            key: ValueKey('revealed-$index-$charIndex'),
-                                            alignment: Alignment.center,
-                                            children: [
-                                              Text(
-                                                ' ${word[charIndex]} ',
-                                                style: GlobalProperties.globalTextStyle(
-                                                  fontSize: 20,
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  letterSpacing: 5,
+                                alignment: Alignment.center,
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: List.generate(word.length, (charIndex) {
+                                    return AnimatedSwitcher(
+                                      duration: Duration(milliseconds: 400),
+                                      transitionBuilder: (child, animation) {
+                                        return ScaleTransition(scale: animation, child: child);
+                                      },
+                                      child: isRevealed
+                                          ? Stack(
+                                              key: ValueKey('revealed-$index-$charIndex'),
+                                              alignment: Alignment.center,
+                                              children: [
+                                                Text(
+                                                  ' ${word[charIndex]} ',
+                                                  style: GlobalProperties.globalTextStyle(
+                                                    fontSize: 20,
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                    letterSpacing: 5,
+                                                  ),
                                                 ),
+                                              ],
+                                            )
+                                          : Text(
+                                              ' _ ',
+                                              key: ValueKey('hidden-$index-$charIndex'),
+                                              style: GlobalProperties.globalTextStyle(
+                                                fontSize: 20,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                                letterSpacing: 5,
                                               ),
-                                            ],
-                                          )
-                                        : Text(
-                                            ' _ ',
-                                            key: ValueKey('hidden-$index-$charIndex'),
-                                            style: GlobalProperties.globalTextStyle(
-                                              fontSize: 20,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                              letterSpacing: 5,
                                             ),
-                                          ),
-                                  );
-                                }),
-                              ),
-                            );
-                          },
-                        ).reversed.toList(),
+                                    );
+                                  }),
+                                ),
+                              );
+                            },
+                          ).reversed.toList(),
+                        ),
                       );
                     },
                   ),
                 ),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

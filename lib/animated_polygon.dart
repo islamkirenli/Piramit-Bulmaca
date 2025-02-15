@@ -163,8 +163,8 @@ class PolygonPainter extends CustomPainter {
 
     // Harfler arası çizgiler için Paint
     final Paint linePaint = Paint()
-      ..color = Colors.red
-      ..strokeWidth = 2.0
+      ..color = Color.fromRGBO(249, 186, 59, 1)
+      ..strokeWidth = 6.0
       ..style = PaintingStyle.stroke;
 
     // Çemberlerin yarıçapı
@@ -212,7 +212,7 @@ class PolygonPainter extends CustomPainter {
       // Seçilen harfler için daire çizimi (değişmedi)
       if (selectedIndexes.contains(i)) {
         final Paint circlePaint = Paint()
-          ..color = Colors.red.withOpacity(0.5)
+          ..color = Color.fromRGBO(249, 186, 59, 1)
           ..style = PaintingStyle.fill;
         canvas.drawCircle(Offset(dx, dy), 25, circlePaint);
       }

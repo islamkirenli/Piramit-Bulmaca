@@ -1,0 +1,2 @@
+/Users/islamkirenli/Desktop/Flutter_Projects/pyramid_puzzle/android/app/.cxx/Debug/405q1rf5/x86_64/CMakeFiles/edit_cache.dir
+/Users/islamkirenli/Desktop/Flutter_Projects/pyramid_puzzle/android/app/.cxx/Debug/405q1rf5/x86_64/CMakeFiles/rebuild_cache.dir
