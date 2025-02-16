@@ -223,16 +223,66 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
       );
     }
 
+    // Mevcut ana bölüme göre arka plan görselini belirleyin:
+    String backgroundImage;
+    switch (currentMainSection) {
+      case "Ana Bölüm 1":
+        backgroundImage = 'assets/images/game_background/keops.jpg';
+        break;
+      case "Ana Bölüm 2":
+        backgroundImage = 'assets/images/game_background/khafre.jpg';
+        break;
+      case "Ana Bölüm 3":
+        backgroundImage = 'assets/images/game_background/menkaure.jpg';
+        break;
+      case "Ana Bölüm 4":
+        backgroundImage = 'assets/images/game_background/djoser.jpg';
+        break;
+      case "Ana Bölüm 5":
+        backgroundImage = 'assets/images/game_background/bent.jpg';
+        break;
+      case "Ana Bölüm 6":
+        backgroundImage = 'assets/images/game_background/meidum.jpg';
+        break;
+      case "Ana Bölüm 7":
+        backgroundImage = 'assets/images/game_background/meroe.jpg';
+        break;
+      case "Ana Bölüm 8":
+        backgroundImage = 'assets/images/game_background/gunes.jpg';
+        break;
+      case "Ana Bölüm 9":
+        backgroundImage = 'assets/images/game_background/tikal.jpg';
+        break;
+      case "Ana Bölüm 10":
+        backgroundImage = 'assets/images/game_background/palenque.jpg';
+        break;
+      case "Ana Bölüm 11":
+        backgroundImage = 'assets/images/game_background/calakmul.jpg';
+        break;
+      case "Ana Bölüm 12":
+        backgroundImage = 'assets/images/game_background/elcastillo.jpg';
+        break;
+      case "Ana Bölüm 13":
+        backgroundImage = 'assets/images/game_background/cestius.jpg';
+        break;
+      case "Ana Bölüm 14":
+        backgroundImage = 'assets/images/game_background/candi.jpg';
+        break;
+      default:
+        backgroundImage = 'assets/images/game_background/keops.jpg';
+        break;
+    }
+
     return WillPopScope(
       onWillPop: () async {
         return false;
       },
       child: Stack(
         children: [
-          // Arka plan görseli
+          // Arka plan görseli artık ana bölüme göre değişiyor:
           Positioned.fill(
             child: Image.asset(
-              'assets/images/game_background/keops.jpg',
+              backgroundImage,
               fit: BoxFit.cover, // Tüm ekranı kaplayacak şekilde ayarlıyoruz
             ),
           ),

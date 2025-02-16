@@ -89,7 +89,19 @@ flutter:
   - assets/animations/chest_spotlight_animation.json
   - assets/images/piramit_background.jpg
   - assets/images/game_background/keops.jpg
+  - assets/images/game_background/bent.jpg
+  - assets/images/game_background/calakmul.jpg
+  - assets/images/game_background/cestius.jpg
+  - assets/images/game_background/djoser.jpg
+  - assets/images/game_background/gunes.jpg
+  - assets/images/game_background/khafre.jpg
+  - assets/images/game_background/meidum.jpg
+  - assets/images/game_background/menkaure.jpg
   - assets/images/game_background/elcastillo.jpg
+  - assets/images/game_background/meroe.jpg
+  - assets/images/game_background/palenque.jpg
+  - assets/images/game_background/tikal.jpg
+  - assets/images/game_background/candi.jpg
   - assets/images/ads_block.png
   - assets/images/correct_guess/correct_guess1.png
   - assets/images/correct_guess/correct_guess2.png
