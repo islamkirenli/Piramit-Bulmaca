@@ -17,6 +17,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/services.dart';
 import 'level_complete_dialog.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'all_sections_completed_dialog.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -1136,8 +1137,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
             .reduce((a, b) => a > b ? a : b);
         _polygonKey.currentState?.setSides(maxWordLength.toDouble());
 
-        shuffledLetters =
-            puzzleSections[currentMainSection]![currentSubSection]![currentIndex]['word']!.split('');
+        shuffledLetters = puzzleSections[currentMainSection]![currentSubSection]![currentIndex]['word']!.split('');
         shuffledLetters.shuffle(); // Harfleri karıştır
       });
     } else {
@@ -1160,10 +1160,13 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
               .reduce((a, b) => a > b ? a : b);
           _polygonKey.currentState?.setSides(maxWordLength.toDouble());
 
-          shuffledLetters =
-              puzzleSections[currentMainSection]![currentSubSection]![currentIndex]['word']!.split('');
+          shuffledLetters = puzzleSections[currentMainSection]![currentSubSection]![currentIndex]['word']!.split('');
           shuffledLetters.shuffle(); // Harfleri karıştır
         });
+      } else {
+        GlobalProperties.allSectionsCompleted = true;
+        // Tüm ana ve alt bölümler tamamlandı: ayrı dosyadaki pop-up'ı göster.
+        showAllSectionsCompletedDialog(context);
       }
     }
   }
@@ -1258,6 +1261,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
     await prefs.setInt('deadlineTimestamp', GlobalProperties.deadlineTimestamp);
     await prefs.setInt('wordHintCount', GlobalProperties.wordHintCount.value);
     await prefs.setInt('singleHintCount', GlobalProperties.singleHintCount.value);
+    await prefs.setBool('allSectionsCompleted', GlobalProperties.allSectionsCompleted);
   }
 
   Future<void> loadGameData() async {

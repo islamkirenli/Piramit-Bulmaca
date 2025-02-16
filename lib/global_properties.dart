@@ -12,6 +12,8 @@ class GlobalProperties {
   static bool isMusicOn = true;      // <-- Müzik durumu
   static bool isVibrationOn = true;  // <-- Titreşim durumu
 
+  static bool allSectionsCompleted = false;
+
   static ValueNotifier<int> wordHintCount = ValueNotifier<int>(5);
   static ValueNotifier<int> singleHintCount = ValueNotifier<int>(5);
 
