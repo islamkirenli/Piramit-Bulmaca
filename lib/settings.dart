@@ -300,7 +300,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
           },
           icon: Icon(Icons.mail, color: Colors.white), // Mail ikonu
           label: Text(
-            'Yardım',
+            'Öneri ve Destek',
             style: GlobalProperties.globalTextStyle(fontSize: 16, color: Colors.white),
           ),
           style: ElevatedButton.styleFrom(
