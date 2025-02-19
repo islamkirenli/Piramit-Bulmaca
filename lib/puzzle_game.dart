@@ -1302,7 +1302,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
   }
 
   void showSingleHint() async{
-    if (GlobalProperties.isSoundOn && GlobalProperties.coin.value > 100){
+    if (GlobalProperties.isSoundOn){
       await _audioPlayerForHints?.stop();
       await _audioPlayerForHints?.play(
         AssetSource('audios/hint_audio.mp3'),
