@@ -1,67 +1,61 @@
-const Map<String, List<String>> infoMessages = {
-  // MARK: ANA BÖLÜM-1
-  "Ana Bölüm 1": [
-    "Piramidin inşa edildiği döneme ait eşsiz mimari özelliklere sahiptir.",
-    "Bu bölümde, antik sırlar ve tarihi bilgiler saklıdır.",
-  ],
-  // MARK: ANA BÖLÜM-2
-  "Ana Bölüm 2": [
-    "Bu bölüm, farklı bir mimari tarzı yansıtan detaylara sahiptir.",
-    "Modern çizgiler ve geçmişin izleri burada buluşuyor.",
-  ],
-  // MARK: ANA BÖLÜM-3
-  "Ana Bölüm 3": [
-    "Bu bölüm, farklı bir mimari tarzı yansıtan detaylara sahiptir.",
-    "Modern çizgiler ve geçmişin izleri burada buluşuyor.",
-  ],
-  // MARK: ANA BÖLÜM-4
-  "Ana Bölüm 4": [
-    "Bu bölüm, farklı bir mimari tarzı yansıtan detaylara sahiptir.",
-    "Modern çizgiler ve geçmişin izleri burada buluşuyor.",
-  ],
-  // MARK: ANA BÖLÜM-5
-  "Ana Bölüm 5": [
-    "Bu bölüm, farklı bir mimari tarzı yansıtan detaylara sahiptir.",
-    "Modern çizgiler ve geçmişin izleri burada buluşuyor.",
-  ],
-  // MARK: ANA BÖLÜM-6
-  "Ana Bölüm 6": [
-    "Bu bölüm, farklı bir mimari tarzı yansıtan detaylara sahiptir.",
-    "Modern çizgiler ve geçmişin izleri burada buluşuyor.",
-  ],
-  // MARK: ANA BÖLÜM-7
-  "Ana Bölüm 7": [
-    "Bu bölüm, farklı bir mimari tarzı yansıtan detaylara sahiptir.",
-    "Modern çizgiler ve geçmişin izleri burada buluşuyor.",
-  ],
-  // MARK: ANA BÖLÜM-8
-  "Ana Bölüm 8": [
-    "Bu bölüm, farklı bir mimari tarzı yansıtan detaylara sahiptir.",
-    "Modern çizgiler ve geçmişin izleri burada buluşuyor.",
-  ],
-  // MARK: ANA BÖLÜM-9
-  "Ana Bölüm 9": [
-    "Bu bölüm, farklı bir mimari tarzı yansıtan detaylara sahiptir.",
-    "Modern çizgiler ve geçmişin izleri burada buluşuyor.",
-  ],
-  // MARK: ANA BÖLÜM-10
-  "Ana Bölüm 10": [
-    "Bu bölüm, farklı bir mimari tarzı yansıtan detaylara sahiptir.",
-    "Modern çizgiler ve geçmişin izleri burada buluşuyor.",
-  ],
-  // MARK: ANA BÖLÜM-11
-  "Ana Bölüm 11": [
-    "Bu bölüm, farklı bir mimari tarzı yansıtan detaylara sahiptir.",
-    "Modern çizgiler ve geçmişin izleri burada buluşuyor.",
-  ],
-  // MARK: ANA BÖLÜM-12
-  "Ana Bölüm 12": [
-    "Bu bölüm, farklı bir mimari tarzı yansıtan detaylara sahiptir.",
-    "Modern çizgiler ve geçmişin izleri burada buluşuyor.",
-  ],
-  // MARK: ANA BÖLÜM-13
-  "Ana Bölüm 13": [
-    "Bu bölüm, farklı bir mimari tarzı yansıtan detaylara sahiptir.",
-    "Modern çizgiler ve geçmişin izleri burada buluşuyor.",
-  ],
-};
+const List<String> infoMessages = [
+  "Keops Piramidi, Mısır’ın Gize Platosu’nda, Kahire’ye yaklaşık 15 km mesafede yer alır.",
+  "Keops Piramidi, Firavun Khufu (Keops) adına MÖ 2580–2560 yılları arasında inşa edilmiştir.",
+  "Keops Piramidi, antik dünyanın yedi harikasından biri olarak kabul edilir.",
+  "Keops Piramidinin orijinal yüksekliği yaklaşık 146,7 m; günümüzde yaklaşık 138,8 m.",
+  "Keops Piramidinin tabanı, her kenarı yaklaşık 230,34 m olan mükemmel bir kare.",
+  "Keops Piramidinde yaklaşık 2,3 milyon, ortalama 2,5 ton ağırlığında taş blok kullanılmıştır.",
+  "Keops Piramidinde taşlar Tura kireçtaşı ve Aswan graniti gibi malzemelerden elde edilmiştir.",
+  "Keops Piramidinde kullanılan taşların taşınması için rampalar, kızaklar ve basit kaldıraç sistemleri kullanılmıştır.",
+  "Keops Piramidi dar tüneller, geniş bir Büyük Galeri, Kral Odası (firavunun lahitinin yer aldığı) ve Kraliçe Odası gibi bölümler içerir.",
+  "Keops Piramidinin dört yüzü neredeyse mükemmel şekilde kuzey, güney, doğu ve batı yönlerine hizalıdır.",
+  "Keops Piramidinin taban çevresi ile yüksekliğinin oranı, yaklaşık olarak pi (π) sayısına denk gelmektedir.",
+  "Khafre Piramidi, Giza Platosu’nda bulunan üç büyük piramit arasında ikinci en büyüğüdür.",
+  "Khafre Piramidi, MÖ 2558–2532 yılları arasında, Firavun Khafre (Khufu’nun oğlu) için inşa edilmiştir.",
+  "Khafre Piramidinin, taban uzunluğu yaklaşık 215,25 m; orijinal yüksekliği 143,5 m, günümüzde yaklaşık 136,4 m.",
+  "Khafre Piramidi, yaklaşık %53,2’lik bir eğime sahiptir.",
+  "Khafre Piramidinin inşasında, devasa kireçtaşı bloklar ve bazı bölümlerde granit kullanılmıştır.",
+  "Khafre Piramidinde, çevredeki taş ocaklarından rampalar, kızaklar ve kaldıraçlarla taşınan bloklar kullanılmıştır.",
+  "Khafre Piramidinin iç yapısı, mezar odası ve dar geçitlerden oluşur.",
+  "Khafre Piramidi kompleksi, Büyük Giza Sfenksi ile tamamlanarak koruyucu bir sembol işlevi görür.",
+  "Menkaure Piramidi, Giza Platosu’ndaki üç büyük piramit arasında en küçüğüdür.",
+  "Menkaure Piramidi, yaklaşık MÖ 2510 civarında, Firavun Menkaure’ye (Mikerinos) ithaf edilmiştir.",
+  "Menkaure Piramidinin, orijinal yüksekliği yaklaşık 65–66 m; günümüzde yaklaşık 62 m.",
+  "Menkaure Piramidinin inşasında kireçtaşı, Aswan graniti ve Tura kireçtaşı kullanılmıştır.",
+  "Menkaure Piramidinin yanında üç küçük kraliçe piramidi, mortuary tapınak ve Vadi Tapınağı mevcuttur.",
+  "Djoser Piramidi, Sakkara nekropolünde yer alır; Antik Mısır’ın ilk devasa taş yapısı ve en eski piramittir.",
+  "Djoser Piramidi, MÖ 27. yüzyılda, 3. Hanedanlık döneminde Firavun Djoser için inşa edilmiştir.",
+  "Djoser Piramidi, mimar İmhotep’in öncülüğünde tasarlanmıştır.",
+  "Djoser Piramidi, başlangıçta düz çatılı bir mastaba olarak planlanmış, sonrasında altı basamaklı (beş eklenen mastaba) step pyramid haline gelmiştir.",
+  "Djoser Piramidi, hem bir mezar hem de firavun Djoser’in öbür dünyaya geçişini garanti altına alan kutsal bir anıt.",
+  "Djoser Piramidi, restorasyon çalışmalarının ardından Mart 2020’de ziyaretçilere açılmıştır.",
+  "Bent Piramidi, Mısır’ın Dahshur bölgesinde, Kahire’nin yaklaşık 40 km güneyinde bulunur.",
+  "Bent Piramidi, hanedanlık döneminde, Firavun Snefru tarafından MÖ 2600’lü yıllarda inşa ettirilmiştir.",
+  "Bent Piramidinin bükülmüş görünümü: Alt kısmı yaklaşık %54, üst kısmı yaklaşık %43 eğimle yükselir.",
+  "Meidum Piramidi, başlangıçta basamaklı olarak inşa edilmiş, sonrasında düz kenarlı (true pyramid) forma geçiş denenmiştir.",
+  "Meidum Piramidi, Mısır’ın Meidum bölgesinde, Nil Nehri’nin batı kıyısında yer alır.",
+  "Meidum Piramidinin inşasında, basamaklı piramitten düzgün kenarlı piramite geçişte yapılan deneysel uygulamalar, sonraki piramitlerin temelini oluşturmuştur.",
+  "Meroe Piramidi, Sudan’da, eski Kush Krallığı’nın başkenti Meroe çevresinde yer alır.",
+  "Meroe Piramidi, Afrika’nın en özgün mimari miraslarından biri olarak kabul edilir.",
+  "Meroe Piramidi, Geleneksel Mısır piramitlerinden farklı olarak, daha ince, dik ve sivri hatlara sahiptir.",
+  "Meroe Piramidi, MÖ 300 ile MS 350 yılları arasına tarihlenen, 200’den fazla mezarlık yapıyı içeren geniş bir nekropolü kapsar.",
+  "Güneş Piramidi, Teotihuacan antik kentinde, Meksika’da yer alır; Mexico City’den yaklaşık 40 km kuzeydoğusundadır.",
+  "Güneş Piramidi, Amerika kıtasındaki en büyük piramitlerden biridir; taban ölçüleri yaklaşık 222×225 m, yüksekliği 65–70 m.",
+  "Güneş Piramidi, Amerika’daki piramitler arasında üçüncü en yüksek olarak tanınır.",
+  "Güneş Piramidi, güneş tanrısına adanmıştır; dini ritüeller ve kozmik düzen anlayışını yansıtır.",
+  "Güneş Piramidinin çevresi, Ay Piramidi, Ölüler Yolu ve Quetzalcoatl Tapınağı gibi yapılarla astronomik ve dini uyum içinde planlanmıştır.",
+  "Tikal Piramidi, Guatemala’nın Petén bölgesinde, antik Maya şehri Tikal’de yer alır.",
+  "Tikal Piramidi, hem dini törenler hem de elit sınıfın mezar işlevi görmek üzere tasarlanmıştır.",
+  "Palenque Piramidi, Meksika’nın Chiapas eyaletinde, antik Maya şehri Palenque’de yer alır.",
+  "Palenque Piramidi, 7. yüzyılda inşa edilmiş, ünlü Maya hükümdarı Pakal’ın mezarını barındırır.",
+  "El Castillo, Meksika’nın Yucatán yarımadasında, Chichén Itzá antik kentinde yer alır.",
+  "El Castillo, devasa bir basamaklı piramittir; her yüzünde 91 basamak bulunur, toplamda 365 basamak (Maya takvimindeki gün sayısına denk).",
+  "El Castillo, bahar ve sonbahar ekinokslarında, merdivenlerde oluşan gölge, yılan şeklinde bir optik fenomen yaratır; bu, kutsal tüylü yılan tanrısı Kukulkan ile ilişkilendirilir.",
+  "Cestius Piramidi, Antik Roma’nın kalbinde, Esquilino Tepesi yakınlarında yer alır.",
+  "Cestius Piramidi, MÖ 18–12 yılları arasında, Roma siyasetçisi ve rahip Gaius Cestius Epulo’nun anısına inşa edilmiştir.",
+  "Cestius Piramidinin inşasında, Mısır piramitlerinden esinlenilmiş, ancak Roma’nın yerel inşaat teknikleri ve estetiğiyle harmanlanmıştır.",
+  "Endonezya’nın Java Adası’nda, dağ eteklerinde yer alır.",
+  "15. yüzyılda, Majapahit döneminde inşa edildiği düşünülmektedir.",
+  "Duvarları, erotik figürler, mitolojik semboller ve doğa unsurlarıyla süslüdür.",
+  "Yerel animistik inançlar ve tantrik öğelerle harmanlanarak, geleneksel Budist ve Hindu tapınak mimarisinden farklı özgün bir tasarım sunar.",
+];

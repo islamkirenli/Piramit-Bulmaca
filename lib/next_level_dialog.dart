@@ -35,13 +35,8 @@ void showNextLevelDialog(
     context: context,
     barrierDismissible: false, // Kullanıcı dışına tıklayarak kapatamaz
     builder: (BuildContext context) {
-      // Ana bölüme göre ilgili mesaj listesini alıyoruz.
       final random = Random();
-      final messagesForSection = infoMessages[mainSection] ?? [];
-      // Eğer ilgili ana bölümde mesaj yoksa varsayılan bir mesaj kullanıyoruz.
-      final infoMessage = messagesForSection.isNotEmpty
-          ? messagesForSection[random.nextInt(messagesForSection.length)]
-          : "Varsayılan bilgi mesajı.";
+      final infoMessage = infoMessages[random.nextInt(infoMessages.length)];
 
       Future.delayed(const Duration(seconds: 1), () {
         final overlay = Overlay.of(context);
@@ -115,7 +110,7 @@ void showNextLevelDialog(
                   RichText(
                     textAlign: TextAlign.center,
                     text: TextSpan(
-                      text: 'Bilgi: ',
+                      text: 'Bilgi Köşesi: ',
                       style: GlobalProperties.globalTextStyle(
                         fontWeight: FontWeight.bold, // Sadece "Bilgi:" kalın
                       ),
