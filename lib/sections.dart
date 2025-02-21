@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'puzzle_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'puzzle_game.dart';
@@ -360,29 +361,59 @@ class _SubSectionsPageState extends State<SubSectionsPage> {
                               ? () async {
                                   if (GlobalProperties.isSoundOn) {
                                     await _clickAudioPlayer?.stop();
-                                    await _clickAudioPlayer?.play(
-                                      AssetSource('audios/click_audio.mp3'),
-                                    );
+                                    await _clickAudioPlayer?.play(AssetSource('audios/click_audio.mp3'));
+                                    await Future.delayed(Duration(milliseconds: 200));
+                                    await _clickAudioPlayer?.play(AssetSource('audios/transition_sound.mp3'));
                                   }
-                                  // Oyun sayfasına git
-                                  await Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => PuzzleGame(
-                                        initialMainSection: widget.sectionName,
-                                        initialSubSection: subSectionKey,
-                                        isCompleted: isCompleted,
-                                      ),
-                                    ),
+                                  await showGeneralDialog(
+                                    context: context,
+                                    barrierDismissible: false,
+                                    barrierColor: Colors.transparent,
+                                    pageBuilder: (context, _, __) {
+                                      return Scaffold(
+                                        backgroundColor: Colors.transparent,
+                                        body: Stack(
+                                          children: [
+                                            Positioned.fill(
+                                              child: Center(
+                                                child: Transform.scale(
+                                                  scale: 1,
+                                                  child: Transform.translate(
+                                                    offset: Offset(0, 0),
+                                                    child: Lottie.asset(
+                                                      'assets/animations/screen_transition_animation.json',
+                                                      width: MediaQuery.of(context).size.width,
+                                                      height: MediaQuery.of(context).size.height,
+                                                      fit: BoxFit.fill,
+                                                      repeat: false,
+                                                      onLoaded: (composition) {
+                                                        Future.delayed(
+                                                          composition.duration,
+                                                          () {
+                                                            Navigator.of(context).pop();
+                                                            Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                builder: (context) => PuzzleGame(
+                                                                  initialMainSection: widget.sectionName,
+                                                                  initialSubSection: subSectionKey,
+                                                                  isCompleted: isCompleted,
+                                                                ),
+                                                              ),
+                                                            );
+                                                          },
+                                                        );
+                                                      },
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
                                   );
-
-                                  // Geri dönünce bu alt bölümü completedSections'a ekle
-                                  await markSectionAsCompleted(fullKey);
-
-                                  // SharedPreferences'ı yeniden oku ve sayfayı güncelle
-                                  setState(() {
-                                    _completedSectionsFuture = getCompletedSections();
-                                  });
                                 }
                               : null,
                           child: Container(
