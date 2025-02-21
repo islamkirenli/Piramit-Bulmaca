@@ -222,6 +222,7 @@ class InfoDialog extends StatelessWidget {
         child: Text(
           getContent(),
           style: GlobalProperties.globalTextStyle(),
+          textAlign: TextAlign.justify,
           ),
       ),
     );
