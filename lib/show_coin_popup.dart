@@ -44,15 +44,12 @@ Future<void> showCoinPopup(BuildContext context) async {
         onUserEarnedReward: (AdWithoutView ad, RewardItem reward) {
           // Kullanıcıya coin ekle
           int earnedCoins = 50; // Reklam başına kazanılan coin miktarı
-          GlobalProperties.coin.value += earnedCoins; // Coin ekleme
-          (context as Element).markNeedsBuild(); // Güncelleme
-
+          GlobalProperties.coin.value += earnedCoins;
+          (context as Element).markNeedsBuild();
           // Durumu kaydet
           saveGameData();
         },
       );
-
-      // Reklam temizliği ve yeniden yükleme
       _rewardedAd = null;
       loadRewardedAd();
     } else {
@@ -71,35 +68,80 @@ Future<void> showCoinPopup(BuildContext context) async {
   await showDialog(
     context: context,
     builder: (BuildContext context) {
-      return AlertDialog(
-        backgroundColor: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        title: Text(
-          'Coin Satın Al',
-          style: GlobalProperties.globalTextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
-              ),
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Divider(color: Colors.grey[300], thickness: 1),
-            const SizedBox(height: 12),
-            Text(
-              'Reklam izleyerek coin kazanabilirsiniz.',
-              style: GlobalProperties.globalTextStyle(
-                    color: Colors.black87,
-                  ),
+      return Dialog(
+        backgroundColor: Colors.transparent,
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.white, Colors.grey[50]!],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
             ),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            borderRadius: BorderRadius.circular(24),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 20,
+                offset: const Offset(0, 10),
+              )
+            ],
+          ),
+          padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
+                // Kampanya bannerı
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  decoration: BoxDecoration(
+                    color: Colors.redAccent,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text(
+                    'ÖZEL KAMPANYA! %20 BONUS COİN',
+                    style: GlobalProperties.globalTextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Coin Satın Al',
+                  style: GlobalProperties.globalTextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                    fontSize: 22,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Sınırlı süreli özel kampanya! Bugün yapacağınız satın alımlarda ekstra bonus coin kazanma fırsatını kaçırmayın.',
+                  style: GlobalProperties.globalTextStyle(
+                    color: Colors.black54,
+                    fontSize: 16,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 12),
+                Divider(color: Colors.grey[300], thickness: 1),
+                const SizedBox(height: 12),
+                Text(
+                  'Reklam izleyerek coin kazanabilirsiniz.',
+                  style: GlobalProperties.globalTextStyle(
+                    color: Colors.black87,
+                    fontSize: 16,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 16),
+                // Ödüllü reklam butonu
                 ElevatedButton(
-                  onPressed: () async{
+                  onPressed: () async {
                     if (GlobalProperties.isSoundOn) {
                       await _clickAudioPlayer.stop();
                       await _clickAudioPlayer.play(
@@ -112,7 +154,7 @@ Future<void> showCoinPopup(BuildContext context) async {
                     backgroundColor: Colors.indigo,
                     shape: const CircleBorder(),
                     padding: const EdgeInsets.all(20),
-                    elevation: 4,
+                    elevation: 6,
                   ),
                   child: const Icon(
                     Icons.video_library,
@@ -120,97 +162,101 @@ Future<void> showCoinPopup(BuildContext context) async {
                     size: 32,
                   ),
                 ),
+                const SizedBox(height: 20),
+                Divider(color: Colors.grey[300], thickness: 1),
+                const SizedBox(height: 12),
+                // Satın alma kartları
+                _buildPurchaseCard(
+                  context,
+                  '100 Coin - \$1.99',
+                  Icons.monetization_on,
+                  onTap: () async {
+                    if (GlobalProperties.isSoundOn) {
+                      await _clickAudioPlayer.stop();
+                      await _clickAudioPlayer.play(
+                        AssetSource('audios/click_audio.mp3'),
+                      );
+                    }
+                    final product = inAppPurchaseService.products.firstWhere(
+                      (element) =>
+                          element.id == InAppPurchaseService.coin100ProductId,
+                      orElse: () =>
+                          throw Exception('Ürün bulunamadı, 100 coin'),
+                    );
+                    await inAppPurchaseService.purchaseProduct(product);
+                  },
+                ),
+                const SizedBox(height: 12),
+                _buildPurchaseCard(
+                  context,
+                  '500 Coin - \$7.99\n(Kampanya Bonus: +20%)',
+                  Icons.monetization_on,
+                  onTap: () async {
+                    if (GlobalProperties.isSoundOn) {
+                      await _clickAudioPlayer.stop();
+                      await _clickAudioPlayer.play(
+                        AssetSource('audios/click_audio.mp3'),
+                      );
+                    }
+                    final product = inAppPurchaseService.products.firstWhere(
+                      (element) =>
+                          element.id == InAppPurchaseService.coin500ProductId,
+                      orElse: () =>
+                          throw Exception('Ürün bulunamadı, 500 coin'),
+                    );
+                    await inAppPurchaseService.purchaseProduct(product);
+                  },
+                ),
+                const SizedBox(height: 12),
+                _buildPurchaseCard(
+                  context,
+                  '1000 Coin - \$14.99\n(Kampanya Bonus: +20%)',
+                  Icons.monetization_on,
+                  onTap: () async {
+                    if (GlobalProperties.isSoundOn) {
+                      await _clickAudioPlayer.stop();
+                      await _clickAudioPlayer.play(
+                        AssetSource('audios/click_audio.mp3'),
+                      );
+                    }
+                    final product = inAppPurchaseService.products.firstWhere(
+                      (element) =>
+                          element.id == InAppPurchaseService.coin1000ProductId,
+                      orElse: () =>
+                          throw Exception('Ürün bulunamadı, 1000 coin'),
+                    );
+                    await inAppPurchaseService.purchaseProduct(product);
+                  },
+                ),
+                const SizedBox(height: 20),
+                TextButton(
+                  onPressed: () async {
+                    if (GlobalProperties.isSoundOn) {
+                      await _clickAudioPlayer.stop();
+                      await _clickAudioPlayer.play(
+                        AssetSource('audios/click_audio.mp3'),
+                      );
+                    }
+                    Navigator.of(context).pop();
+                  },
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.indigo,
+                    textStyle: GlobalProperties.globalTextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  child: Text(
+                    'Kapat',
+                    style: GlobalProperties.globalTextStyle(
+                      color: Colors.indigo,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
               ],
             ),
-            const SizedBox(height: 24),
-            Divider(color: Colors.grey[300], thickness: 1),
-            const SizedBox(height: 8),
-
-            // 100 Coin
-            _buildPurchaseCard(
-              context,
-              '100 Coin - \$1.99',
-              Icons.monetization_on,
-              onTap: () async {
-                if (GlobalProperties.isSoundOn) {
-                  await _clickAudioPlayer.stop();
-                  await _clickAudioPlayer.play(
-                    AssetSource('audios/click_audio.mp3'),
-                  );
-                }
-                // 100 Coin satın alma tıklandı
-                final product = inAppPurchaseService.products.firstWhere(
-                  (element) => element.id == InAppPurchaseService.coin100ProductId,
-                  orElse: () => throw Exception('Ürün bulunamadı, 100 coin'),
-                );
-                await inAppPurchaseService.purchaseProduct(product);
-              },
-            ),
-            const SizedBox(height: 12),
-
-            // 500 Coin
-            _buildPurchaseCard(
-              context,
-              '500 Coin - \$7.99',
-              Icons.monetization_on,
-              onTap: () async {
-                if (GlobalProperties.isSoundOn) {
-                  await _clickAudioPlayer.stop();
-                  await _clickAudioPlayer.play(
-                    AssetSource('audios/click_audio.mp3'),
-                  );
-                }
-                // 500 Coin satın alma tıklandı
-                final product = inAppPurchaseService.products.firstWhere(
-                  (element) => element.id == InAppPurchaseService.coin500ProductId,
-                  orElse: () => throw Exception('Ürün bulunamadı, 500 coin'),
-                );
-                await inAppPurchaseService.purchaseProduct(product);
-              },
-            ),
-            const SizedBox(height: 12),
-
-            // 1000 Coin
-            _buildPurchaseCard(
-              context,
-              '1000 Coin - \$14.99',
-              Icons.monetization_on,
-              onTap: () async {
-                if (GlobalProperties.isSoundOn) {
-                  await _clickAudioPlayer.stop();
-                  await _clickAudioPlayer.play(
-                    AssetSource('audios/click_audio.mp3'),
-                  );
-                }
-                // 1000 Coin satın alma tıklandı
-                final product = inAppPurchaseService.products.firstWhere(
-                  (element) => element.id == InAppPurchaseService.coin1000ProductId,
-                  orElse: () => throw Exception('Ürün bulunamadı, 1000 coin'),
-                );
-                await inAppPurchaseService.purchaseProduct(product);
-              },
-            ),
-          ],
-        ),
-        actionsPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        actions: [
-          TextButton(
-            onPressed: () async{
-              if (GlobalProperties.isSoundOn) {
-                await _clickAudioPlayer.stop();
-                await _clickAudioPlayer.play(
-                  AssetSource('audios/click_audio.mp3'),
-                );
-              }
-              Navigator.of(context).pop();
-            },
-            style: TextButton.styleFrom(
-              foregroundColor: Colors.indigo,
-              textStyle: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-            child: Text('Kapat', style: GlobalProperties.globalTextStyle(),),
           ),
-        ],
+        ),
       );
     },
   ).then((_) {
@@ -218,37 +264,40 @@ Future<void> showCoinPopup(BuildContext context) async {
   });
 }
 
-
-/// Her satın alma satırını ayrı bir çerçevede gösteren widget
+/// Modern tasarıma sahip satın alma kartını gösteren widget
 Widget _buildPurchaseCard(
   BuildContext context,
   String title,
   IconData icon, {
   required VoidCallback onTap,
 }) {
-  return Container(
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(12),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.grey.withOpacity(0.25),
-          spreadRadius: 1,
-          blurRadius: 8,
-          offset: const Offset(0, 2),
-        ),
-      ],
-    ),
-    child: ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      title: Text(
-        title,
-        style: GlobalProperties.globalTextStyle(
-              color: Colors.black87,
-            ),
+  return GestureDetector(
+    onTap: onTap,
+    child: Container(
+      margin: const EdgeInsets.symmetric(vertical: 4),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.grey[300]!),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
-      trailing: Icon(icon, color: Colors.amber),
-      onTap: onTap,
+      child: ListTile(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        title: Text(
+          title,
+          style: GlobalProperties.globalTextStyle(
+            color: Colors.black87,
+            fontSize: 16,
+          ),
+        ),
+        trailing: Icon(icon, color: Colors.amber),
+      ),
     ),
   );
 }

@@ -25,6 +25,9 @@ class InAppPurchaseService {
   static const String coin500ProductId = 'coin_500';
   static const String coin1000ProductId = 'coin_1000';
 
+static const String bundleProductId = 'bundle_product_id';
+
+
   void initialize() {
     final purchaseUpdateStream = _inAppPurchase.purchaseStream;
     _subscription = purchaseUpdateStream.listen(
