@@ -42,7 +42,7 @@ Future<void> showCoinPopup(BuildContext context) async {
       _rewardedAd!.show(
         onUserEarnedReward: (AdWithoutView ad, RewardItem reward) {
           // Kullanıcıya coin ekle
-          int earnedCoins = 50; // Reklam başına kazanılan coin miktarı
+          int earnedCoins = 75; // Reklam başına kazanılan coin miktarı
           GlobalProperties.coin.value += earnedCoins;
           (context as Element).markNeedsBuild();
           // Durumu kaydet

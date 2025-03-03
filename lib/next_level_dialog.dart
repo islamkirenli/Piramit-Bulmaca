@@ -55,7 +55,7 @@ void showNextLevelDialog(
                 fit: BoxFit.contain,
                 onLoaded: (composition) {
                   // Coin artırmayı animasyon süresi ile senkronize et
-                  incrementScore(15000, () {
+                  incrementScore(120, () {
                     saveGameData(); // Skor artışı tamamlandığında veriyi kaydet
                   });
                   Future.delayed(composition.duration, () {

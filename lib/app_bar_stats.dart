@@ -45,7 +45,7 @@ class _AppBarStatsState extends State<AppBarStats> {
     if (GlobalProperties.remainingLives.value > 0) {
       countdownTimer?.cancel();
       countdownTimer = null;
-      GlobalProperties.countdownSeconds.value = 15;
+      GlobalProperties.countdownSeconds.value = 3599;
       GlobalProperties.isTimerRunning.value = false;
     }
 

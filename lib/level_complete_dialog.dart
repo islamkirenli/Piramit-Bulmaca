@@ -42,13 +42,13 @@ class _LevelCompleteDialogState extends State<LevelCompleteDialog> with TickerPr
           showRewardAnimations = true;
 
           if (widget.sourcePage == 'daily_puzzle_game') {
-            GlobalProperties.remainingLives.value += 1;  
-            GlobalProperties.coin.value += 50;           
+            GlobalProperties.remainingLives.value += 2;  
+            GlobalProperties.coin.value += 80;           
             GlobalProperties.wordHintCount.value += 1;     
             GlobalProperties.singleHintCount.value += 1;     
           } else {
-            GlobalProperties.remainingLives.value += 3;
-            GlobalProperties.coin.value += 100;
+            GlobalProperties.remainingLives.value += 2;
+            GlobalProperties.coin.value += 150;
             GlobalProperties.wordHintCount.value += 2;   
             GlobalProperties.singleHintCount.value += 2;
           }

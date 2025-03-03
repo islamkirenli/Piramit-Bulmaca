@@ -387,13 +387,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   context: context,
                                   builder: (context) {
                                     return AlertDialog(
-                                      title: Text("Oyun Devam Etmiyor!"),
+                                      title: Text("Oyuna Kısa Bir Ara"),
                                       content: Text(
                                         GlobalProperties.allSectionsCompleted
                                             ? "Muhteşem! Tüm bölümleri başarıyla geçtin, harikasın! Şu an için yeni bulmaca yok, ama diğer eğlenceli seçenekler seni bekliyor. Maceraya her zaman tekrar devam edebilirsin!"
                                             : "Ahh, sanırım canların tükenmiş! Endişelenme, küçük bir mola verip yenileneceksin. Hazır olduğunda, bulmaca keyfi yeniden başlayacak. Biz buradayız, seni bekliyoruz!",
                                         style: GlobalProperties.globalTextStyle(),
-                                        textAlign: TextAlign.center,
+                                        //textAlign: TextAlign.center,
                                       ),
                                       actions: [
                                         TextButton(
@@ -731,8 +731,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     showTimeCompletedDialog(context, () {
       _isTimeDialogShown = false;
       setState(() {
-        GlobalProperties.remainingLives.value = 3;
-        GlobalProperties.countdownSeconds.value = 15;
+        GlobalProperties.remainingLives.value = 5;
+        GlobalProperties.countdownSeconds.value = 3599;
         GlobalProperties.isTimerRunning.value = false;
       });
       saveGameData();
@@ -780,8 +780,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     GlobalProperties.coin.value = prefs.getInt('coin') ?? 0;
-    GlobalProperties.remainingLives.value = prefs.getInt('remainingLives') ?? 3;
-    GlobalProperties.countdownSeconds.value = prefs.getInt('countdownSeconds') ?? 15;
+    GlobalProperties.remainingLives.value = prefs.getInt('remainingLives') ?? 5;
+    GlobalProperties.countdownSeconds.value = prefs.getInt('countdownSeconds') ?? 3599;
     GlobalProperties.isTimerRunning.value = prefs.getBool('isTimerRunning') ?? false;
     GlobalProperties.deadlineTimestamp = prefs.getInt('deadlineTimestamp') ?? 0;
     GlobalProperties.isSoundOn = prefs.getBool('isSoundOn') ?? true;

@@ -145,7 +145,7 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
     );
 
     // Geri sayım başlangıç değeri
-    GlobalProperties.countdownSeconds.value = 15;
+    GlobalProperties.countdownSeconds.value = 3599;
 
     // Settings ikonu animasyonu
     _settingsIconController = AnimationController(
@@ -679,8 +679,8 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
     GlobalProperties.isTimeCompletedWhileAppClosed = false;
     showTimeCompletedDialog(context, () {
       setState(() {
-        GlobalProperties.remainingLives.value = 3;
-        GlobalProperties.countdownSeconds.value = 15;
+        GlobalProperties.remainingLives.value = 5;
+        GlobalProperties.countdownSeconds.value = 3599;
         GlobalProperties.isTimerRunning.value = false;
       });
       saveGameData();
@@ -791,8 +791,8 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
 
     // GlobalProperties
     GlobalProperties.coin.value = prefs.getInt('coin') ?? 0;
-    GlobalProperties.remainingLives.value = prefs.getInt('remainingLives') ?? 3;
-    GlobalProperties.countdownSeconds.value = prefs.getInt('countdownSeconds') ?? 15;
+    GlobalProperties.remainingLives.value = prefs.getInt('remainingLives') ?? 5;
+    GlobalProperties.countdownSeconds.value = prefs.getInt('countdownSeconds') ?? 3599;
     GlobalProperties.isTimerRunning.value = prefs.getBool('isTimerRunning') ?? false;
     GlobalProperties.deadlineTimestamp = prefs.getInt('deadlineTimestamp') ?? 0;
   }

@@ -158,7 +158,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
       curve: Curves.easeInOut,
     );
 
-    GlobalProperties.countdownSeconds.value = 15;
+    GlobalProperties.countdownSeconds.value = 3599;
     // Animasyon denetleyicisini başlat
     _settingsIconController = AnimationController(
       duration: Duration(milliseconds: 500),
@@ -517,7 +517,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                                             ),
                                             const SizedBox(width: 2),
                                             Text(
-                                              '${(puzzleSections[currentMainSection]![currentSubSection]![currentIndex]['word']!.length-1) * 100}',
+                                              '${(puzzleSections[currentMainSection]![currentSubSection]![currentIndex]['word']!.length-1) * 50}',
                                               style: GlobalProperties.globalTextStyle(
                                                 color: Colors.white,
                                                 fontSize: 10,
@@ -642,7 +642,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                                             ),
                                             const SizedBox(width: 2),
                                             Text(
-                                              '100',
+                                              '75',
                                               style: GlobalProperties.globalTextStyle(
                                                 color: Colors.white,
                                                 fontSize: 10,
@@ -1074,7 +1074,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
     setState(() {
       currentPuzzle = 0; // İlk bölüme dön
       currentIndex = 0; // İlk kelimeye dön
-      GlobalProperties.remainingLives.value = 3; // Kullanıcıya tekrar 5 hak ver
+      GlobalProperties.remainingLives.value = 5; // Kullanıcıya tekrar 5 hak ver
       feedbackMessage = ''; // Geri bildirim mesajını temizle
       selectedLetters.clear(); // Seçilen harfleri temizle
       visitedLetters.clear();
@@ -1232,8 +1232,8 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
     showTimeCompletedDialog(context, () {
       // Popup kapatılırken hakları yenile
       setState(() {
-        GlobalProperties.remainingLives.value = 3;
-        GlobalProperties.countdownSeconds.value = 15;
+        GlobalProperties.remainingLives.value = 5;
+        GlobalProperties.countdownSeconds.value = 3599;
         GlobalProperties.isTimerRunning.value = false;
       });
       saveGameData();
@@ -1268,8 +1268,8 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     GlobalProperties.coin.value = prefs.getInt('coin') ?? 0;
-    GlobalProperties.remainingLives.value = prefs.getInt('remainingLives') ?? 3;
-    GlobalProperties.countdownSeconds.value = prefs.getInt('countdownSeconds') ?? 15;
+    GlobalProperties.remainingLives.value = prefs.getInt('remainingLives') ?? 5;
+    GlobalProperties.countdownSeconds.value = prefs.getInt('countdownSeconds') ?? 3599;
     GlobalProperties.isTimerRunning.value = prefs.getBool('isTimerRunning') ?? false;
     GlobalProperties.wordHintCount.value = prefs.getInt('wordHintCount') ?? 5;
     GlobalProperties.singleHintCount.value = prefs.getInt('singleHintCount') ?? 5;
@@ -1315,11 +1315,11 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
         saveGameData();
       } else {
         // Ücretsiz ipucu kalmadıysa, coin kontrolü yap:
-        if (GlobalProperties.coin.value < 100) {
+        if (GlobalProperties.coin.value < 75) {
           showCoinPopup(context);
           return;
         } else {
-          GlobalProperties.coin.value -= 100;
+          GlobalProperties.coin.value -= 75;
           saveGameData();
         }
       }
@@ -1417,7 +1417,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
     // 1) Coin kontrolü
     String currentWord =
         puzzleSections[currentMainSection]![currentSubSection]![currentIndex]['word']!;
-    int cost = (currentWord.length - 1) * 100;
+    int cost = (currentWord.length - 1) * 50;
 
     setState(() {
       isWordHintActive = true; // Animasyon başladı
