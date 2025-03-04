@@ -357,65 +357,95 @@ class _SubSectionsPageState extends State<SubSectionsPage> {
                         bool isCompleted = completedSections.contains(fullKey);
 
                         return GestureDetector(
-                          onTap: isUnlocked && remainingLives > 0
-                              ? () async {
-                                  if (GlobalProperties.isSoundOn) {
-                                    await _clickAudioPlayer?.stop();
-                                    await _clickAudioPlayer?.play(AssetSource('audios/click_audio.mp3'));
-                                    await Future.delayed(Duration(milliseconds: 200));
-                                    await _clickAudioPlayer?.play(AssetSource('audios/transition_sound.mp3'));
-                                  }
-                                  await showGeneralDialog(
-                                    context: context,
-                                    barrierDismissible: false,
-                                    barrierColor: Colors.transparent,
-                                    pageBuilder: (context, _, __) {
-                                      return Scaffold(
-                                        backgroundColor: Colors.transparent,
-                                        body: Stack(
-                                          children: [
-                                            Positioned.fill(
-                                              child: Center(
-                                                child: Transform.scale(
-                                                  scale: 1,
-                                                  child: Transform.translate(
-                                                    offset: Offset(0, 0),
-                                                    child: Lottie.asset(
-                                                      'assets/animations/screen_transition_animation.json',
-                                                      width: MediaQuery.of(context).size.width,
-                                                      height: MediaQuery.of(context).size.height,
-                                                      fit: BoxFit.fill,
-                                                      repeat: false,
-                                                      onLoaded: (composition) {
-                                                        Future.delayed(
-                                                          composition.duration,
-                                                          () {
-                                                            Navigator.of(context).pop();
-                                                            Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                builder: (context) => PuzzleGame(
-                                                                  initialMainSection: widget.sectionName,
-                                                                  initialSubSection: subSectionKey,
-                                                                  isCompleted: isCompleted,
-                                                                ),
-                                                              ),
-                                                            );
-                                                          },
-                                                        );
-                                                      },
-                                                    ),
-                                                  ),
-                                                ),
+                          onTap: () async {
+                            // Eğer bölüm kilitliyse, işlem yapmadan çık (alternatif olarak kilit mesajı da ekleyebilirsiniz)
+                            if (!isUnlocked) return;
+
+                            // Eğer kalan hak sıfır ise pop-up mesajı göster
+                            if (remainingLives <= 0) {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: Text("Oyuna Kısa Bir Ara"),
+                                    content: Text(
+                                      "Ahh, sanırım canların tükenmiş! Endişelenme, küçük bir mola verip yenileneceksin. Hazır olduğunda, bulmaca keyfi yeniden başlayacak. Biz buradayız, seni bekliyoruz!",
+                                      style: GlobalProperties.globalTextStyle(),
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text(
+                                          "Tamam",
+                                          style: GlobalProperties.globalTextStyle(color: Colors.blue),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                              return;
+                            }
+
+                            // Kalan hak varsa normal işleyiş devam ediyor
+                            if (GlobalProperties.isSoundOn) {
+                              await _clickAudioPlayer?.stop();
+                              await _clickAudioPlayer?.play(AssetSource('audios/click_audio.mp3'));
+                              await Future.delayed(Duration(milliseconds: 200));
+                              await _clickAudioPlayer?.play(AssetSource('audios/transition_sound.mp3'));
+                            }
+                            await showGeneralDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              barrierColor: Colors.transparent,
+                              pageBuilder: (context, _, __) {
+                                return Scaffold(
+                                  backgroundColor: Colors.transparent,
+                                  body: Stack(
+                                    children: [
+                                      Positioned.fill(
+                                        child: Center(
+                                          child: Transform.scale(
+                                            scale: 1,
+                                            child: Transform.translate(
+                                              offset: Offset(0, 0),
+                                              child: Lottie.asset(
+                                                'assets/animations/screen_transition_animation.json',
+                                                width: MediaQuery.of(context).size.width,
+                                                height: MediaQuery.of(context).size.height,
+                                                fit: BoxFit.fill,
+                                                repeat: false,
+                                                onLoaded: (composition) {
+                                                  Future.delayed(
+                                                    composition.duration,
+                                                    () {
+                                                      Navigator.of(context).pop();
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) => PuzzleGame(
+                                                            initialMainSection: widget.sectionName,
+                                                            initialSubSection: subSectionKey,
+                                                            isCompleted: isCompleted,
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                  );
+                                                },
                                               ),
                                             ),
-                                          ],
+                                          ),
                                         ),
-                                      );
-                                    },
-                                  );
-                                }
-                              : null,
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            );
+                          },
                           child: Container(
                             decoration: BoxDecoration(
                               color: isUnlocked
