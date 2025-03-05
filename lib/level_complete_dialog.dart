@@ -143,7 +143,7 @@ class _LevelCompleteDialogState extends State<LevelCompleteDialog> with TickerPr
                               ),
                               SizedBox(width: 8),
                               Text(
-                                widget.sourcePage == 'daily_puzzle_game' ? "+50" : "+100",
+                                widget.sourcePage == 'daily_puzzle_game' ? "+80" : "+150",
                                 style: GlobalProperties.globalTextStyle(
                                   color: Colors.yellow,
                                   fontSize: 22,
@@ -166,7 +166,7 @@ class _LevelCompleteDialogState extends State<LevelCompleteDialog> with TickerPr
                               ),
                               SizedBox(width: 8),
                               Text(
-                                widget.sourcePage == 'daily_puzzle_game' ? "+1" : "+3",
+                                widget.sourcePage == 'daily_puzzle_game' ? "+2" : "+2",
                                 style: GlobalProperties.globalTextStyle(
                                   color: Colors.red,
                                   fontSize: 22,

@@ -956,6 +956,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                 selectedLetters.clear();
                 visitedIndexes.clear();
                 linePoints.clear();
+                revealedIndexesForCurrentWord.clear();
                 shuffledLetters = puzzleSections[currentMainSection]![currentSubSection]![currentIndex]['word']!.split('');
                 shuffleLetters();
               },
@@ -1391,6 +1392,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                 selectedLetters.clear();
                 visitedIndexes.clear();
                 linePoints.clear();
+                revealedIndexesForCurrentWord.clear();
                 shuffledLetters = puzzleSections[currentMainSection]![currentSubSection]![currentIndex]['word']!.split('');
                 shuffleLetters();
               },
@@ -1504,6 +1506,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
               selectedLetters.clear();
               visitedIndexes.clear();
               linePoints.clear();
+              revealedIndexesForCurrentWord.clear();
               shuffledLetters =
                   puzzleSections[currentMainSection]![currentSubSection]![currentIndex]['word']!.split('');
               shuffleLetters();
