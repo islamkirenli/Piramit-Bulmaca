@@ -280,7 +280,7 @@ class _LevelCompleteDialogState extends State<LevelCompleteDialog> with TickerPr
                 child: FadeTransition(
                   opacity: _textOpacity,
                   child: Text(
-                    "Açmak için sandığa tıklayın.",
+                    "Açmak için sandığa tıklayın",
                     textAlign: TextAlign.center,
                     style: GlobalProperties.globalTextStyle(
                       color: Colors.white,
