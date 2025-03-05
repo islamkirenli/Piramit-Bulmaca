@@ -54,8 +54,8 @@ const List<String> infoMessages = [
   "Cestius Piramidi, Antik Roma’nın kalbinde, Esquilino Tepesi yakınlarında yer alır.",
   "Cestius Piramidi, MÖ 18–12 yılları arasında, Roma siyasetçisi ve rahip Gaius Cestius Epulo’nun anısına inşa edilmiştir.",
   "Cestius Piramidinin inşasında, Mısır piramitlerinden esinlenilmiş, ancak Roma’nın yerel inşaat teknikleri ve estetiğiyle harmanlanmıştır.",
-  "Endonezya’nın Java Adası’nda, dağ eteklerinde yer alır.",
-  "15. yüzyılda, Majapahit döneminde inşa edildiği düşünülmektedir.",
-  "Duvarları, erotik figürler, mitolojik semboller ve doğa unsurlarıyla süslüdür.",
-  "Yerel animistik inançlar ve tantrik öğelerle harmanlanarak, geleneksel Budist ve Hindu tapınak mimarisinden farklı özgün bir tasarım sunar.",
+  "Candi Sukuh Piramidi, Endonezya’nın Java Adası’nda, dağ eteklerinde yer alır.",
+  "Candi Sukuh Piramidinin 15. yüzyılda, Majapahit döneminde inşa edildiği düşünülmektedir.",
+  "Candi Sukuh Piramidinin duvarları, erotik figürler, mitolojik semboller ve doğa unsurlarıyla süslüdür.",
+  "Candi Sukuh Piramidi, Yerel animistik inançlar ve tantrik öğelerle harmanlanarak, geleneksel Budist ve Hindu tapınak mimarisinden farklı özgün bir tasarım sunar.",
 ];
