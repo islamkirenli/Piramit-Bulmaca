@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:pyramid_puzzle/background_music.dart';
 import 'package:pyramid_puzzle/global_properties.dart';
@@ -334,7 +335,23 @@ class _SettingsDialogState extends State<SettingsDialog> {
                 AssetSource('audios/click_audio.mp3'),
               );
             }
-            // Takip et butonuna basıldığında yapılacak işlemler
+            Uri url;
+            if (Platform.isAndroid) {
+              // Android mağaza linki (Google Play)
+              url = Uri.parse("https://play.google.com/store/apps/details?id=YOUR_ANDROID_PACKAGE_ID");
+            } else if (Platform.isIOS) {
+              // iOS mağaza linki (App Store)
+              url = Uri.parse("https://apps.apple.com/app/idYOUR_APP_ID");
+            } else {
+              // Diğer platformlar için alternatif bir link
+              url = Uri.parse("https://yourgamewebsite.com");
+            }
+
+            if (await canLaunchUrl(url)) {
+              await launchUrl(url, mode: LaunchMode.externalApplication);
+            } else {
+              debugPrint('Could not launch $url');
+            }
           },
           icon: Icon(Icons.star, color: Colors.white), // Takip ikonu
           label: Text(
