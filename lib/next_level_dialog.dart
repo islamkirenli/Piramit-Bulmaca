@@ -4,7 +4,7 @@ import 'dart:async';
 import 'dart:math'; // Rastgele seçim için
 import 'package:shared_preferences/shared_preferences.dart';
 import 'main.dart';
-import 'in_app_purchase_service.dart';
+//import 'in_app_purchase_service.dart';
 import 'global_properties.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'info_messages.dart'; // Dictionary'nin bulunduğu dosya
@@ -23,13 +23,13 @@ void showNextLevelDialog(
   // Tamamlanan bölümü kaydet
   updateCompletionStatus(mainSection, subSection);
 
-  bool showRemoveAds = true;
+  /*bool showRemoveAds = true;
   if (mainSection == "Ana Bölüm 1") {
     int subSecNumber = int.tryParse(subSection) ?? 0;
     if (subSecNumber <= 10) {
       showRemoveAds = false;
     }
-  }
+  }*/
 
   showDialog(
     context: context,
