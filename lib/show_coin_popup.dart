@@ -53,6 +53,12 @@ Future<void> showCoinPopup(BuildContext context) async {
       loadRewardedAd();
     } else {
       debugPrint('Rewarded ad is not ready yet.');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Reklam henüz hazır değil, lütfen tekrar deneyin!'),
+          duration: Duration(seconds: 2),
+        ),
+      );
     }
   }
 
