@@ -226,7 +226,7 @@ void showNextLevelDialog(
                 ),
               ],
             ),
-            if (showRemoveAds) ...[
+            /*if (showRemoveAds) ...[
               const SizedBox(height: 16),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -270,7 +270,7 @@ void showNextLevelDialog(
                   height: 80,
                 ),
               ),
-            ],
+            ],*/
             const SizedBox(height: 16),
           ],
         ),

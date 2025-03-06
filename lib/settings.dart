@@ -336,6 +336,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
             ),
           ),
         ),
+        /*
         // EKLENEN KISIMLAR BAŞLANGICI
         const SizedBox(height: 16),
         Padding(
@@ -394,7 +395,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
             height: 80,
           ),
         ),
-        // EKLENEN KISIMLAR SONU
+        // EKLENEN KISIMLAR SONU*/
       ],
     );
   }
