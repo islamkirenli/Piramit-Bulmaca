@@ -1,5 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pyramid_puzzle/background_music.dart';
 import 'package:video_player/video_player.dart';
 import 'puzzle_game.dart'; // Oyun sayfası dosyasını dahil edin
@@ -17,8 +18,11 @@ import 'daily_puzzle_game.dart';
 import 'special_day_popup.dart';
 
 
-void main() {
+void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
   MobileAds.instance.initialize();
   runApp(
     MusicBackground(
