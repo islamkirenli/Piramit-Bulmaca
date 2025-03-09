@@ -155,6 +155,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       );
     }
 
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double scaleFactor = (screenWidth / 400).clamp(0.5, 1.5);
+
     return Stack(
       children: [
         // Arka plan videosu
@@ -184,7 +187,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 60), // AppBar ile buton arasına boşluk ekler
+              SizedBox(height: 60 * scaleFactor), // AppBar ile buton arasına boşluk ekler
               ValueListenableBuilder<bool>(
                 valueListenable: GlobalProperties.puzzleForTodayCompleted,
                 builder: (context, puzzleCompleted, child) {
@@ -256,10 +259,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         scale: _isDailyPuzzlePressed ? 0.95 : 1.0,
                         duration: Duration(milliseconds: 100),
                         child: Container(
-                          width: 200,
-                          height: buttonHeight,
+                          width: 200 * scaleFactor,
+                          height: buttonHeight * scaleFactor,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25),
+                            borderRadius: BorderRadius.circular(25 * scaleFactor),
                             gradient: disableButton
                                 ? LinearGradient(colors: [Colors.grey, Colors.grey])
                                 : LinearGradient(
@@ -297,18 +300,18 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                       "Günlük Bulmaca",
                                       style: GlobalProperties.globalTextStyle(
                                         color: disableButton ? Colors.black38 : Colors.white,
-                                        fontSize: 20,
+                                        fontSize: 20 * scaleFactor,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                     if (puzzleCompleted && !isNewDailyPuzzle)
                                       Padding(
-                                        padding: const EdgeInsets.only(top: 4.0),
+                                        padding: EdgeInsets.only(top: 4.0 * scaleFactor),
                                         child: Text(
                                           _formatTime(nextPuzzleSeconds),
                                           style: GlobalProperties.globalTextStyle(
                                             color: Colors.black38,
-                                            fontSize: 16,
+                                            fontSize: 16 * scaleFactor,
                                             fontWeight: FontWeight.normal,
                                           ),
                                         ),
@@ -319,11 +322,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                               // İsteğe bağlı: Yeni günlük bulmaca varsa sağ üst köşeye (!) işareti ekleyebilirsiniz.
                               if (isNewDailyPuzzle)
                                 Positioned(
-                                  top: -10,
+                                  top: -10 * scaleFactor,
                                   right: 0,
                                   child: Container(
-                                    width: 18,
-                                    height: 18,
+                                    width: 18 * scaleFactor,
+                                    height: 18 * scaleFactor,
                                     decoration: BoxDecoration(
                                       color: Colors.red,
                                       shape: BoxShape.circle,
@@ -340,7 +343,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                         '!',
                                         style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: 12,
+                                          fontSize: 12 * scaleFactor,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -361,7 +364,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(height: 100),
+                      SizedBox(height: 100 * scaleFactor),
                       ValueListenableBuilder<int>(
                         valueListenable: GlobalProperties.remainingLives,
                         builder: (context, remainingLives, _) {
@@ -473,11 +476,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                 AnimatedBuilder(
                                   animation: _rippleController,
                                   builder: (context, child) {
-                                    double scaleFactor = 1 + _rippleController.value * 0.3;
+                                    double rippleScaleFactor = 1 + _rippleController.value * 0.3;
                                     double opacity = (1 - _rippleController.value).clamp(0.0, 1.0);
                                     return Container(
-                                      width: 150 * scaleFactor,
-                                      height: 150 * scaleFactor,
+                                      width: 150 * rippleScaleFactor * scaleFactor,
+                                      height: 150 * rippleScaleFactor * scaleFactor,
                                       decoration: BoxDecoration(
                                         shape: BoxShape.circle,
                                         color: Colors.white.withOpacity(opacity * 0.2),
@@ -490,8 +493,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                   scale: _isPressed ? 0.95 : 1.0,
                                   duration: Duration(milliseconds: 100),
                                   child: Container(
-                                    width: 150,
-                                    height: 150,
+                                    width: 150 * scaleFactor,
+                                    height: 150 * scaleFactor,
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
                                       gradient: isPlayButtonActive
@@ -528,7 +531,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                         style: TextStyle(
                                           fontFamily: Icons.play_arrow.fontFamily,
                                           package: Icons.play_arrow.fontPackage,
-                                          fontSize: 60,
+                                          fontSize: 60 * scaleFactor,
                                           color: isPlayButtonActive ? Colors.white : Colors.black38,
                                           shadows: [
                                             Shadow(
@@ -554,12 +557,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             ],
           ),
           floatingActionButton: Padding(
-            padding: const EdgeInsets.only(bottom: 60.0),
+            padding: EdgeInsets.only(bottom: 60.0 * scaleFactor),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 60.0),
+                  padding: EdgeInsets.only(left: 60.0 * scaleFactor),
                   child: GestureDetector(
                     onTapDown: (_) {
                       setState(() {
@@ -595,8 +598,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       scale: _isSettingsPressed ? 0.95 : 1.0,
                       duration: Duration(milliseconds: 100),
                       child: Container(
-                        width: 80,
-                        height: 80,
+                        width: 80 * scaleFactor,
+                        height: 80 * scaleFactor,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           gradient: LinearGradient(
@@ -627,7 +630,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           child: Icon(
                             Icons.settings,
                             color: Colors.white,
-                            size: 40,
+                            size: 40 * scaleFactor,
                             shadows: [
                               Shadow(
                                 offset: Offset(2, 2),
@@ -642,7 +645,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(right: 30.0),
+                  padding: EdgeInsets.only(right: 30.0 * scaleFactor),
                   child: GestureDetector(
                     onTapDown: (_) {
                       setState(() {
@@ -675,8 +678,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       scale: _isSectionsPressed ? 0.95 : 1.0,
                       duration: Duration(milliseconds: 100),
                       child: Container(
-                        width: 80,
-                        height: 80,
+                        width: 80 * scaleFactor,
+                        height: 80 * scaleFactor,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           gradient: LinearGradient(
@@ -707,7 +710,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           child: Icon(
                             Icons.format_list_bulleted, // İkon tercihinize göre değiştirilebilir
                             color: Colors.white,
-                            size: 40,
+                            size: 40 * scaleFactor,
                             shadows: [
                               Shadow(
                                 offset: Offset(2, 2),
