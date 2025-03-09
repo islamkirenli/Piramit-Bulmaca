@@ -224,6 +224,12 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
       );
     }
 
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double scaleFactor = (screenWidth / 500).clamp(0.5, 1.5);
+
+    final screenSize = MediaQuery.of(context).size;
+    final polygonSize = (screenSize.width * 0.65)*(screenWidth / 400).clamp(0.5, 1.0);
+
     // Mevcut ana bölüme göre arka plan görselini belirleyin:
     String backgroundImage;
     switch (currentMainSection) {
@@ -333,23 +339,23 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
             body: Column(
               children: [
                 Container(
-                  height: 90,
-                  margin: EdgeInsets.symmetric(horizontal: 16.0),
+                  height: 90 * scaleFactor,
+                  margin: EdgeInsets.symmetric(horizontal: 16.0 * scaleFactor),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(20 * scaleFactor),
                     color: Colors.black54,
                     border: Border.all(
                       color: Colors.black,
-                      width: 2.0,
+                      width: 2.0 * scaleFactor,
                     ),
                   ),
-                  padding: const EdgeInsets.all(16.0),
+                  padding: EdgeInsets.all(16.0 * scaleFactor),
                   alignment: Alignment.center,
                   child: AutoSizeText(
                     puzzleSections[currentMainSection]![currentSubSection]![currentIndex]['hint']!,
                     style: GlobalProperties.globalTextStyle(
                       color: Colors.white,
-                      fontSize: 18,
+                      fontSize: 18 * scaleFactor,
                       fontWeight: FontWeight.bold,
                     ),
                     textAlign: TextAlign.center,
@@ -358,7 +364,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                     overflow: TextOverflow.ellipsis, // Gerekirse sonuna "..." ekler
                   ),
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 10 * scaleFactor),
                 Expanded(
                   child: Center(
                     child: Column(
@@ -380,22 +386,22 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                           
                           return GestureDetector(
                             child: Container(
-                              width: 50.0 * word.length,
-                              height: 40,
+                              width: 50.0 * scaleFactor * word.length,
+                              height: 40 * scaleFactor,
                               decoration: BoxDecoration(
                                 color: insideColor,
                                 borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(10),
-                                  topRight: Radius.circular(10),
-                                  bottomLeft: isLongestWord ? Radius.circular(10) : Radius.zero,
-                                  bottomRight: isLongestWord ? Radius.circular(10) : Radius.zero,
+                                  topLeft: Radius.circular(10 * scaleFactor),
+                                  topRight: Radius.circular(10 * scaleFactor),
+                                  bottomLeft: isLongestWord ? Radius.circular(10 * scaleFactor) : Radius.zero,
+                                  bottomRight: isLongestWord ? Radius.circular(10 * scaleFactor) : Radius.zero,
                                 ),
                                 border: Border(
-                                  top: BorderSide(color: borderColor, width: 2.0),
-                                  left: BorderSide(color: borderColor, width: 2.0),
-                                  right: BorderSide(color: borderColor, width: 2.0),
+                                  top: BorderSide(color: borderColor, width: 2.0 * scaleFactor),
+                                  left: BorderSide(color: borderColor, width: 2.0 * scaleFactor),
+                                  right: BorderSide(color: borderColor, width: 2.0 * scaleFactor),
                                   bottom: isLongestWord
-                                      ? BorderSide(color: borderColor, width: 2.0)
+                                      ? BorderSide(color: borderColor, width: 2.0 * scaleFactor)
                                       : BorderSide.none,
                                 ),
                               ),
@@ -422,15 +428,15 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                                               Text(
                                                 ' ${word[charIndex]} ',
                                                 style: GlobalProperties.globalTextStyle(
-                                                  fontSize: 20,
+                                                  fontSize: 20 * scaleFactor,
                                                   color: Colors.white,
                                                   fontWeight: FontWeight.bold,
-                                                  letterSpacing: 7,
+                                                  letterSpacing: 7 * scaleFactor,
                                                 ),
                                               ),
                                               SizedBox(
-                                                width: 35,
-                                                height: 35,
+                                                width: 35 * scaleFactor,
+                                                height: 35 * scaleFactor,
                                                 child: Transform.scale(
                                                   scale: 6.0, // Animasyonu içeride büyütmek için
                                                   child: Lottie.asset(
@@ -446,10 +452,10 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                                             ' _ ',
                                             key: ValueKey('hidden-$index-$charIndex'),
                                             style: GlobalProperties.globalTextStyle(
-                                              fontSize: 20,
+                                              fontSize: 20 * scaleFactor,
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold,
-                                              letterSpacing: 7,
+                                              letterSpacing: 7 * scaleFactor,
                                             ),
                                           ),
                                   );
@@ -469,7 +475,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                   children: [
                     // SOLDAKİ BUTON
                     Padding(
-                      padding: const EdgeInsets.only(left: 16.0, bottom: 1.0),
+                      padding: EdgeInsets.only(left: 16.0 * scaleFactor, bottom: 1.0 * scaleFactor),
                       child: GestureDetector(
                         onTap: widget.isCompleted || isWordHintActive
                             ? null
@@ -480,14 +486,14 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                           clipBehavior: Clip.none,
                           children: [
                             Container(
-                              width: 50,
-                              height: 50,
+                              width: 50 * scaleFactor,
+                              height: 50 * scaleFactor,
                               decoration: BoxDecoration(
                                 color: Colors.black54,
                                 shape: BoxShape.circle,
                                 border: Border.all(
                                   color: Colors.white,
-                                  width: 2,
+                                  width: 2 * scaleFactor,
                                 ),
                               ),
                               child: Column(
@@ -496,7 +502,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                                   Icon(
                                     Icons.auto_fix_high,
                                     color: Colors.white,
-                                    size: 25,
+                                    size: 25 * scaleFactor,
                                   ),
                                   // Coin animasyonu ve metin sadece count sıfırsa gösterilsin:
                                   ValueListenableBuilder<int>(
@@ -507,20 +513,20 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
                                             SizedBox(
-                                              height: 10,
-                                              width: 10,
+                                              height: 10 * scaleFactor,
+                                              width: 10 * scaleFactor,
                                               child: Lottie.asset(
                                                 'assets/animations/coin_flip_animation.json',
                                                 repeat: true,
                                                 animate: true,
                                               ),
                                             ),
-                                            const SizedBox(width: 2),
+                                            SizedBox(width: 2 * scaleFactor),
                                             Text(
                                               '${(puzzleSections[currentMainSection]![currentSubSection]![currentIndex]['word']!.length-1) * 50}',
                                               style: GlobalProperties.globalTextStyle(
                                                 color: Colors.white,
-                                                fontSize: 10,
+                                                fontSize: 10 * scaleFactor,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
@@ -536,11 +542,11 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                             ),
                             // Kırmızı etiket (badge) ekliyoruz:
                             Positioned(
-                              top: -5,
-                              right: 35,
+                              top: -5 * scaleFactor,
+                              right: 35 * scaleFactor,
                               child: Container(
-                                width: 20,
-                                height: 20,
+                                width: 20 * scaleFactor,
+                                height: 20 * scaleFactor,
                                 decoration: BoxDecoration(
                                   color: Colors.red,
                                   shape: BoxShape.circle,
@@ -553,7 +559,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                                         '$value',
                                         style: GlobalProperties.globalTextStyle(
                                           color: Colors.white,
-                                          fontSize: 12,
+                                          fontSize: 12 * scaleFactor,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       );
@@ -572,30 +578,30 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                       transform: isShaking
                           ? Matrix4.translationValues(shakeOffset, 0, 0)
                           : Matrix4.identity(),
-                      height: 30,
-                      margin: EdgeInsets.symmetric(horizontal: 16.0),
+                      height: 30 * scaleFactor,
+                      margin: EdgeInsets.symmetric(horizontal: 16.0 * scaleFactor),
                       alignment: Alignment.center,
                       child: AnimatedOpacity(
                         duration: Duration(milliseconds: 300),
                         opacity: showSelectedLetters ? 1.0 : 0.0,
                         child: Container(
-                          width: 15.0 * (selectedLetters.length.clamp(1, double.infinity)),
-                          height: 20,
+                          width: 15.0 * scaleFactor * (selectedLetters.length.clamp(1, double.infinity)),
+                          height: 20 * scaleFactor,
                           decoration: BoxDecoration(
                             color: Colors.black,
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(10 * scaleFactor),
                           ),
                           alignment: Alignment.center,
                           child: Text(
                             selectedLetters.join(''),
-                            style: GlobalProperties.globalTextStyle(color: Colors.white, fontSize: 15),
+                            style: GlobalProperties.globalTextStyle(color: Colors.white, fontSize: 15 * scaleFactor),
                           ),
                         ),
                       ),
                     ),
                     // SAĞDAKİ BUTON
                     Padding(
-                      padding: const EdgeInsets.only(right: 16.0, bottom: 1.0),
+                      padding: EdgeInsets.only(right: 16.0 * scaleFactor, bottom: 1.0 * scaleFactor),
                       child: GestureDetector(
                         onTap: widget.isCompleted
                             ? null
@@ -606,14 +612,14 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                           clipBehavior: Clip.none,
                           children: [
                             Container(
-                              width: 50,
-                              height: 50,
+                              width: 50 * scaleFactor,
+                              height: 50 * scaleFactor,
                               decoration: BoxDecoration(
                                 color: Colors.black54,
                                 shape: BoxShape.circle,
                                 border: Border.all(
                                   color: Colors.white,
-                                  width: 2,
+                                  width: 2 * scaleFactor,
                                 ),
                               ),
                               child: Column(
@@ -622,7 +628,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                                   Icon(
                                     Icons.lightbulb,
                                     color: Colors.white,
-                                    size: 25,
+                                    size: 25 * scaleFactor,
                                   ),
                                   ValueListenableBuilder<int>(
                                     valueListenable: GlobalProperties.singleHintCount,
@@ -632,20 +638,20 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
                                             SizedBox(
-                                              height: 10,
-                                              width: 10,
+                                              height: 10 * scaleFactor,
+                                              width: 10 * scaleFactor,
                                               child: Lottie.asset(
                                                 'assets/animations/coin_flip_animation.json',
                                                 repeat: true,
                                                 animate: true,
                                               ),
                                             ),
-                                            const SizedBox(width: 2),
+                                            SizedBox(width: 2 * scaleFactor),
                                             Text(
                                               '75',
                                               style: GlobalProperties.globalTextStyle(
                                                 color: Colors.white,
-                                                fontSize: 10,
+                                                fontSize: 10 * scaleFactor,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
@@ -661,11 +667,11 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                             ),
                             // Kırmızı etiket (badge) ekliyoruz:
                             Positioned(
-                              top: -5,
-                              right: -5,
+                              top: -5 * scaleFactor,
+                              right: -5 * scaleFactor,
                               child: Container(
-                                width: 20,
-                                height: 20,
+                                width: 20 * scaleFactor,
+                                height: 20 * scaleFactor,
                                 decoration: BoxDecoration(
                                   color: Colors.red,
                                   shape: BoxShape.circle,
@@ -678,7 +684,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                                         '$value',
                                         style: GlobalProperties.globalTextStyle(
                                           color: Colors.white,
-                                          fontSize: 12,
+                                          fontSize: 12 * scaleFactor,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       );
@@ -693,13 +699,13 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                     ),
                   ],
                 ),
-                SizedBox(height: 5),
+                SizedBox(height: 5 * scaleFactor),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: EdgeInsets.symmetric(horizontal: 16.0 * scaleFactor),
                   child: GestureDetector(
                     onPanUpdate: (details) {
                       final localPosition = details.localPosition;
-                      onLetterDrag(localPosition);
+                      onLetterDrag(localPosition, polygonSize);
                     },
                     onPanEnd: (_) => onDragEnd(),
                     child: Stack(
@@ -708,7 +714,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                         AnimatedPolygonWidget(
                           key: _polygonKey,
                           initialSides: shuffledLetters.length.toDouble(),
-                          size: 300,
+                          size: polygonSize,
                           color: Colors.black54,
                           letters: shuffledLetters,
                           selectedIndexes: visitedIndexes,
@@ -719,13 +725,13 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                          // Doğru cevap görseli ekleniyor
                         if (showCorrectAnswerImage && currentCorrectGuessImage != null)
                           Positioned(
-                            top: -60, // AnimatedPolygonWidget'ın 10 px yukarısında
+                            top: -60 * scaleFactor, // AnimatedPolygonWidget'ın 10 px yukarısında
                             child: FadeTransition(
                               opacity: _correctGuessOpacity, // Animasyonlu görünürlük
                               child: Image.asset(
                                 currentCorrectGuessImage!, // Rastgele seçilen görsel
-                                width: 200, // İstediğiniz genişlik
-                                height: 200, // İstediğiniz yükseklik
+                                width: 200 * scaleFactor, // İstediğiniz genişlik
+                                height: 200 * scaleFactor, // İstediğiniz yükseklik
                               ),
                             ),
                           ),
@@ -744,15 +750,15 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                                     shuffleLetters();
                                 },
                             child: Container(
-                              width: 50,
-                              height: 50,
+                              width: 50 * scaleFactor,
+                              height: 50 * scaleFactor,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                               ),
                               child: Icon(
                                 Icons.shuffle,
                                 color: Colors.white,
-                                size: 30,
+                                size: 30 * scaleFactor,
                               ),
                             ),
                           ),
@@ -761,11 +767,11 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                     ),
                   ),
                 ),
-                SizedBox(height: 5), // Reklamın en altta görünmesi için Spacer ekleniyor
+                SizedBox(height: 5 * scaleFactor), // Reklamın en altta görünmesi için Spacer ekleniyor
                 if (checkIfShouldShowAds(currentMainSection, currentSubSection) && _isBannerAdReady)
                   Container(
-                    height: _bannerAd.size.height.toDouble(),
-                    width: _bannerAd.size.width.toDouble(),
+                    height: _bannerAd.size.height.toDouble() * scaleFactor,
+                    width: _bannerAd.size.width.toDouble() * scaleFactor,
                     child: AdWidget(ad: _bannerAd),
                   ),
               ],
@@ -819,7 +825,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
     });
   }
 
-  void onLetterDrag(Offset position) {
+  void onLetterDrag(Offset position, double polygonSize) {
     if (widget.isCompleted) return;
     // Eğer yanlış bir seçim beklemesi varsa, ekrana dokunulduğunda hemen iptal et
     if (_isWrongChoiceWaiting) {
@@ -836,9 +842,12 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
       // İptal ettikten sonra yeni seçimi dinlemeye devam edebiliriz
     }
 
+    final double radius = polygonSize / 2;
+    final Offset center = Offset(polygonSize / 2, polygonSize / 2);
+
     for (int i = 0; i < shuffledLetters.length; i++) {
       // Pozisyonları dinamik olarak belirle
-      final point = _getLetterPosition(i, 300 / 2, Offset(150, 150));
+      final point = _getLetterPosition(i, radius, center);
       final hitBox = Rect.fromCircle(center: point, radius: 30); // Çember alanı
 
       if (hitBox.contains(position)) {
