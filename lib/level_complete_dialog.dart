@@ -101,200 +101,207 @@ class _LevelCompleteDialogState extends State<LevelCompleteDialog> with TickerPr
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black.withOpacity(0.7), // Tam ekran şeffaf siyah arkaplan
-      body: GestureDetector(
-        onTap: () {
-          if (!isAnimationStarted) {
-            setState(() {
-              isAnimationStarted = true;
-              isTextVisible = false;
-            });
-            _animationController.duration = Duration(seconds: 2); // Tam hızına geri getir
-            _animationController.forward(from: 0); // Animasyonu baştan başlat
-          }
-        },
-        child: Stack(
-          children: [
-            if (showRewardAnimations) ...[
-              Positioned(
-                top: MediaQuery.of(context).size.height * 0.19,
-                left: MediaQuery.of(context).size.width * 0.25,
-                child: SlideTransition(
-                  position: _slideAnimation,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      // İlk satır: Coin ve Can ödülleri
-                     Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          // Coin ödülü
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Lottie.asset(
-                                'assets/animations/coin_flip_animation.json',
-                                width: 50,
-                                height: 50,
-                                controller: _coinFlipController,
+Widget build(BuildContext context) {
+  // Sandık animasyonunun sabit yüksekliği (300)
+  double chestHeight = 300.0;
+  // Sandık animasyonunun ekranın dikey merkezindeki üst konumu
+  double chestTop = (MediaQuery.of(context).size.height - chestHeight) / 2;
+  // Ödül animasyonlarını sandığın 60 piksel üstüne yerleştirmek için hesaplanan top değeri
+  double rewardTop = chestTop - 90;
+
+  return Scaffold(
+    backgroundColor: Colors.black.withOpacity(0.7),
+    body: GestureDetector(
+      onTap: () {
+        if (!isAnimationStarted) {
+          setState(() {
+            isAnimationStarted = true;
+            isTextVisible = false;
+          });
+          _animationController.duration = Duration(seconds: 2);
+          _animationController.forward(from: 0);
+        }
+      },
+      child: Stack(
+        children: [
+          // Ödül animasyonlarının Positioned widget'ı:
+          if (showRewardAnimations)
+            Positioned(
+              top: rewardTop,
+              left: 0,
+              right: 0,
+              child: SlideTransition(
+                position: _slideAnimation,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // İlk satır: Coin ve Can ödülleri
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center, // Yatayda ortalama
+                      children: [
+                        // Coin ödülü
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Lottie.asset(
+                              'assets/animations/coin_flip_animation.json',
+                              width: 50,
+                              height: 50,
+                              controller: _coinFlipController,
+                            ),
+                            SizedBox(width: 8),
+                            Text(
+                              widget.sourcePage == 'daily_puzzle_game' ? "+80" : "+150",
+                              style: GlobalProperties.globalTextStyle(
+                                color: Colors.yellow,
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
                               ),
-                              SizedBox(width: 8),
-                              Text(
-                                widget.sourcePage == 'daily_puzzle_game' ? "+80" : "+150",
-                                style: GlobalProperties.globalTextStyle(
-                                  color: Colors.yellow,
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(width: 20),
+                        // Can ödülü
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Lottie.asset(
+                              'assets/animations/heart_beat_animation.json',
+                              width: 50,
+                              height: 50,
+                              controller: _heartBeatController,
+                            ),
+                            SizedBox(width: 8),
+                            Text(
+                              widget.sourcePage == 'daily_puzzle_game' ? "+2" : "+2",
+                              style: GlobalProperties.globalTextStyle(
+                                color: Colors.red,
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
                               ),
-                            ],
-                          ),
-                          SizedBox(width: 20), // İki ödül arasında ek boşluk (isteğe bağlı)
-                          // Can ödülü
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Lottie.asset(
-                                'assets/animations/heart_beat_animation.json',
-                                width: 50,
-                                height: 50,
-                                controller: _heartBeatController,
-                              ),
-                              SizedBox(width: 8),
-                              Text(
-                                widget.sourcePage == 'daily_puzzle_game' ? "+2" : "+2",
-                                style: GlobalProperties.globalTextStyle(
-                                  color: Colors.red,
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 30), // Satırlar arası dikey boşluk
-                      // İkinci satır: Kelime ipucu ve Tek ipucu ödülleri
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          // Kelime ipucu ödülü (Icons.auto_fix_high)
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.auto_fix_high,
-                                color: Colors.white,
-                                size: 50,
-                              ),
-                              SizedBox(width: 8),
-                              Text(
-                                widget.sourcePage == 'daily_puzzle_game' ? "+1" : "+2",
-                                style: GlobalProperties.globalTextStyle(
-                                  color: Colors.white,
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(width: 30), // İki ödül arasında ek boşluk (isteğe bağlı)
-                          // Tek ipucu ödülü (Icons.lightbulb)
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.lightbulb,
-                                color: Colors.white,
-                                size: 50,
-                              ),
-                              SizedBox(width: 8),
-                              Text(
-                                widget.sourcePage == 'daily_puzzle_game' ? "+1" : "+2",
-                                style: GlobalProperties.globalTextStyle(
-                                  color: Colors.white,
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-            Center(
-              child: Lottie.asset(
-                'assets/animations/chest_spotlight_animation.json',
-                width: 500, // Daha büyük boyut
-                height: 500,
-                fit: BoxFit.contain,
-                repeat: true, // Sürekli tekrar etsin
-              ),
-            ),
-            // Ortada animasyon (ilk başta 0.6 saniyesi yavaş oynar)
-            Center(
-              child: Lottie.asset(
-                'assets/animations/chest_animation.json',
-                width: 300,
-                height: 300,
-                fit: BoxFit.contain,
-                controller: _animationController,
-              ),
-            ),
-            // Sağ üst köşedeki kapatma butonu
-            if (isCloseButtonVisible)
-              Positioned(
-                top: 40,
-                right: 20,
-                child: IconButton(
-                  icon: Icon(Icons.close, color: Colors.white, size: 30),
-                  onPressed: () {
-                    if (widget.sourcePage == 'daily_puzzle_game') {
-                      // daily_puzzle_game ekranından çağrıldıysa ana menüye yönlendir
-                      Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (context) => HomePage()),
-                        (route) => false,
-                      );
-                    } else {
-                      // Diğer ekranlar (örneğin puzzle_game) için mevcut davranış
-                      Navigator.of(context).pop();
-                    }
-                  },
-                ),
-              ),
-            if (isTextVisible)
-              Positioned(
-                bottom: 50,
-                left: 0,
-                right: 0,
-                child: FadeTransition(
-                  opacity: _textOpacity,
-                  child: Text(
-                    "Açmak için sandığa tıklayın",
-                    textAlign: TextAlign.center,
-                    style: GlobalProperties.globalTextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
+                    SizedBox(height: 30),
+                    // İkinci satır: Kelime ipucu ve Tek ipucu ödülleri
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center, // Yatayda ortalama
+                      children: [
+                        // Kelime ipucu ödülü
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.auto_fix_high,
+                              color: Colors.white,
+                              size: 50,
+                            ),
+                            SizedBox(width: 8),
+                            Text(
+                              widget.sourcePage == 'daily_puzzle_game' ? "+1" : "+2",
+                              style: GlobalProperties.globalTextStyle(
+                                color: Colors.white,
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(width: 30),
+                        // Tek ipucu ödülü
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.lightbulb,
+                              color: Colors.white,
+                              size: 50,
+                            ),
+                            SizedBox(width: 8),
+                            Text(
+                              widget.sourcePage == 'daily_puzzle_game' ? "+1" : "+2",
+                              style: GlobalProperties.globalTextStyle(
+                                color: Colors.white,
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          // Diğer widget'lar (chest spotlight, chest animasyonu, kapatma butonu vs.) aynı kalıyor.
+          Center(
+            child: Lottie.asset(
+              'assets/animations/chest_spotlight_animation.json',
+              width: 500,
+              height: 500,
+              fit: BoxFit.contain,
+              repeat: true,
+            ),
+          ),
+          Center(
+            child: Lottie.asset(
+              'assets/animations/chest_animation.json',
+              width: chestHeight, // 300 olarak ayarlandı
+              height: chestHeight,
+              fit: BoxFit.contain,
+              controller: _animationController,
+            ),
+          ),
+          // Sağ üstteki kapatma butonu ve diğer widget'lar...
+          if (isCloseButtonVisible)
+            Positioned(
+              top: 40,
+              right: 20,
+              child: IconButton(
+                icon: Icon(Icons.close, color: Colors.white, size: 30),
+                onPressed: () {
+                  if (widget.sourcePage == 'daily_puzzle_game') {
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (context) => HomePage()),
+                      (route) => false,
+                    );
+                  } else {
+                    Navigator.of(context).pop();
+                  }
+                },
+              ),
+            ),
+          if (isTextVisible)
+            Positioned(
+              bottom: 50,
+              left: 0,
+              right: 0,
+              child: FadeTransition(
+                opacity: _textOpacity,
+                child: Text(
+                  "Açmak için sandığa tıklayın",
+                  textAlign: TextAlign.center,
+                  style: GlobalProperties.globalTextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
-          ],
-        ),
+            ),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
+
 
   Future<void> saveGameData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
