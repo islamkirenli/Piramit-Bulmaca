@@ -186,6 +186,13 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
       );
     }
 
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double scaleFactor = (screenWidth / 400).clamp(0.5, 1.5);
+
+    final screenSize = MediaQuery.of(context).size;
+    final double calculatedSize = screenSize.width * 0.75;
+    final double polygonSize = min(calculatedSize, 400.0);
+
     if (puzzleIndex >= dailyPuzzleData.length) {
       return Scaffold(
         body: Center(
@@ -263,30 +270,28 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
               children: [
                 // İpucu alanı
                 Container(
-                  height: 90,
-                  margin: EdgeInsets.symmetric(horizontal: 16.0),
+                  height: 90 * scaleFactor,
+                  margin: EdgeInsets.symmetric(horizontal: 16.0 * scaleFactor),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(20 * scaleFactor),
                     color: Colors.black54,
-                    border: Border.all(color: Colors.black, width: 2.0),
+                    border: Border.all(color: Colors.black, width: 2.0 * scaleFactor),
                   ),
-                  padding: const EdgeInsets.all(16.0),
+                  padding: EdgeInsets.all(16.0 * scaleFactor),
                   alignment: Alignment.center,
                   child: SingleChildScrollView(
                     child: Text(
                       currentHint,
                       style: GlobalProperties.globalTextStyle(
                         color: Colors.white,
-                        fontSize: 18,
+                        fontSize: 18 * scaleFactor,
                         fontWeight: FontWeight.bold,
                       ),
                       textAlign: TextAlign.center,
                     ),
                   ),
                 ),
-
-                SizedBox(height: 100),
-
+                SizedBox(height: 100 * scaleFactor),
                 Expanded(
                   child: LayoutBuilder(
                     builder: (context, constraints) {
@@ -307,15 +312,15 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
                                   : calculatedWidth;
 
                               return Container(
-                                width: containerWidth,
-                                height: 40,
-                                margin: EdgeInsets.only(bottom: 4),
+                                width: containerWidth * scaleFactor,
+                                height: 40 * scaleFactor,
+                                margin: EdgeInsets.only(bottom: 4 * scaleFactor),
                                 decoration: BoxDecoration(
                                   color: Colors.black54,
-                                  borderRadius: BorderRadius.circular(10),
+                                  borderRadius: BorderRadius.circular(10 * scaleFactor),
                                   border: Border.all(
                                     color: Colors.black,
-                                    width: 2.0,
+                                    width: 2.0 * scaleFactor,
                                   ),
                                 ),
                                 alignment: Alignment.center,
@@ -335,10 +340,10 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
                                                 Text(
                                                   ' ${word[charIndex]} ',
                                                   style: GlobalProperties.globalTextStyle(
-                                                    fontSize: 20,
+                                                    fontSize: 20 * scaleFactor,
                                                     color: Colors.white,
                                                     fontWeight: FontWeight.bold,
-                                                    letterSpacing: 5,
+                                                    letterSpacing: 5 * scaleFactor,
                                                   ),
                                                 ),
                                               ],
@@ -347,10 +352,10 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
                                               ' _ ',
                                               key: ValueKey('hidden-$index-$charIndex'),
                                               style: GlobalProperties.globalTextStyle(
-                                                fontSize: 20,
+                                                fontSize: 20 * scaleFactor,
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.bold,
-                                                letterSpacing: 5,
+                                                letterSpacing: 5 * scaleFactor,
                                               ),
                                             ),
                                     );
@@ -372,27 +377,27 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
                       transform: isShaking
                           ? Matrix4.translationValues(shakeOffset, 0, 0)
                           : Matrix4.identity(),
-                      height: 30,
-                      margin: EdgeInsets.symmetric(horizontal: 16.0),
+                      height: 30 * scaleFactor,
+                      margin: EdgeInsets.symmetric(horizontal: 16.0 * scaleFactor),
                       alignment: Alignment.center,
                       child: AnimatedOpacity(
                         duration: Duration(milliseconds: 300),
                         opacity: showSelectedLetters ? 1.0 : 0.0,
                         child: Container(
-                          width: 15.0 *
+                          width: 15.0 * scaleFactor *
                               (selectedLetters.length.clamp(1, 9999)
                                   as num), // min 1 harf
-                          height: 20,
+                          height: 20 * scaleFactor,
                           decoration: BoxDecoration(
                             color: Colors.black87,
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(10 * scaleFactor),
                           ),
                           alignment: Alignment.center,
                           child: Text(
                             selectedLetters.join(''),
                             style: GlobalProperties.globalTextStyle(
                               color: Colors.white,
-                              fontSize: 15,
+                              fontSize: 15 * scaleFactor,
                             ),
                           ),
                         ),
@@ -401,14 +406,14 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
                   ],
                 ),
 
-                SizedBox(height: 5),
+                SizedBox(height: 5 * scaleFactor),
 
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: EdgeInsets.symmetric(horizontal: 16.0 * scaleFactor),
                   child: GestureDetector(
                       onPanUpdate: (details) {
                         final localPosition = details.localPosition;
-                        onLetterDrag(localPosition);
+                        onLetterDrag(localPosition, polygonSize);
                       },
                       onPanEnd: (_) => onDragEnd(),
                       child: Stack(
@@ -418,7 +423,7 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
                           CirclePainterWidget(
                             key: _polygonKey,
                             initialSides: shuffledLetters.length.toDouble(),
-                            size: 300,
+                            size: polygonSize,
                             color: Colors.black54,
                             letters: shuffledLetters,
                             selectedIndexes: visitedIndexes,
@@ -429,13 +434,13 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
                           // Doğru cevap görseli
                           if (showCorrectAnswerImage && currentCorrectGuessImage != null)
                             Positioned(
-                              top: -60,
+                              top: -60 * scaleFactor,
                               child: FadeTransition(
                                 opacity: _correctGuessOpacity,
                                 child: Image.asset(
                                   currentCorrectGuessImage!,
-                                  width: 200,
-                                  height: 200,
+                                  width: 200 * scaleFactor,
+                                  height: 200 * scaleFactor,
                                 ),
                               ),
                             ),
@@ -457,15 +462,15 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
                                 _letterShuffleController.forward(from: 0);
                               },
                               child: Container(
-                                width: 50,
-                                height: 50,
+                                width: 50 * scaleFactor,
+                                height: 50 * scaleFactor,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                 ),
                                 child: Icon(
                                   Icons.shuffle,
                                   color: Colors.white,
-                                  size: 30,
+                                  size: 30 * scaleFactor,
                                 ),
                               ),
                             ),
@@ -475,7 +480,7 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
                     ),
                   ),
 
-                SizedBox(height: 5),
+                SizedBox(height: 5 * scaleFactor),
 
                 // Banner reklam alanı
                 if (_isBannerAdReady)
@@ -521,7 +526,7 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
   }
 
   /// Ekranda sürükleme sırasında harfleri tespit etme
-  void onLetterDrag(Offset position) {
+  void onLetterDrag(Offset position, double polygonSize) {
     // Yanlış seçim bekliyorsak, dokunulduğu anda iptal edelim
     if (_isWrongChoiceWaiting) {
       _wrongChoiceTimer?.cancel();
@@ -534,8 +539,11 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
       });
     }
 
+    final double radius = polygonSize / 2;
+    final Offset center = Offset(polygonSize / 2, polygonSize / 2);
+
     for (int i = 0; i < shuffledLetters.length; i++) {
-      final point = _getLetterPosition(i, 300 / 2, Offset(150, 150));
+      final point = _getLetterPosition(i, radius, center);
       final hitBox = Rect.fromCircle(center: point, radius: 30);
 
       if (hitBox.contains(position)) {
@@ -666,11 +674,11 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
 
   /// Çokgendeki harfin ekrandaki konumunu hesaplar
   Offset _getLetterPosition(int index, double radius, Offset center) {
-    final int sides = shuffledLetters.length;
-    final adjustmentFactor = 0.8;
-    final angle = -pi / 2 + (2 * pi / sides) * index;
-    final dx = center.dx + (radius * adjustmentFactor) * cos(angle);
-    final dy = center.dy + (radius * adjustmentFactor) * sin(angle);
+    // Harflerin çizildiği yerde kullanılan hesaplama: letterRadius = radius - 30
+    final double letterRadius = radius - 30;
+    final double angle = -pi / 2 + (2 * pi / shuffledLetters.length) * index;
+    final double dx = center.dx + letterRadius * cos(angle);
+    final double dy = center.dy + letterRadius * sin(angle);
     return Offset(dx, dy);
   }
 
