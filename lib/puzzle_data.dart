@@ -2,316 +2,1670 @@ final Map<String, Map<String, List<Map<String, String>>>> puzzleSections = {
   // MARK: ANA BÖLÜM-1
   'Ana Bölüm 1': {
     '1': [
-      {'hint': 'Eski dilde, kesin olarak değeri biçilmiş olan', 'word': 'MAKTU'},
-      {'hint': 'Halk hizmeti gören devlet organları', 'word': 'KAMU'},
-      {'hint': 'Kayaların ufalanması ile oluşan ufak tanecikler', 'word': 'KUM'},
-    ],
+      {'hint': 'Günün belli saatlerinde yenilen besin', 'word': 'YEMEK'},
+      {'hint': 'Büyük sıçan', 'word': 'KEME'},
+      {'hint': 'Kötü, fena (göz, söz vb.)', 'word': 'KEM'},
+      ],
     '2': [
-      {'hint': 'Yazma, çizme vb. işlerde kullanılan çeşitli biçimlerde araç', 'word': 'KALEM'},
-      {'hint': 'Gülgillerden, çiçekleri pembe veya beyaz bir ağaç (Pirus malus)', 'word': 'ELMA'},
-      {'hint': 'Bir kimsenin, bir tüzel kişinin mülkiyeti altında bulunan, taşınır veya taşınmaz varlıkların bütünü', 'word': 'MAL'}
-    ],
+      {'hint': 'Küçük yaştaki erkek veya kız', 'word': 'ÇOCUK'},
+      {'hint': 'Okçuluk sporunu yapan kimse, kemankeş', 'word': 'OKÇU'},
+      {'hint': 'Damızlık erkek koyun', 'word': 'KOÇ'},
+      ],
     '3': [
       {'hint': 'Ciltli veya ciltsiz olarak bir araya getirilmiş, basılı veya yazılı kâğıt yaprakların bütünü', 'word': 'KİTAP'},
       {'hint': 'Çabuk davranan, çevik', 'word': 'ATİK'},
-      {'hint': 'Herhangi bir kas kümesinin irade dışı hareketi', 'word': 'TİK'}
-    ],
+      {'hint': 'Herhangi bir kas kümesinin irade dışı hareketi', 'word': 'TİK'},
+      ],
     '4': [
-      {'hint': 'İl, ilçe vb. yerleşim bölgelerinde, iki yanında evler olan, caddeye oranla daha dar veya kısa olabilen yol', 'word': 'SOKAK'},
-      {'hint': 'Kargaşa', 'word': 'KAOS'},
-      {'hint': 'Dingil', 'word': 'AKS'}
-    ],
+      {'hint': 'Yazma, çizme vb. işlerde kullanılan çeşitli biçimlerde araç', 'word': 'KALEM'},
+      {'hint': 'Kabuğu parlak, sert, kırmızı, sarı ve yeşil renkte, kokusu hoş, tadı ekşi veya tatlı, dokusu gevrek, ufak çekirdekli meyve', 'word': 'ELMA'},
+      {'hint': 'Bir kimsenin, bir tüzel kişinin mülkiyeti altında bulunan, taşınır veya taşınmaz varlıkların bütünü', 'word': 'MAL'},
+      ],
     '5': [
-      {'hint': 'Yenmek için pişirilip hazırlanmış yiyecek, aş, taam, ekmek', 'word': 'YEMEK'},
-      {'hint': 'Büyük sıçan', 'word': 'KEME'},
-      {'hint': 'Kötü, fena (göz, söz vb.)', 'word': 'KEM'}
-    ],
+      {'hint': 'İl, ilçe vb. yerleşim bölgelerinde, iki yanında evler olan, caddeye oranla daha dar veya kısa olabilen yol', 'word': 'SOKAK'},
+      {'hint': 'Evrenin düzene girmeden önceki biçimden yoksun, uyumsuz ve karışık durumu', 'word': 'KAOS'},
+      {'hint': 'Dingil', 'word': 'AKS'},
+      ],
     '6': [
-      {'hint': 'Küçük yaştaki erkek veya kız', 'word': 'ÇOCUK'},
-      {'hint': 'Ok yapan veya satan kimse', 'word': 'OKÇU'},
-      {'hint': 'Damızlık erkek koyun', 'word': 'KOÇ'}
-    ],
+      {'hint': 'Kastamonu iline bağlı ilçelerden biri', 'word': 'ABANA'},
+      {'hint': 'Ben zamirinin yönelme durumu eki almış biçimi', 'word': 'BANA'},
+      {'hint': 'Osmanlı Devleti\'nde Macaristan ve Hırvatistan\'da sancak beylerine ve küçük prenslere verilen unvan', 'word': 'BAN'},
+      ],
     '7': [
-      {'hint': 'Canlı, sağ olma durumu', 'word': 'HAYAT'},
-      {'hint': 'Yanlış', 'word': 'HATA'},
-      {'hint': 'Çizgi', 'word': 'HAT'}
-    ],
+      {'hint': 'Açık saman renginde, ipekten yapılan, yarı mat, kalınca bir yazı kâğıdı türü', 'word': 'ABADİ'},
+      {'hint': 'Yaratma, yoktan var etme', 'word': 'İBDA'},
+      {'hint': 'Rüzgâr', 'word': 'BAD'},
+      ],
     '8': [
-      {'hint': 'Bir işin, bir oluşun içinde geçtiği, geçeceği veya geçmekte olduğu süre, vakit', 'word': 'ZAMAN'},
-      {'hint': 'Anlam', 'word': 'MANA'},
-      {'hint': 'Anne', 'word': 'ANA'}
-    ],
+      {'hint': 'Bir olay, bir durum karşısında kişinin takındığı davranış', 'word': 'TAVIR'},
+      {'hint': 'Sıfırdan büyük, önünde artı işareti bulunan (sayı), eksi karşıtı, pozitif', 'word': 'ARTI'},
+      {'hint': 'Genellikle uluslararası kara yolu taşımacılığında kullanılan, dingil sayısı fazla olan uzun kamyon', 'word': 'TIR'},
+      ],
     '9': [
-      {'hint': 'Güneşin doğduğu andan öğleye kadar geçen zaman', 'word': 'SABAH'},
-      {'hint': 'Patiska', 'word': 'HASA'},
-      {'hint': 'İhtiyarların baston yerine kullandıkları uzun sopa', 'word': 'ASA'}
-    ],
+      {'hint': 'Hızlılık, çabukluk, ivinti', 'word': 'SÜRAT'},
+      {'hint': 'Yıldız', 'word': 'STAR'},
+      {'hint': 'Genellikle içine sulu şeyler konulan metal vb.nden yapılmış kap', 'word': 'TAS'},
+      ],
     '10': [
-      {'hint': 'İnsanı bir şeye veya bir kimseye karşı yakın ilgi ve bağlılık göstermeye yönelten duygu', 'word': 'SEVGİ'},
-      {'hint': 'Aşk', 'word': 'SEVİ'},
-      {'hint': 'cümleye koşul veya karşılaştırma anlamı katan bağlaç', 'word': 'İSE'}
-    ],
+      {'hint': 'İpek iplikle dokunmuş ince, şeffaf kumaş', 'word': 'ŞİFON'},
+      {'hint': 'Bir tür çok tüylü küçük köpek', 'word': 'FİNO'},
+      {'hint': 'Belirli bir iş için gerektikçe harcanmak üzere ayrılıp işletilen para, kaynak', 'word': 'FON'},
+      ],
     '11': [
+      {'hint': 'Servi', 'word': 'SELVİ'},
+      {'hint': 'Sekiz yıllık ilköğretimden sonra en az dört yıllık bir eğitimle hayata veya yükseköğretime hazırlayan ortaöğretim kurumu', 'word': 'LİSE'},
+      {'hint': 'Sürekli yağan yağmurdan veya eriyen kardan oluşan, geçtiği yerlere zarar veren taşkın su, su taşkını', 'word': 'SEL'},
+      ],
+    '12': [
+      {'hint': 'Midye, istiridye vb. deniz hayvanlarının kabuğunda bulunan sedefçilikte kullanılan, pırıltılı, beyaz, sert bir madde', 'word': 'SEDEF'},
+      {'hint': 'Üzüntü, kaygı, tasa', 'word': 'ESEF'},
+      {'hint': 'Şapka yerine kullanılan, kırmızı, kalın çuhadan yapılmış, tepesinde püskülü olan, silindir biçiminde başlık', 'word': 'FES'},
+      ],
+    '13': [
+      {'hint': 'Elektrik dalgalarının özelliğinden yararlanarak seslerin iletilmesi sistemi', 'word': 'RADYO'},
+      {'hint': 'Yöntemine uygun düzgün sarılmış halat yumağı', 'word': 'RODA'},
+      {'hint': 'İçine alacağı şeye oranla ölçüleri yetersiz olan, geniş ve bol karşıtı', 'word': 'DAR'},
+      ],
+    '14': [
+      {'hint': 'Küçük kamyon, kamyonet', 'word': 'PİKAP'},
+      {'hint': 'Yerinde, önceki durumunda bırakma', 'word': 'İPKA'},
+      {'hint': 'Dökme demir', 'word': 'PİK'},
+      ],
+    '15': [
+      {'hint': 'Bir kimseyi, bir yeri veya bir şeyi görme, ona kavuşma isteği, hasret, tahassür', 'word': 'ÖZLEM'},
+      {'hint': 'Yalnız bir kişiye, bir şeye ait veya ilişkin olan, spesiyal', 'word': 'ÖZEL'},
+      {'hint': 'Özgü', 'word': 'ÖZE'},
+      ],
+    '16': [
       {'hint': 'Duygu ve hareket yeteneği olan, içgüdüleriyle hareket eden canlı yaratık', 'word': 'HAYVAN'},
       {'hint': 'İçinde bir şey dövüp ufalamaya yarayan, tahta, taş, maden veya plastikten yapılan kap', 'word': 'HAVAN'},
       {'hint': 'Çöllerde çoğu kez yüze çıkan yer altı sularının yarattığı tarım veya yerleşme bölgesi', 'word': 'VAHA'},
-      {'hint': '`Yazık` anlamında söylenen bir söz', 'word': 'VAH'}
-    ],
-    '12': [
+      {'hint': '\'Yazık\' anlamında söylenen bir söz', 'word': 'VAH'},
+      ],
+    '17': [
       {'hint': 'Koyu sarı veya açık kestane rengi', 'word': 'KUMRAL'},
       {'hint': 'Ortaya para koyarak oynanan talih oyunu', 'word': 'KUMAR'},
       {'hint': 'Kime veya neye isabet edeceği önceden belli olmayan bir çekimle sonucu belirleme', 'word': 'KURA'},
-      {'hint': 'Yabancı paraların ulusal para cinsinden değeri', 'word': 'KUR'}
-    ],
-    '13': [
-      {'hint': 'Bey olma durumu', 'word': 'BEYLİK'},
-      {'hint': 'Çocukların oynamak için kullandığı taş, maden, toprak, cam vb.nden yapılmış küçük yuvarlak nesne, misket, cıncık, zıpzıp', 'word': 'BİLYE'},
-      {'hint': 'Genellikle giysinin yaka, kol, etek çevresine kendi kumaşından veya başka kumaştan geçirilen ince şerit', 'word': 'BİYE'},
-      {'hint': 'Erkek özel adları yerine kullanılan bir söz', 'word': 'BEY'}
-    ],
-    '14': [
+      {'hint': 'Yabancı paraların ulusal para cinsinden değeri', 'word': 'KUR'},
+      ],
+    '18': [
       {'hint': 'Aslan', 'word': 'ARSLAN'},
       {'hint': 'Gerçekte yeri olmayıp zihinde tasarlanan, mevhum, farazi, tahminî', 'word': 'SANAL'},
       {'hint': 'Esasla ilgili, asıl ve temel olanla ilgili, esasi', 'word': 'ASAL'},
-      {'hint': 'Birçok kalın direk yan yana bağlanarak yapılan, düz ve korkuluksuz deniz veya ırmak taşıtı', 'word': 'SAL'}
-    ],
-    '15': [
+      {'hint': 'Birçok kalın direk yan yana bağlanarak yapılan, düz ve korkuluksuz deniz veya ırmak taşıtı', 'word': 'SAL'},
+      ],
+    '19': [
+      {'hint': 'Merkeze tam bağlı olmayarak bir beyin yönetimi altındaki ülke, emîrlik, emaret, mirlik', 'word': 'BEYLİK'},
+      {'hint': 'Çocukların oynamak için kullandığı taş, maden, toprak, cam vb.nden yapılmış küçük yuvarlak nesne, misket, cıncık, zıpzıp', 'word': 'BİLYE'},
+      {'hint': 'Genellikle giysinin yaka, kol, etek çevresine kendi kumaşından veya başka kumaştan geçirilen ince şerit', 'word': 'BİYE'},
+      {'hint': 'Erkek adlarının sonuna getirilen bir saygı sanı', 'word': 'BEY'},
+      ],
+    '20': [
       {'hint': 'Zambakgillerden, türlü renklerde çiçek açan, çok yıllık, yumrulu bir kır bitkisi, mahmur çiçeği (Colchicum)', 'word': 'ÇİĞDEM'},
       {'hint': 'Liyakat', 'word': 'DEĞİM'},
-      {'hint': 'İğdegillerden, kokulu, sarı çiçekleri olan, çalı biçiminde bir ağaç (Elaeagnus)', 'word': 'İĞDE'},
-      {'hint': 'Düşünce', 'word': 'İDE'}
-    ],
-    '16': [
-      {'hint': 'Antep fıstığı, çam fıstığı veya yer fıstığı denilen yemişlerin genel adı', 'word': 'FISTIK'},
-      {'hint': 'Kişinin yurttaşlık haklarını kullanma yetkisinin yargı kuruluşları tarafından kaldırılması', 'word': 'KISIT'},
-      {'hint': 'Dar', 'word': 'SIKI'},
-      {'hint': 'Bir cismin uzamasına, genleşmesine, buharlaşmasına, erimesine, sıcaklığının artmasına yol açan fiziksel enerji', 'word': 'ISI'}
-    ],
-    '17': [
-      {'hint': 'Yüzeyi belirli uzunlukta bırakılmış ham madde lifleriyle kaplı, parlak, yumuşak kumaş, velur', 'word': 'KADİFE'},
-      {'hint': 'Kural', 'word': 'KAİDE'},
-      {'hint': 'memeli, köpek dişleri iyi gelişmiş, çevik ve kuvvetli, evcil, küçük hayvan, pisik (Felis domesticus)', 'word': 'KEDİ'},
-      {'hint': 'Yatay bir düzleme göre yer çekimi doğrultusunda bulunan, eğik olmayan', 'word': 'DİK'}
-    ],
-    '18': [
-      {'hint': 'Bir milletin, belli bir topluluğun veya bir kuruluşun simgesi olarak kullanılan, renk ve biçimle özelleştirilmiş, genellikle dikdörtgen biçiminde kumaş, sancak', 'word': 'BAYRAK'},
-      {'hint': 'Yüksek tutulan veya sayılan birinden gelen iyilik, lütuf, ihsan, atıfet, inayet', 'word': 'KAYRA'},
-      {'hint': 'Bir aygıtın gereken işi yapabilmesi durumu', 'word': 'AYAR'},
-      {'hint': 'Uçurum', 'word': 'YAR'}
-    ],
-    '19': [
-      {'hint': 'Tarla, bahçe vb. yerlerde ağaç dallarından örülmüş barınak', 'word': 'ÇARDAK'},
-      {'hint': 'Dağ sırtlarında davarların yatırıldığı düz, rüzgâr almayan kuytu yer', 'word': 'ARKAÇ'},
-      {'hint': 'Bir iş yapmakta veya sonuçlandırmakta gücünden yararlanılan nesne', 'word': 'ARAÇ'},
-      {'hint': 'Rus imparatorlarına ve Bulgar krallarına verilen unvan', 'word': 'ÇAR'}
-    ],
-    '20': [
-      {'hint': 'muvaffakiyet', 'word': 'BAŞARI'},
-      {'hint': 'Savaşın bittiğinin bir antlaşmayla belirtilmesinden sonraki durum, sulh, hazar', 'word': 'BARIŞ'},
-      {'hint': 'Henüz mayalanmamış üzüm suyu', 'word': 'ŞIRA'},
-      {'hint': 'Birtakım hastalıklara karşı bağışıklık sağlamak için vücuda verilen, o hastalığın mikrobuyla hazırlanmış eriyik', 'word': 'AŞI'}
-    ],
+      {'hint': 'Zeytin biçiminde, kabuğu kırmızıya çalan sarı renkte, beyaz unlu, tadı mayhoş yemiş', 'word': 'İĞDE'},
+      {'hint': 'Düşünce', 'word': 'İDE'},
+      ],
     '21': [
-      {'hint': 'Tümsek, çıkıntı, kabarmış yer', 'word': 'KABARTI'},
-      {'hint': 'Okuma', 'word': 'KIRAAT'},
-      {'hint': 'Baharat veya güzel kokular satan kimse veya dükkân', 'word': 'AKTAR'},
-      {'hint': 'Gençliği ve körpeliği kalmamış, körpe karşıtı', 'word': 'KART'},
-      {'hint': 'Atmosferdeki su buharının yoğunlaşmasıyla oluşan ve yeryüzüne beyaz ve hafif billurlar biçiminde donarak düşen su buharı', 'word': 'KAR'}
-    ],
+      {'hint': 'Üzerinde değişik renkler bulunan', 'word': 'EBRULİ'},
+      {'hint': 'Yarım kilogramlık bir ağırlık ölçü birimi', 'word': 'LİBRE'},
+      {'hint': 'Konuşanın önündeki iki uzaklıktan kendisine daha yakın olanı, öte karşıtı', 'word': 'BERİ'},
+      {'hint': 'Şaşkınlık, coşku anlatan bir seslenme sözü', 'word': 'BRE'},
+      ],
     '22': [
-      {'hint': 'Avustralya yerlisi', 'word': 'ABORJİN'},
-      {'hint': 'Dört köşe yelkenlerin yan yakalarına, alt tarafa doğru bağlanan halat', 'word': 'BORİNA'},
-      {'hint': 'Batı ülkelerinde vikont ile şövalye arasında soyluluk unvanı', 'word': 'BARON'},
-      {'hint': 'Büyüklük, nicelik, derece bakımından iki şey arasında veya parça ile bütün arasında bulunan bağıntı, nispet, rasyo', 'word': 'ORAN'},
-      {'hint': 'Yaprakları karşılıklı, çiçekleri büyük, koyu kırmızı renkte, küçük bir ağaç (Punica granatum)', 'word': 'NAR'}
-    ],
+      {'hint': 'Ebenin yaptığı iş', 'word': 'EBELİK'},
+      {'hint': 'Olabilir ki, muhtemel olarak', 'word': 'BELKİ'},
+      {'hint': 'İncirin döllenmesini sağlayan sinek', 'word': 'İLEK'},
+      {'hint': 'Islandığı zaman kolayca biçimlendirilebilen yumuşak ve yağlı toprak', 'word': 'KİL'},
+      ],
     '23': [
+      {'hint': 'Güç, takat, mecal', 'word': 'DERMAN'},
+      {'hint': 'Dönence, cezir karşıtı', 'word': 'MEDAR'},
+      {'hint': 'Acıklı, üzüntülü olayları, bazen güldürücü yönlerini de katarak konu alan sahne oyunu veya televizyon filmi', 'word': 'DRAM'},
+      {'hint': 'Yapıları dış etkilerden korumak amacıyla üzerlerine yapılan çoğu kiremit kaplı bölüm', 'word': 'DAM'},
+      ],
+    '24': [
+      {'hint': 'Meridyen', 'word': 'BOYLAM'},
+      {'hint': 'Sapı orakla biçilmeyecek kadar kısa kalmış ekin', 'word': 'YOLMA'},
+      {'hint': 'Deniz, göl, havuz vb. yerlere girerken veya güneşlenirken giyilen, tek parçadan oluşan giyisi', 'word': 'MAYO'},
+      {'hint': 'İyi talih, iyi haber', 'word': 'YOM'},
+      ],
+    '25': [
+      {'hint': 'Gücü tükenmiş olan, çok yorgun, argın, aygın, dermansız', 'word': 'BİTKİN'},
+      {'hint': 'Binilecek taşıt veya hayvan', 'word': 'BİNİT'},
+      {'hint': 'Kapı, dolap vb. şeylerin, kanatları kapandığında kalan aralığı örtebilmek için bu kanatların kenarına çakılan çıta', 'word': 'BİNİ'},
+      {'hint': 'Dokuz yüz doksan dokuzdan sonra gelen sayının adı', 'word': 'BİN'},
+      ],
+    '26': [
+      {'hint': 'Genellikle başı korumak için giyilen şapka, serpuş', 'word': 'BAŞLIK'},
+      {'hint': 'Askerlerin toplu olarak barındıkları yapılar bütünü', 'word': 'KIŞLA'},
+      {'hint': 'Belirlenen biçimde, kurallarına ve doğasına uygun olarak gerçekleşme', 'word': 'AKIŞ'},
+      {'hint': 'Kuzey yarım kürede 22 Aralık-21 Mart tarihleri arasındaki zaman dilimi, sonbaharla ilkbahar arasındaki soğuk mevsim', 'word': 'KIŞ'},
+      ],
+    '27': [
+      {'hint': 'Usçu, rasyonalist', 'word': 'AKILCI'},
+      {'hint': 'Kal işi yapan kimse', 'word': 'KALCI'},
+      {'hint': 'Bozularak kokmuş (yumurta)', 'word': 'CILK'},
+      {'hint': 'Yok, olmaz, hayır anlamında çıkartılan ses', 'word': 'CIK'},
+      ],
+    '28': [
+      {'hint': 'Kız evlat', 'word': 'KERİME'},
+      {'hint': 'Gübre, tezek', 'word': 'KEMRE'},
+      {'hint': 'Tene yumuşaklık vermek veya güneş, yağmur vb. dış etkilerden korunmak için sürülen koyu kıvamlı madde', 'word': 'KREM'},
+      {'hint': 'Kuvvet, kudret', 'word': 'KER'},
+      ],
+    '29': [
+      {'hint': 'Anne', 'word': 'VALİDE'},
+      {'hint': 'Hz. Ali\'ye bağlı olan kimse', 'word': 'ALEVİ'},
+      {'hint': 'Bir çocuğu koruyan, işlerine bakan ve her türlü davranışından sorumlu kimse, ege, iye', 'word': 'VELİ'},
+      {'hint': 'Cümle içinde aynı görevde bulunan iki ögeyi birbirine bağlamaya yarayan bir söz', 'word': 'İLE'},
+      ],
+    '30': [
+      {'hint': 'Çocukların ve gençlerin toplum yaşayışında yerlerini almaları için gerekli bilgi, beceri ve anlayışları elde etmelerine, kişiliklerini geliştirmelerine okul içinde veya dışında, doğrudan veya dolaylı yardım etme, terbiye', 'word': 'EĞİTİM'},
+      {'hint': 'Un elerken dökülmemesi için yere serilen örtü', 'word': 'İTEĞİ'},
+      {'hint': 'İtmek işi', 'word': 'İTME'},
+      {'hint': 'Geleneksel olarak yayılan veya toplumun hayal gücü etkisiyle biçim değiştiren alegorik bir anlatımı olan halk hikâyesi', 'word': 'MİT'},
+      ],
+    '31': [
       {'hint': 'Tez iş gören, çabuk davranan, canı tez, farfara, fırtına gibi, içi tez, ivecen, iveğen, kıvrak, sabırsız, tez canlı, telaşlı, acul', 'word': 'ACELECİ'},
       {'hint': 'Bütün aile ile, ailecek', 'word': 'AİLECE'},
       {'hint': 'Hızlı yapılan, çabuk, tez, ivedi', 'word': 'ACELE'},
       {'hint': 'Hayatın sonu, ölüm zamanı', 'word': 'ECEL'},
-      {'hint': 'Kraliçe', 'word': 'ECE'}
-    ],
-    '24': [
-      {'hint': 'Sık, yuvarlak ve küçük taneli bir tür ekşi üzüm', 'word': 'ACIKARA'},
-      {'hint': 'Rengi karaya yakın olan, esmer', 'word': 'KARACA'},
-      {'hint': 'Acar', 'word': 'ACARA'},
-      {'hint': 'Hindistan\'da prenslere verilen unvan', 'word': 'RACA'},
-      {'hint': 'Çağrı, tellal ile duyurma', 'word': 'CAR'}
-    ],
-    '25': [
+      {'hint': 'Kraliçe', 'word': 'ECE'},
+      ],
+    '32': [
+      {'hint': 'Tümsek, çıkıntı, kabarmış yer', 'word': 'KABARTI'},
+      {'hint': 'Okuma', 'word': 'KIRAAT'},
+      {'hint': 'Baharat veya güzel kokular satan kimse veya dükkân', 'word': 'AKTAR'},
+      {'hint': 'Gençliği ve körpeliği kalmamış, körpe karşıtı', 'word': 'KART'},
+      {'hint': 'Atmosferdeki su buharının yoğunlaşmasıyla oluşan ve yeryüzüne beyaz ve hafif billurlar biçiminde donarak düşen su buharı', 'word': 'KAR'},
+      ],
+    '33': [
       {'hint': 'Güç bir sahnenin çeşitli açılardan çekiminin yapılması', 'word': 'AÇILAMA'},
       {'hint': 'Rengi kızıla yakın bir tür çam (Picea excelsa)', 'word': 'ALAÇAM'},
       {'hint': 'Bir elektrik akımını alıp başka bir kuvvete çeviren cihaz, alıcı, reseptör', 'word': 'ALMAÇ'},
       {'hint': 'Ulaşmak istenilen sonuç, maksat, meram', 'word': 'AMAÇ'},
-      {'hint': 'Çelişkili ve tutarsız iki cümleyi birbirine bağlamaya yarayan bir söz, amma, lakin, velakin', 'word': 'AMA'}
-    ],
+      {'hint': 'Çelişkili ve tutarsız iki cümleyi birbirine bağlamaya yarayan bir söz, lakin, velakin', 'word': 'AMA'},
+      ],
+    '34': [
+      {'hint': 'Yasaların veya toplum kurallarının uygulanamadığı yer', 'word': 'DAĞBAŞI'},
+      {'hint': 'Sağ ayağı sol uyluğun, sol ayağı sağ uyluğun altına alarak oturma biçimi', 'word': 'BAĞDAŞ'},
+      {'hint': 'Ayağa vurulan, ipten, ağaçtan veya demirden yapılan köstek', 'word': 'BAĞDA'},
+      {'hint': 'Kaynatılarak çok koyu ve yapışkan bir macun durumuna getirilen pekmez veya limonlu şeker eriyiği', 'word': 'AĞDA'},
+      {'hint': 'Yer kabuğunun çıkıntılı, yüksek, eğimli yamaçlarıyla çevresine hâkim ve oldukça geniş bir alana yayılan bölümü', 'word': 'DAĞ'},
+      ],
+    '35': [
+      {'hint': 'Sık, yuvarlak ve küçük taneli bir tür ekşi üzüm', 'word': 'ACIKARA'},
+      {'hint': 'Rengi karaya yakın olan, esmer', 'word': 'KARACA'},
+      {'hint': 'Acar', 'word': 'ACARA'},
+      {'hint': 'Hindistan\'da prenslere verilen unvan', 'word': 'RACA'},
+      {'hint': 'Çağrı, tellal ile duyurma', 'word': 'CAR'},
+      ],
+    '36': [
+      {'hint': 'Dadanma işi', 'word': 'DADANIŞ'},
+      {'hint': 'Adanma işi', 'word': 'ADANIŞ'},
+      {'hint': 'Üzüntülü, kederli, mahzun', 'word': 'NAŞAD'},
+      {'hint': 'Adları aynı olanlardan her biri', 'word': 'ADAŞ'},
+      {'hint': 'Sevinçli, neşeli', 'word': 'ŞAD'},
+      ],
+    '37': [
+      {'hint': 'Avustralya yerlisi', 'word': 'ABORJİN'},
+      {'hint': 'Dört köşe yelkenlerin yan yakalarına, alt tarafa doğru bağlanan halat', 'word': 'BORİNA'},
+      {'hint': 'Batı ülkelerinde vikont ile şövalye arasında soyluluk unvanı', 'word': 'BARON'},
+      {'hint': 'Büyüklük, nicelik, derece bakımından iki şey arasında veya parça ile bütün arasında bulunan bağıntı, nispet, rasyo', 'word': 'ORAN'},
+      {'hint': 'Yaprakları karşılıklı, çiçekleri büyük, koyu kırmızı renkte, küçük bir ağaç (Punica granatum)', 'word': 'NAR'},
+      ],
+    '38': [
+      {'hint': 'İç taraftan', 'word': 'DAHİLEN'},
+      {'hint': 'Herhangi bir sayıda evi olan', 'word': 'HANELİ'},
+      {'hint': 'Manzum biçimde yazılmış trajedi', 'word': 'HAİLE'},
+      {'hint': 'Bir işte yetkili olan, bir işi yapan, erbap', 'word': 'EHİL'},
+      {'hint': 'Bir şeyden veya bir kimseden yana olma, aleyh karşıtı', 'word': 'LEH'},
+      ],
+    '39': [
+      {'hint': 'Uygulama', 'word': 'AMELİYE'},
+      {'hint': 'Kamu ile ilgili işlerin yürütülmesi için gerekli gelirleri ve harcanan paraları düzenleyen kuralların bütünü', 'word': 'MALİYE'},
+      {'hint': 'Eğiklik, eğim, akıntı', 'word': 'MEYİL'},
+      {'hint': 'Parça', 'word': 'LİME'},
+      {'hint': 'Selin sürükleyip getirdiği çok küçük taneli çamurlaşmış kum ve toprak karışımı', 'word': 'MİL'},
+      ],
+    '40': [
+      {'hint': 'Deha', 'word': 'DAHİLİK'},
+      {'hint': 'İçle ilgili', 'word': 'DAHİLİ'},
+      {'hint': 'Bir işe karışmış olma, karışma', 'word': 'DAHİL'},
+      {'hint': 'Antlaşmaya göre olan, antlaşma gereği olan', 'word': 'AHDİ'},
+      {'hint': 'Sınır, uç', 'word': 'HAD'},
+      ],
+  },
+  // MARK: ANA BÖLÜM-2
+  'Ana Bölüm 2': {
+    '1': [
+      {'hint': 'Çok küçük boyutlarda işaret, benek', 'word': 'NOKTA'},
+      {'hint': 'Artı uç', 'word': 'ANOT'},
+      {'hint': 'Bin kilogramlık ağırlık birimi', 'word': 'TON'},
+      ],
+    '2': [
+      {'hint': 'Kullanılması hemen mümkün olan para, peşin para, likit', 'word': 'NAKİT'},
+      {'hint': 'Sözleşme, nikah', 'word': 'AKİT'},
+      {'hint': 'İlgilendiren, ilişkin, ilişik, ilgili', 'word': 'AİT'},
+      ],
+    '3': [
+      {'hint': 'Gürcistan’ın kuzeybatısında, Karadeniz’in doğusunda yaşayan halktan veya bu halkın soyundan olan kimse; Abhaz', 'word': 'ABAZA'},
+      {'hint': 'Yatağın yerden yüksek olmasını sağlayan veya sandık olarak kullanılan boş bölmesi', 'word': 'BAZA'},
+      {'hint': 'Temel', 'word': 'BAZ'},
+      ],
+    '4': [
+      {'hint': 'Küçük ve sevimli', 'word': 'MİNİK'},
+      {'hint': 'Vizon', 'word': 'MİNK'},
+      {'hint': 'Birine karşı duyulan öç alma isteği, garaz', 'word': 'KİN'},
+      ],
+    '5': [
+      {'hint': 'Duyularla algılanabilen nesne', 'word': 'MADDE'},
+      {'hint': 'Yokluk', 'word': 'ADEM'},
+      {'hint': 'Davranış, tavır', 'word': 'EDA'},
+      ],
+    '6': [
+      {'hint': 'Önder, şef', 'word': 'LİDER'},
+      {'hint': 'Bazı dillerde erkek cinsten sayılan (kelime), müzekker', 'word': 'ERİL'},
+      {'hint': 'Kaynağı mitolojik çağlara dayanan kirişli bir çalgı', 'word': 'LİR'},
+      ],
+    '7': [
+      {'hint': 'Yer kabuğunun yapı gereci olan bir veya birkaç mineralden oluşan kütle, külte, porfir', 'word': 'KAYAÇ'},
+      {'hint': 'Bayrak ve sancak direklerinin tepesindeki pirinçten yapılmış ay yıldızlı süs, alem', 'word': 'AYÇA'},
+      {'hint': 'Çeşitli bitkilerin yaprak veya çiçeklerinin demlenmesiyle elde edilen bir içecek türü', 'word': 'ÇAY'},
+      ],
+    '8': [
+      {'hint': 'Olgun', 'word': 'KAMİL'},
+      {'hint': 'Parasal', 'word': 'MALİ'},
+      {'hint': 'Belirtilen sayıların da dâhil edildiği aralığı anlatan söz', 'word': 'İLA'},
+      ],
+    '9': [
+      {'hint': 'Unun su veya başka sıvılarla yoğrulmuş durumu', 'word': 'HAMUR'},
+      {'hint': 'Çare', 'word': 'UMAR'},
+      {'hint': 'Papaz', 'word': 'RUA'},
+      ],
+    '10': [
+      {'hint': 'Divan edebiyatında 5-10 beyit arasında değişen, ilk beytinin dizeleri birbiriyle, sonraki beyitlerinin ikinci dizeleri birinci beyitle uyaklı, genellikle lirik konularda yazılan nazım biçimi', 'word': 'GAZEL'},
+      {'hint': 'Sunumun birkaç satıcı tarafından yapıldığı ve bu az sayıdaki satıcının birbirlerinin üretim kararlarından etkilendiği piyasa türü, oligopol', 'word': 'AZEL'},
+      {'hint': 'Üzme, sıkıntı verme, üzgü', 'word': 'EZA'},
+      ],
+    '11': [
+      {'hint': 'Tohumdan veya tomurcuktan çıkan körpe ve küçük dal, sürgün, ışkın, eşkin (II), cımbar, çıvgın, şıvgın', 'word': 'FİLİZ'},
+      {'hint': 'İş, davranış', 'word': 'FİİL'},
+      {'hint': 'Satrançta çapraz hareket ettirilen taş', 'word': 'FİL'},
+      ],
+    '12': [
+      {'hint': 'Havadar, aydınlık, iç açıcı (yer)', 'word': 'FERAH'},
+      {'hint': 'Sıçangillerden, küçük vücutlu, kemirgen, memeli hayvan (Mus)', 'word': 'FARE'},
+      {'hint': 'Taşıtların ön bölümünde bulunan, kısa ve uzun mesafeyi aydınlatmaya yarayan ışık düzeneği', 'word': 'FAR'},
+      ],
+    '13': [
+      {'hint': 'Bir erkekle bir kadının evlilik birliği kurmasını sağlayacak yasal işlem; evlilik akdi, akit', 'word': 'NİKAH'},
+      {'hint': 'Hıyanet eden (kimse)', 'word': 'HAİN'},
+      {'hint': 'Kurnaz, cin fikirli kimse', 'word': 'HİN'},
+      ],
+    '14': [
+      {'hint': 'Alfabe', 'word': 'ABECE'},
+      {'hint': 'Zırh', 'word': 'CEBE'},
+      {'hint': 'Doğum işini yaptıran kadın', 'word': 'EBE'},
+      ],
+    '15': [
+      {'hint': 'Yurdumuzun her yerinde yetiştirilen, yeşil kabuklu ve taneli bir bitki (Vicia faba)', 'word': 'BAKLA'},
+      {'hint': 'Yol üzerinde oluşan çukur', 'word': 'LAKA'},
+      {'hint': 'Uzak Doğu\'da yetişen Amerikan elmasından çıkan zamk', 'word': 'LAK'},
+      ],
+    '16': [
+      {'hint': 'Dem çeken, güzel ses çıkaran (güvercin)', 'word': 'DEMKEŞ'},
+      {'hint': 'Toprağı veya toprak gibi yumuşak bir şeyi biraz kazmak', 'word': 'EŞMEK'},
+      {'hint': 'Atgillerden, uzun kulaklı binek ve hizmet hayvanı, merkep, karakaçan, uzun kulaklı (Equus asinus)', 'word': 'EŞEK'},
+      {'hint': 'Büyük, yetişkin, yaşlı, kart', 'word': 'EKE'},
+      ],
+    '17': [
+      {'hint': 'Sığınma', 'word': 'İLTİCA'},
+      {'hint': 'Hızlandırma, çabuklaştırma, tezleştirme', 'word': 'TACİL'},
+      {'hint': 'Buluş', 'word': 'İCAT'},
+      {'hint': 'Gelecek', 'word': 'ATİ'},
+      ],
+    '18': [
+      {'hint': 'Cin', 'word': 'ECİNNİ'},
+      {'hint': 'Dölüt', 'word': 'CENİN'},
+      {'hint': 'Kendi cinsinden olanlara göre dar ve kalınlığı az olan, kalın karşıtı', 'word': 'İNCE'},
+      {'hint': 'Masallara ve kimi inanışlara göre göze görünmeyen ama gerektiğinde türlü biçimlere girebilen, iyilik de kötülük de yapabilen yaratık', 'word': 'CİN'},
+      ],
+    '19': [
+      {'hint': 'Bir dinin buyruklarını yerine getirme', 'word': 'İBADET'},
+      {'hint': 'İslam dininde Hz. Muhammed zamanından sonra ortaya çıkan değişik yargılar ve ilkeler', 'word': 'BİDAT'},
+      {'hint': 'Yavaş, ağır', 'word': 'BATİ'},
+      {'hint': 'Yarım kanatlılar alt takımına giren, insan ve memeli hayvanların vücudunda asalak olarak yaşayan böcek, kehle (Pediculus)', 'word': 'BİT'},
+      ],
+    '20': [
+      {'hint': '\'Kaç, uzaklaş; tamam, bitti\' anlamlarında kullanılan bir seslenme sözü', 'word': 'FERTİK'},
+      {'hint': 'Derece, makam bakımından yükselme', 'word': 'TERFİ'},
+      {'hint': 'Birey', 'word': 'FERT'},
+      {'hint': 'Parlaklık, aydınlık', 'word': 'FER'},
+      ],
+    '21': [
+      {'hint': 'Geçimini yaptığı işlerle sağlayan kimse', 'word': 'EMEKÇİ'},
+      {'hint': 'Fiillerin çeşitli zaman, kişi ve kiplere, adların da ad durumlarına göre uğradığı biçimleri, tasrif', 'word': 'ÇEKİM'},
+      {'hint': 'İçinde birtakım mineraller ve tuzlar bulunan, suyu ilaç olarak ve çoğunlukla iç sürdürmek için içilen kaynak', 'word': 'İÇME'},
+      {'hint': 'Buğdaygillerden, bahçelerin, yol kenarlarının ve parkların yeşillendirilmesinde yararlanılan çok yıllık bitki (Lolium)', 'word': 'ÇİM'},
+      ],
+    '22': [
+      {'hint': 'Genellikle üzüm şırasının kaynatılması ile yapılan koyu pekmez', 'word': 'BULAMA'},
+      {'hint': 'Bulmak işi', 'word': 'BULMA'},
+      {'hint': 'Bir iskambil oyunu türü', 'word': 'BLUM'},
+      {'hint': 'Yalnız iki geniş yüzü testere ile düzeltilmiş tahta', 'word': 'BUL'},
+      ],
+    '23': [
+      {'hint': 'Suç işlediği veya suçluların bulunduğu sanılan bir yere ansızın girme', 'word': 'BASKIN'},
+      {'hint': 'Geçen, önceki, eski', 'word': 'SABIK'},
+      {'hint': 'Gemiye hayvan yüklerken kullanılan sandık', 'word': 'BAKS'},
+      {'hint': 'En kalın erkek sesi', 'word': 'BAS'},
+      ],
+    '24': [
+      {'hint': 'Para, altın vb. taşınır değerlerin ticaretiyle uğraşan kimse', 'word': 'BANKER'},
+      {'hint': 'Elâzığ iline bağlı ilçelerden biri', 'word': 'KEBAN'},
+      {'hint': 'Mekke\'de bulunan, Müslümanlarca kıble olarak kabul edilen, hac ve umre ibadeti yapılırken tavaf edilen kutsal yer', 'word': 'KABE'},
+      {'hint': 'Seslenmek ve dikkati çekmek için özellikle Rumeli\'de kullanılan bir söz', 'word': 'ABE'},
+      ],
+    '25': [
+      {'hint': 'Yeryüzünde, yer altında belirli bir yatak içinde, eğim boyunca sürekli veya zaman zaman akan su', 'word': 'AKARSU'},
+      {'hint': 'Sık sık küçük, önemsiz kazalar yapan (kimse)', 'word': 'SAKAR'},
+      {'hint': 'Türkiye\'nin Doğu Anadolu Bölgesi\'nde yer alan illerinden biri', 'word': 'KARS'},
+      {'hint': 'Uyanık, gözü açık, müteyakkız', 'word': 'SAK'},
+      ],
     '26': [
-      {'hint': 'Gelişmek', 'word': 'AÇINMAK'},
+      {'hint': 'Gizlilik ortamında insanların birbirini tanımalarını ve anlaşmalarını sağlayan işaret', 'word': 'PAROLA'},
+      {'hint': 'Kutup', 'word': 'POLAR'},
+      {'hint': 'Ağız yoluyla', 'word': 'ORAL'},
+      {'hint': 'Bir kişiliği canlandıran oyuncunun söylemesi ve yapması gereken hareketlerin genel adı', 'word': 'ROL'},
+      ],
+    '27': [
+      {'hint': 'Dayanıklı ve esnek döküm maddesi', 'word': 'NAYLON'},
+      {'hint': 'Çok zengin (kimse)', 'word': 'ALYON'},
+      {'hint': 'Ortaya çıkan, oluşan durum, ilgi çeken veya çekebilecek nitelikte olan her türlü iş, hadise, vaka', 'word': 'OLAY'},
+      {'hint': 'Telefon konuşmasına başlarken kullanılan bir seslenme sözü', 'word': 'ALO'},
+      ],
+    '28': [
+      {'hint': 'Dil ve kültür yönünden büyük bir türdeşlik gösteren, birçok boydan oluşan, yapısındaki aileler arasında toplum, ekonomi, din, kan veya evlilik bağları bulunan göçebe veya yerleşik nitelikteki topluluk', 'word': 'AŞİRET'},
+      {'hint': 'Doğru yolu gösterme, uyarma', 'word': 'İRŞAT'},
+      {'hint': 'Şiir söyleyen veya yazan kimse, ozan', 'word': 'ŞAİR'},
+      {'hint': 'İslamiyet\'te Hz. Ali\'ye yandaş olan kimseler', 'word': 'ŞİA'},
+      ],
+    '29': [
+      {'hint': 'İlaçların hazırlandığı veya hazır ilaçların satıldığı yer', 'word': 'ECZANE'},
+      {'hint': 'Âcizler', 'word': 'ACEZE'},
+      {'hint': 'Çeşitli amaçlarla kullanılan kimyasal madde', 'word': 'ECZA'},
+      {'hint': 'Başlangıçta Kuzey Amerika zencilerine aitken sonraları bütün dünyada benimsenen bir müzik türü', 'word': 'CAZ'},
+      ],
+    '30': [
+      {'hint': 'Kentlileşmiş, kırsallıktan kurtulmuş, uygar', 'word': 'MEDENİ'},
+      {'hint': 'Kot vb. yapımında kullanılan bir tür pamuklu kumaş', 'word': 'DENİM'},
+      {'hint': 'Şüphesi olmayan', 'word': 'EMİN'},
+      {'hint': 'Yarı', 'word': 'NİM'},
+      ],
+    '31': [
+      {'hint': 'Sevimli ve cana yakın bir biçimde (çalınmak)', 'word': 'AMABİLE'},
+      {'hint': 'Ailece, ev halkıyla birlikte', 'word': 'MAAİLE'},
+      {'hint': 'Bir tarafa yatırma, eğme', 'word': 'İMALE'},
+      {'hint': 'Bayrak, simge', 'word': 'ALEM'},
+      {'hint': 'Mikroskopta incelenecek maddelerin üzerine konulduğu dar, uzun cam parçası', 'word': 'LAM'},
+      ],
+    '32': [
+      {'hint': 'Sapınç, sapkınlık, doğru yoldan ayrılma', 'word': 'DALALET'},
+      {'hint': 'Yasalarla sahip olunan hakların herkes tarafından kullanılmasının sağlanması, türe', 'word': 'ADALET'},
+      {'hint': 'Bir ırmağın çatallanarak denize veya göle kavuştuğu yerde oluşan üçgen biçimli ova, çatal ağız', 'word': 'DELTA'},
+      {'hint': 'Kumaşla astar arasına konularak giysinin dik durmasını sağlayan kolalı bez', 'word': 'TELA'},
+      {'hint': 'Kök, sap ve yaprak şeklinde farklılaşmamış bir bitkinin yaşama ve büyüme organı', 'word': 'TAL'},
+      ],
+    '33': [
+      {'hint': 'Bir yerleşim yeri veya bir yapı için gerekli olan yol, kanalizasyon, su, elektrik vb. tesisatın tümü', 'word': 'ALTYAPI'},
+      {'hint': 'Tapa konmuş olan, tıpalı', 'word': 'TAPALI'},
+      {'hint': 'Lüle taşı', 'word': 'PATAL'},
+      {'hint': 'Şişe gibi dar delikleri tıkamaya yarayan mantar, cam, tahta veya plastikten tıkaç', 'word': 'TAPA'},
+      {'hint': 'Yassı, basık', 'word': 'PAT'},
+      ],
+    '34': [
+      {'hint': 'Zehirli böcek, ısırgan otu, sert kumaş dokunarak teni acıtmak veya kaşındırmak', 'word': 'DALAMAK'},
+      {'hint': 'Suyun içine bütün vücuduyla ve hızla girmek', 'word': 'DALMAK'},
+      {'hint': 'Midenin arkasında, diyaframın altında, sol böbreğin üstünde, yassı, uzunca, akyuvar üreten ve yıpranmış alyuvarları toplayan, damarlı, gevşek bir dokudan oluşmuş organ', 'word': 'DALAK'},
+      {'hint': 'Yol üzerinde oluşan çukur', 'word': 'LAKA'},
+      {'hint': 'Bir alaşımdaki madenlerin erime derecesi farkından yararlanarak bunları birbirinden ayırma işlemi', 'word': 'KAL'},
+      ],
+    '35': [
+      {'hint': 'Alkollü içkilere hastalık derecesinde düşkün olan (kimse)', 'word': 'ALKOLİK'},
+      {'hint': 'Pamuk iplikleriyle yapılan ilk cilt bezi', 'word': 'KALİKO'},
+      {'hint': 'Bağırsak, böbrek gibi içi boş organlarda aralıklı duyulan güçlü sancı', 'word': 'KOLİK'},
+      {'hint': 'Halter sporunda barın iki ucuna yerleştirilen ve ağırlığı oluşturan parça', 'word': 'KİLO'},
+      {'hint': 'İnsan vücudunda omuz başından parmak uçlarına kadar uzanan bölüm', 'word': 'KOL'},
+      ],
+    '36': [
+      {'hint': 'Muğla iline bağlı ilçelerden biri', 'word': 'DALAMAN'},
+      {'hint': 'Bir olay veya önermenin daha önce bilinen bir kanunun veya formülün sonucu olduğunu görme', 'word': 'ANLAMA'},
+      {'hint': 'Almanya’da yaşayan, Cermen soyundan halk veya bu halkın soyundan olan kimse', 'word': 'ALMAN'},
+      {'hint': 'Düz, açık ve geniş yer, meydan, saha', 'word': 'ALAN'},
+      {'hint': 'At, eşek, öküz vb. yük hayvanlarının tırnaklarına çakılan, ayağın şekline uygun demir parçası', 'word': 'NAL'},
+      ],
+    '37': [
+      {'hint': 'Bir malın serbest sürümünü engellemek için konulan yasak, engelleyim', 'word': 'AMBARGO'},
+      {'hint': 'Levreğe benzer bir balık', 'word': 'BARGAM'},
+      {'hint': 'İyi toplanmamış halat veya zincirlerde ortaya çıkan dolaşıklık', 'word': 'GAMBA'},
+      {'hint': 'Yunan alfabesinin üçüncü harfi (g)', 'word': 'GAMA'},
+      {'hint': 'Tasa, kaygı, üzüntü', 'word': 'GAM'},
+      ],
+    '38': [
+      {'hint': 'Boğumlanma noktası damakta bulunan (ses)', 'word': 'DAMAKSI'},
+      {'hint': 'Ölçüt', 'word': 'MISDAK'},
+      {'hint': 'Sadakatli', 'word': 'SADIK'},
+      {'hint': 'Boşa çıkarma, rast getirememe', 'word': 'ISKA'},
+      {'hint': 'Afiş', 'word': 'ASI'},
+      ],
+    '39': [
+      {'hint': 'Âlime yakışır bir biçimde', 'word': 'ALİMANE'},
+      {'hint': 'Bezginlik ve sızlanma anlatan bir söz', 'word': 'ELAMAN'},
+      {'hint': 'Bir kelimeden, bir sözden, bir davranış veya olgudan anlaşılan şey, bunların hatırlattığı düşünce veya nesne, mana, meal, fehva, deme, mazmun, medlul, valör', 'word': 'ANLAM'},
+      {'hint': 'Şaşma veya yardım istenildiğini anlatan bir söz', 'word': 'AMAN'},
+      {'hint': 'Ün', 'word': 'NAM'},
+      ],
+    '40': [
+      {'hint': 'Aksi, huysuz', 'word': 'DAMARLI'},
+      {'hint': 'Irlamak işi, yırlama', 'word': 'IRLAMA'},
+      {'hint': 'Aralıklı', 'word': 'ARALI'},
+      {'hint': 'Namuslu, utangaç, sıkılgan', 'word': 'ARLI'},
+      {'hint': 'Karakter', 'word': 'IRA'},
+      ],
+  },
+  // MARK: ANA BÖLÜM-3
+  'Ana Bölüm 3': {
+    '1': [
+      {'hint': 'Anıt', 'word': 'ABİDE'},
+      {'hint': 'Şarap, içki', 'word': 'BADE'},
+      {'hint': 'Kötü, çirkin, tuhaf', 'word': 'BED'},
+      ],
+    '2': [
+      {'hint': 'Göğüs', 'word': 'BAĞIR'},
+      {'hint': 'Vücudun herhangi bir yerinde duyulan şiddetli acı', 'word': 'AĞRI'},
+      {'hint': 'Karakter', 'word': 'IRA'},
+      ],
+    '3': [
+      {'hint': 'Görece', 'word': 'BAĞIL'},
+      {'hint': 'Ağı bulunan', 'word': 'AĞLI'},
+      {'hint': 'Zehir', 'word': 'AĞI'},
+      ],
+    '4': [
+      {'hint': 'Kesin olarak değeri biçilmiş', 'word': 'MAKTU'},
+      {'hint': 'Halk hizmeti gören devlet organlarının tümü', 'word': 'KAMU'},
+      {'hint': 'Silisli kütlelerin, kayaların, doğal etkenlerle parçalanarak ufalanmasından oluşan, deniz kıyısı, dere yatağı vb. yerlerde çok bulunan, ufak, sert tanecikler', 'word': 'KUM'},
+      ],
+    '5': [
+      {'hint': 'Bağ yetiştirip ürününü satan kimse', 'word': 'BAĞCI'},
+      {'hint': 'Ağ ile balık tutarak geçinen kimse', 'word': 'AĞCI'},
+      {'hint': 'Parmaklık, korkuluk', 'word': 'CAĞ'},
+      ],
+    '6': [
+      {'hint': 'Ölü doğan kuzunun derisi', 'word': 'BAĞAN'},
+      {'hint': 'Kaplumbağa kabuğu', 'word': 'BAĞA'},
+      {'hint': 'İki şeyi birbirine ya da birçok şeyi topluca birbirlerine tutturmak, bağlamak için kullanılan ip, sicim, şerit, tel gibi düğümlenebilir nesne', 'word': 'BAĞ'},
+      ],
+    '7': [
+      {'hint': 'Bateri çalmaya yarayan ince, kısa çubuk', 'word': 'BAGET'},
+      {'hint': 'Yunan alfabesinin ikinci harfi', 'word': 'BETA'},
+      {'hint': 'Mizaç, huy, tabiat, karakter', 'word': 'TAB'},
+      ],
+    '8': [
+      {'hint': 'Samsun iline bağlı ilçelerden biri', 'word': 'BAFRA'},
+      {'hint': 'İslam inancına göre cennet ile cehennem arasında bir yer', 'word': 'ARAF'},
+      {'hint': 'Üstüne öteberi koymak için duvara veya bir dolabın içine birbirine paralel olarak tutturulmuş, genellikle geniş, uzun tahta veya metal levha', 'word': 'RAF'},
+      ],
+    '9': [
+      {'hint': 'Ördek, palaz', 'word': 'BADİK'},
+      {'hint': 'Altın ve gümüş işlemeli bir tür ipek kumaş', 'word': 'DİBA'},
+      {'hint': 'Değersiz, kötü, sıradan, hiçbir özelliği olmayan', 'word': 'ADİ'},
+      ],
+    '10': [
+      {'hint': 'Erkek kümes hayvanlarının en iri ve yaşlı olanı', 'word': 'BABAÇ'},
+      {'hint': 'Herhangi bir işi yapmak için ortaya konan güç, zorlu, sürekli çalışma, gayret, ceht, efor', 'word': 'ÇABA'},
+      {'hint': 'Osmanlı İmparatorluğu’nda gümrük vergisi', 'word': 'BAÇ'},
+      ],
+    '11': [
+      {'hint': 'Açıklanmış', 'word': 'AFİŞE'},
+      {'hint': 'Gizli bir şeyi açığa çıkarma, yayma', 'word': 'İFŞA'},
+      {'hint': 'Belli olmak, açıklanmak, ortaya çıkmak', 'word': 'FAŞ'},
+      ],
+    '12': [
+      {'hint': 'Gösterişli, çalımlı', 'word': 'AFİLİ'},
+      {'hint': 'Eden, yapan, işleyen', 'word': 'FAİL'},
+      {'hint': 'Geleceği öğrenmek, şans ve kısmeti anlamak amacıyla oyun kâğıdı, kahve telvesi, el ayası vb.ne bakarak anlam çıkarma, bakı', 'word': 'FAL'},
+      ],
+    '13': [
+      {'hint': 'Söz yitimi', 'word': 'AFAZİ'},
+      {'hint': 'Düşkünlük', 'word': 'ZAAF'},
+      {'hint': 'Elektrik geriliminde evre', 'word': 'FAZ'},
+      ],
+    '14': [
+      {'hint': 'Bir kaynağa dayanmayan, hayalî', 'word': 'AFAKİ'},
+      {'hint': 'Üstün, yüksek', 'word': 'FAİK'},
+      {'hint': 'Gösteriş, çalım, caka', 'word': 'AFİ'},
+      ],
+    '15': [
+      {'hint': 'Neredeyse', 'word': 'ADETA'},
+      {'hint': 'Tek başına anlamı olmayan, sonuna geldiği sözle cümledeki diğer kelimeler arasında ilişki kuran kelime türü, ilgeç', 'word': 'EDAT'},
+      {'hint': 'Tanrıtanımaz', 'word': 'ATE'},
+      ],
+    '16': [
+      {'hint': 'Edilmek işi', 'word': 'EDİLME'},
+      {'hint': 'Çok demlenmiş, koyu (çay)', 'word': 'DEMLİ'},
+      {'hint': 'Yapılmış, gerçekleşmiş iş, amel, fiil', 'word': 'EDİM'},
+      {'hint': 'Hazırlanan çayın renk ve koku bakımından istenilen durumu', 'word': 'DEM'},
+      ],
+    '17': [
+      {'hint': 'Gelin', 'word': 'ELKIZI'},
+      {'hint': 'Parlak kırmızı renk', 'word': 'KIZIL'},
+      {'hint': 'Soğukla sıcak arası, ne soğuk ne sıcak', 'word': 'ILIK'},
+      {'hint': 'Bazı hayvanların derisinde, insan vücudunun belli yerlerinde çıkan, üst deri ürünü olan ipliksi uzantı', 'word': 'KIL'},
+      ],
+    '18': [
+      {'hint': 'Geçimini toprağı ekerek sağlayan kimse', 'word': 'ÇİFTÇİ'},
+      {'hint': 'Arabozan', 'word': 'FİTÇİ'},
+      {'hint': 'Birbirini tamamlayan iki tekten oluşan (nesneler)', 'word': 'ÇİFT'},
+      {'hint': 'Birini başkasına karşı kışkırtma', 'word': 'FİT'},
+      ],
+    '19': [
+      {'hint': 'Sadist', 'word': 'ELEZER'},
+      {'hint': 'Alçak, soysuz', 'word': 'ERZEL'},
+      {'hint': 'Menteşe', 'word': 'REZE'},
+      {'hint': 'Altın', 'word': 'ZER'},
+      ],
+    '20': [
+      {'hint': 'Kumaş olabilen, kumaş yapılabilen', 'word': 'DOKUMA'},
+      {'hint': 'Kıraat', 'word': 'OKUMA'},
+      {'hint': 'Yemen’de yetişen, çok kokulu, en iyi nitelikli bir kahve', 'word': 'MOKA'},
+      {'hint': 'Kalça kemiği', 'word': 'OMA'},
+      ],
+    '21': [
+      {'hint': 'Yanıcı, renksiz, az kokulu, 0,97 yoğunluğunda karbon ve hidrojen birleşimi', 'word': 'ETİLEN'},
+      {'hint': 'İshal', 'word': 'LİNET'},
+      {'hint': 'Seçkin', 'word': 'ELİT'},
+      {'hint': 'Türlü metallerden yapılmış, kopmaya karşı bir direnç gösteren ince uzun nesne', 'word': 'TEL'},
+      ],
+    '22': [
+      {'hint': 'Arpa, buğday vb.nin kalburdan geçirilmiş bölümü', 'word': 'ELENTİ'},
+      {'hint': 'Nitelik bakımından, nitelikle ilgili, kalitatif', 'word': 'NİTEL'},
+      {'hint': 'Çayda bulunan ve kafein niteliğinde olan etkili madde', 'word': 'TEİN'},
+      {'hint': 'Bütün çizgileri belirgin olan, gözün bütün ayrıntılarıyla algılanan, iyi görünen', 'word': 'NET'},
+      ],
+    '23': [
+      {'hint': 'Satılan bir mal, yapılan bir iş veya harcanan bir emek karşılığında elde edilen para, getiri, temettü', 'word': 'KAZANÇ'},
+      {'hint': 'Toprak, metal vb. bir maddeden yapılmış yayvan, çukurca kap', 'word': 'ÇANAK'},
+      {'hint': 'Oldukça beyaz', 'word': 'AKÇA'},
+      {'hint': 'Yırtık, yarık', 'word': 'ÇAK'},
+      ],
+    '24': [
+      {'hint': 'Üzüntülü, kederli', 'word': 'ELEMLİ'},
+      {'hint': 'Milletler, uluslar', 'word': 'MİLEL'},
+      {'hint': 'Acıklı', 'word': 'ELİM'},
+      {'hint': 'Selin sürükleyip getirdiği çok küçük taneli çamurlaşmış kum ve toprak karışımı', 'word': 'MİL'},
+      ],
+    '25': [
+      {'hint': 'Bezginlik ve sızlanma anlatan bir söz', 'word': 'ELAMAN'},
+      {'hint': 'Malca', 'word': 'MALEN'},
+      {'hint': 'İnleme, inilti', 'word': 'NALE'},
+      {'hint': 'Ulan', 'word': 'LAN'},
+      ],
+    '26': [
+      {'hint': 'Çok olma durumu, çokluk', 'word': 'KESRET'},
+      {'hint': 'İşaret için yapılmış çentik veya iz, kerti', 'word': 'KERTE'},
+      {'hint': 'Bırakma, ayrılma', 'word': 'TERK'},
+      {'hint': 'Eşi olmayan, biricik, yegâne', 'word': 'TEK'},
+      ],
+    '27': [
+      {'hint': 'Hesap özeti', 'word': 'EKSTRE'},
+      {'hint': 'Organik asitlerle alkollerin aralarından bir su molekülü ayrılması sonucunda verdikleri madde', 'word': 'ESTER'},
+      {'hint': 'Gerekli olan duruma karşıt, zıt', 'word': 'TERS'},
+      {'hint': 'Uygun bulmama, geri çevirme, kabul etmeme', 'word': 'RET'},
+      ],
+    '28': [
+      {'hint': 'Bir nesnenin veya düşüncenin zihindeki soyut ve genel tasarımı, mefhum, fehva, konsept, nosyon', 'word': 'KAVRAM'},
+      {'hint': '\'Bir şeyin olmasına çok az kalmak\' anlamına gelen ramak kalmak deyiminde geçer', 'word': 'RAMAK'},
+      {'hint': 'Yeryüzünün denizle örtülü olmayan bölümü, toprak', 'word': 'KARA'},
+      {'hint': 'İçinden su akıtmak için toprak kazılarak yapılan açık oluk, arık, dren, karık', 'word': 'ARK'},
+      ],
+    '29': [
+      {'hint': 'Fazladan, alışılan ve gerekenden başka, ek olarak', 'word': 'EKSTRA'},
+      {'hint': 'Bir yapının damında çevresi, üstü açık yer, ayazlık, taraça', 'word': 'TERAS'},
+      {'hint': 'Volkanik tüf', 'word': 'TRAS'},
+      {'hint': 'Başa giyilen metal koruyucu', 'word': 'TAS'},
+      ],
+    '30': [
+      {'hint': 'Bilirkişi', 'word': 'EKSPER'},
+      {'hint': 'Saç tutamının aşağıdan yukarıya doğru ters yönde taranıp üstü düzleştirilerek kabarık gösterilmesi', 'word': 'KREPE'},
+      {'hint': 'Işığa karşı bakıldığında kâğıt tabakasının yapısal görünümü', 'word': 'EPER'},
+      {'hint': 'Delici kılıç', 'word': 'EPE'},
+      ],
+    '31': [
+      {'hint': 'Ambara bakan görevli, ambar memuru', 'word': 'AMBARCI'},
+      {'hint': 'Filiz', 'word': 'CIMBAR'},
+      {'hint': 'Bar işleten kimse', 'word': 'BARCI'},
+      {'hint': 'Kız kardeş', 'word': 'BACI'},
+      {'hint': 'Bazı maddelerin dilde bıraktığı yakıcı duyu, tatlı karşıtı', 'word': 'ACI'},
+      ],
+    '32': [
+      {'hint': 'Danışılan yer, müracaat, enformasyon', 'word': 'DANIŞMA'},
+      {'hint': 'Üzerine kandil, mum veya herhangi bir ışık kaynağı konulan yüksek tabla, mumluk, çırakma', 'word': 'ŞAMDAN'},
+      {'hint': 'Büyü yapan, gelecekten haber verdiğine, ruhlarla ilişki kurarak hastalıkları iyileştirdiğine inanılan kimse, kam', 'word': 'ŞAMAN'},
+      {'hint': 'Aylık', 'word': 'MAAŞ'},
+      {'hint': 'Bir tür börülce (Phaseolus aureus)', 'word': 'MAŞ'},
+      ],
+    '33': [
+      {'hint': 'Ceza sahası içinde kale direklerine 5,5 metre uzaklıkta, kale çizgisine dik çizilen çizgi ile kale çizgisi arasında kalan bölüm', 'word': 'ALTIPAS'},
+      {'hint': 'Tütün yaprağı dizisi', 'word': 'PASTAL'},
+      {'hint': 'Zekâsı pek gelişmemiş, zekâ yoksunu, alık, ahmak, alık salık', 'word': 'APTAL'},
+      {'hint': 'Nişastalı tanelerin, su ile kaynatılarak bulamaç kıvamına getirilmiş durumu', 'word': 'LAPA'},
+      {'hint': 'Yiğit, kahraman', 'word': 'ALP'},
+      ],
+    '34': [
+      {'hint': 'Âlâ', 'word': 'DANİSKA'},
+      {'hint': 'Pezevenk', 'word': 'DASNİK'},
+      {'hint': 'Parasal', 'word': 'NAKDİ'},
+      {'hint': 'Çağırma, bağırma, seslenme', 'word': 'NİDA'},
+      {'hint': 'Ansızın yapılan', 'word': 'ANİ'},
+      ],
+    '35': [
+      {'hint': 'Süs taşı olarak kullanılan, mor renkte bir kuvars türü', 'word': 'AMETİST'},
+      {'hint': 'Tanrıtanımaz', 'word': 'ATEİST'},
+      {'hint': 'Geniş gövdeli, dar boğazlı, emzikli veya emziksiz olabilen, toprak, cam, metal vb. maddelerden yapılan su kabı', 'word': 'TESTİ'},
+      {'hint': 'Genellikle belli meslek adamları için yapılmış veya belli amaçlarla kurulmuş konutlar topluluğu, iş merkezi', 'word': 'SİTE'},
+      {'hint': 'Toprağın kaymasını veya suyun akmasını önlemek için yapılan kalın duvar', 'word': 'SET'},
+      ],
+    '36': [
+      {'hint': 'Özgül ağırlık', 'word': 'DANSİTE'},
+      {'hint': 'Tarih öncesi tanrı, tanrıça, yarı tanrı ve kahramanlarla ilgili olağanüstü olayları konu alan şiir, epope', 'word': 'DESTAN'},
+      {'hint': 'Parlak, pamuklu kumaş', 'word': 'SATEN'},
+      {'hint': 'Övme', 'word': 'SENA'},
+      {'hint': 'Açıklık, açık ve kesin yargı', 'word': 'NAS'},
+      ],
+    '37': [
+      {'hint': 'Çabuk gücenen, kırılan', 'word': 'ALINGAN'},
+      {'hint': 'Gana’da yaşayan halk veya bu halkın soyundan olan kimse', 'word': 'GANALI'},
+      {'hint': 'Cılız, zayıf, hastalıkl', 'word': 'ALGIN'},
+      {'hint': 'Bıkma, usanma', 'word': 'GINA'},
+      {'hint': 'Geçmişte yaşanmış çeşitli olaylardan belleğin sakladığı her türlü iz, hatıra', 'word': 'ANI'},
+      ],
+    '38': [
+      {'hint': 'Darbe yaparak yönetime el koyan kimse', 'word': 'DARBECİ'},
+      {'hint': 'Birdenbire ortaya çıkan tehlikeli durum', 'word': 'BADİRE'},
+      {'hint': 'Uyanık, uyumayan', 'word': 'BİDAR'},
+      {'hint': 'Arpa ile şerbetçi otunun mayalandırılmasıyla yapılan bir içki, arpa suyu', 'word': 'BİRA'},
+      {'hint': 'Arınmış, soyutlanmış', 'word': 'ARİ'},
+      ],
+    '39': [
+      {'hint': 'Hile, düzen, tuzak', 'word': 'ALENGİR'},
+      {'hint': 'Diyarbakır iline bağlı ilçelerden biri', 'word': 'ERGANİ'},
+      {'hint': 'Kemikli balıklardan, ılık denizlerde büyük sürüler hâlinde dolaşan ve tütsü ile kurutulmuşu sıkça tüketilen, uskumru iriliğinde bir balık (Clupea harengus)', 'word': 'RİNGA'},
+      {'hint': 'Üzerinde boks yapılan, çevresi kordonla çevrilmiş yer', 'word': 'RİNG'},
+      {'hint': 'Kül rengi, boz renk, demir rengi, demirî', 'word': 'GRİ'},
+      ],
+    '40': [
+      {'hint': 'Daim olma durumu', 'word': 'DAİMLİK'},
+      {'hint': 'Allah tarafından insanların rızkını dağıtmakla ve doğa olaylarının gerçekleşmesini sağlamakla görevlendirilen melek', 'word': 'MİKAİL'},
+      {'hint': 'Soğuk veya sıcak hava vererek kapalı bir yerin havasını değiştiren elektrikli araç, iklimleme cihazı', 'word': 'KLİMA'},
+      {'hint': 'Etken, etmen, sebep, faktör', 'word': 'AMİL'},
+      {'hint': 'Yüce, yüksek', 'word': 'ALİ'},
+      ],
+  },
+  // MARK: ANA BÖLÜM-4
+  'Ana Bölüm 4': {
+    '1': [
+      {'hint': 'Türkiye\'nin Akdeniz Bölgesi\'nde yer alan illerinden biri', 'word': 'ADANA'},
+      {'hint': 'İneğin, sütten kesildikten sonra bir yaşına kadar olan yavrusu', 'word': 'DANA'},
+      {'hint': 'Deniz veya göl suları ile çevrilmiş küçük kara parçası, cezire', 'word': 'ADA'},
+      ],
+    '2': [
+      {'hint': 'Satranç oyununda şahı koruyan taşlardan birinin yerinden oynatılamaması durumu', 'word': 'AÇMAZ'},
+      {'hint': 'Orman içinde ağaç kesme veya yakma yoluyla tarıma elverişli bir duruma getirilen arazi', 'word': 'AÇMA'},
+      {'hint': 'Dört mevsim yeşil kalabilen, iğne yapraklı, yurdumuzda birçok türü yetişen bir orman ağacı (Pinus)', 'word': 'ÇAM'},
+      ],
+    '3': [
+      {'hint': 'Çarpık', 'word': 'ÇALIK'},
+      {'hint': 'Kapalı olmayan, kapalı karşıtı', 'word': 'AÇIK'},
+      {'hint': 'Kuyruk sokumu bölgesi, kaba et, kaba but, popo, makat', 'word': 'KIÇ'},
+      ],
+    '4': [
+      {'hint': 'Tuhaf kimse', 'word': 'ACUBE'},
+      {'hint': 'İzmir iline bağlı ilçelerden biri', 'word': 'BUCA'},
+      {'hint': 'Kuyruk sokumu kemiği', 'word': 'UCA'},
+      ],
+    '5': [
+      {'hint': 'Âcizler', 'word': 'ACEZE'},
+      {'hint': 'Uygunsuz davranışlarda bulunanlara uygulanan üzüntü, sıkıntı, acı verici işlem veya yaptırım', 'word': 'CEZA'},
+      {'hint': 'Servis sayısı', 'word': 'ACE'},
+      ],
+    '6': [
+      {'hint': 'Bir işin yabancısı olan, eli işe alışmamış, bir işi beceremeyen', 'word': 'ACEMİ'},
+      {'hint': 'Klasik Türk müziğinde mi notasına yakın bir perde', 'word': 'ACEM'},
+      {'hint': 'Soda veya potas katılmış silisli kumun ateşte eritilmesiyle yapılan sert, saydam ve çabuk kırılır cisim', 'word': 'CAM'},
+      ],
+    '7': [
+      {'hint': 'İrade yitimi', 'word': 'ABULİ'},
+      {'hint': 'Yenge, amca veya dayı karısı', 'word': 'BULA'},
+      {'hint': 'Şaşma ve korku bildiren bir söz', 'word': 'ABU'},
+      ],
+    '8': [
+      {'hint': 'Alaca benekli', 'word': 'ABRAŞ'},
+      {'hint': 'Türkiye’de 1925 yılına kadar tarımsal ürünün onda biri oranında aynî olarak alınan vergi', 'word': 'AŞAR'},
+      {'hint': 'İslam inanışına göre göğün en yüksek katı', 'word': 'ARŞ'},
+      ],
+    '9': [
+      {'hint': 'Gemide hareket hâlindeki halatın veya zincirin bir an durdurulması için verilen komut', 'word': 'ABOSA'},
+      {'hint': 'Genellikle birçok Avrupa ülkesinde giyilen tahta ayakkabı', 'word': 'SABO'},
+      {'hint': 'Kadınların boyunlarına aldıkları yılan biçiminde dar ve uzun kürk, boyun kürkü', 'word': 'BOA'},
+      ],
+    '10': [
+      {'hint': 'Ev, arsa, bahçe vb. taşınamayan mal ve mülklerin ortak adı, taşınmazlar, gayrimenkul', 'word': 'EMLAK'},
+      {'hint': 'Düşmanın gelmesi beklenilen yollar üzerinde, askerî önem taşıyan şehirlerde, geçit ve dar boğazlarda güvenliği sağlamak için yapılan kalın duvarlı, burçlu, mazgallı yapı', 'word': 'KALE'},
+      {'hint': 'Kuzey Avrupa\'da yaşayan, geniş dallı boynuzları olan, iri bir tür geyik', 'word': 'ELK'},
+      ],
+    '11': [
+      {'hint': 'Abaza', 'word': 'ABHAZ'},
+      {'hint': 'Tam anlamıyla', 'word': 'HAZA'},
+      {'hint': 'İşte', 'word': 'AHA'},
+      ],
+    '12': [
+      {'hint': 'Atom numarası 26, atom ağırlığı 55,847, yoğunluğu 7,8 olan, 1510 °C\'de eriyen, mavimtırak esmer renkte, özellikle çelik, döküm ve alaşımlar durumunda sanayide kullanılmaya en elverişli element (simgesi Fe)', 'word': 'DEMİR'},
+      {'hint': 'Omurgalılarda, sindirim sisteminin, yemek borusu ile onikiparmak bağırsağı arasında besinlerin sindirime hazır duruma getirildiği; omurgasız hayvanlarda ise sindirim kanalının bu bölgeye karşılık olan parçası', 'word': 'MİDE'},
+      {'hint': 'Yapılan iş', 'word': 'EDİ'},
+      ],
+    '13': [
+      {'hint': 'Damızlık erkek at', 'word': 'AYGIR'},
+      {'hint': 'Bir bütünü oluşturan iki eşit parçadan her biri, nısıf', 'word': 'YARI'},
+      {'hint': 'Ezgi, türkü, nağme', 'word': 'YIR'},
+      ],
+    '14': [
+      {'hint': 'Çimentonun su yardımıyla kum, çakıl vb. maddelerle karışması sonucu oluşan sert, dayanıklı, bağlayıcı yapı malzemesi', 'word': 'BETON'},
+      {'hint': 'Düz veya kıvrımlı her çeşit yumuşak kumaş vb. maddeden yapılan başlık', 'word': 'BONE'},
+      {'hint': 'Çoğu doğuştan, tende bulunan ufak, koyu renkli leke veya kabartı', 'word': 'BEN'},
+      ],
+    '15': [
+      {'hint': 'Kendiliğinden yetişmiş çim', 'word': 'ÇİMEN'},
+      {'hint': 'Tekne, yukaç karşıtı', 'word': 'İNEÇ'},
+      {'hint': 'Uzunluğu 2,54 santimetre olan İngiliz uzunluk ölçü birimi, parmak, pus', 'word': 'İNÇ'},
+      ],
+    '16': [
+      {'hint': 'Düzen', 'word': 'SİSTEM'},
+      {'hint': 'Bir kimseye, yaptığı bir hareketin veya söylediği sözün üzüntü, alınganlık, kırgınlık vb. duygular uyandırdığını öfkelenmeden belirtme', 'word': 'SİTEM'},
+      {'hint': 'Sarhoş', 'word': 'MEST'},
+      {'hint': 'Zehir', 'word': 'SEM'},
+      ],
+    '17': [
+      {'hint': 'Genellikle', 'word': 'EKSERİ'},
+      {'hint': 'Bir birimin bölündüğü eşit parçalardan birini veya birkaçını anlatan sayı', 'word': 'KESİR'},
+      {'hint': 'Oturmak için evlerin önüne taş ve çamurdan yapılan set', 'word': 'SEKİ'},
+      {'hint': 'Genellikle yakmak için kullanılan iri saman', 'word': 'KES'},
+      ],
+    '18': [
+      {'hint': 'İçinde ekşisi bulunan', 'word': 'EKŞİLİ'},
+      {'hint': 'Kuruntu', 'word': 'İŞKİL'},
+      {'hint': 'Üzeri nakışlı', 'word': 'İŞLİ'},
+      {'hint': 'Şiilik mezhebinden olan kimse', 'word': 'Şİİ'},
+      ],
+    '19': [
+      {'hint': 'İçerisinde çay demlenen emzikli kap', 'word': 'DEMLİK'},
+      {'hint': 'Bir kimsenin dilediği şey, istek, talep, temenni, rica, murat', 'word': 'DİLEK'},
+      {'hint': 'Aklını yitirmiş olan, akli dengesi bozulmuş olan, mecnun', 'word': 'DELİ'},
+      {'hint': 'Ağız boşluğunda, tatmaya, yutkunmaya, sesleri boğumlamaya yarayan etli, uzun, hareketli organ, tat alma organı', 'word': 'DİL'},
+      ],
+    '20': [
+      {'hint': 'Ekilme işi', 'word': 'EKİLİŞ'},
+      {'hint': 'Birlikte, beraber', 'word': 'EŞLİK'},
+      {'hint': 'Kapı boşluğunun alt yanında bulunan alçak basamak', 'word': 'EŞİK'},
+      {'hint': 'Yağı alınmış sütten veya yoğurttan yapılan peynir', 'word': 'KEŞ'},
+      ],
+    '21': [
+      {'hint': 'Danışıklı (spor karşılaşması)', 'word': 'ŞİKELİ'},
+      {'hint': 'Çok işleyen, canlı, hareketli', 'word': 'İŞLEK'},
+      {'hint': 'Eşi olan', 'word': 'EŞLİ'},
+      {'hint': 'Kokmuş hayvan ölüsü', 'word': 'LEŞ'},
+      ],
+    '22': [
+      {'hint': '\'Saf dışı etmek, konu dışında tutmak\' anlamındaki ekarte etmek, saf dışı edilmek, konu dışında tutulmak\' anlamındaki ekarte olmak birleşik fiillerinde geçen bir söz', 'word': 'EKARTE'},
+      {'hint': 'Evlerin veya dükkânların yüksekçe yerinde bulunan raf', 'word': 'TEREK'},
+      {'hint': 'Erkek keçi', 'word': 'TEKE'},
+      {'hint': 'Engel', 'word': 'KET'},
+      ],
+    '23': [
+      {'hint': 'Cinsel ilişkide bulunmamış (dişi), kızoğlan, kızoğlankız, erden', 'word': 'BAKİRE'},
+      {'hint': 'Davranış, düşünce, duygu bakımından ince, nazik olan (kimse)', 'word': 'KİBAR'},
+      {'hint': 'Arap harflerinin en çok kullanılan el yazısı biçimi', 'word': 'RİKA'},
+      {'hint': 'Herhangi bir şeyin veya vücudun üzerinde oluşan, biriken pislik, pasak', 'word': 'KİR'},
+      ],
+    '24': [
+      {'hint': 'Az eğri olan', 'word': 'EĞRİCE'},
+      {'hint': 'Hayvanlarda akciğer, yürek ve karaciğerin oluşturduğu takım', 'word': 'CİĞER'},
+      {'hint': 'Sevap', 'word': 'ECİR'},
+      {'hint': 'Bir şeyin ya da birinin etkisinde kalmak', 'word': 'CER'},
+      ],
+    '25': [
+      {'hint': 'Dayanma, karşı koyma gücü, mukavemet', 'word': 'DİRENÇ'},
+      {'hint': 'Dibi yüzeyinden veya ağzından uzak olan', 'word': 'DERİN'},
+      {'hint': 'Alçak, kötü, kişiliksiz (kimse)', 'word': 'DENİ'},
+      {'hint': 'Tanrı\'ya, doğaüstü güçlere, çeşitli kutsal varlıklara inanmayı ve tapınmayı sistemleştiren toplumsal bir kurum, diyanet', 'word': 'DİN'},
+      ],
+    '26': [
+      {'hint': 'Bencillik', 'word': 'EGOİZM'},
+      {'hint': 'Sır', 'word': 'GİZEM'},
+      {'hint': 'Belli bir kurallara göre düzenlenmiş, kulağa hoş gelen ses dizisi, haz, nağme, melodi', 'word': 'EZGİ'},
+      {'hint': 'Okun, kirişe geçen ucundaki kertik', 'word': 'GEZ'},
+      ],
+    '27': [
+      {'hint': 'Yönetimini hiçbir kısıtlama veya denetime bağlı olmaksızın sürdüren, bağımlı olmayan, hükümran, hâkim', 'word': 'EGEMEN'},
+      {'hint': 'Enemek işi', 'word': 'ENEME'},
+      {'hint': 'Bağ çubuğu, ağaç veya sebze dikmek için açılan çukur', 'word': 'EMEN'},
+      {'hint': 'Havada bulunan su buharı', 'word': 'NEM'},
+      ],
+    '28': [
+      {'hint': 'Boşuna, boş yere', 'word': 'NAFİLE'},
+      {'hint': 'Lenf', 'word': 'LENFA'},
+      {'hint': 'Damarlarda dolaşan kanla, doku ögeleri arasında aracı görevi yapan, kan plazması ve lenfositten oluşan saydam, sarı renkte bir sıvı, ak kan', 'word': 'LENF'},
+      {'hint': 'İçine sokma, iliştirme', 'word': 'LEF'},
+      ],
+    '29': [
+      {'hint': 'Günümüzde bey unvanından farklı olarak özel adlardan sonra kullanılan ikinci derecede bir unvan', 'word': 'EFENDİ'},
+      {'hint': 'Ölüyü gömme', 'word': 'DEFİN'},
+      {'hint': 'Tohumdan yetiştirilip başka yerlere dikilmek için hazırlanan sebze veya körpe çiçek', 'word': 'FİDE'},
+      {'hint': 'Savma', 'word': 'DEF'},
+      ],
+    '30': [
+      {'hint': 'Labada', 'word': 'EFELEK'},
+      {'hint': 'Gök, gökyüzü, sema', 'word': 'FELEK'},
+      {'hint': 'Adana iline bağlı ilçelerden biri', 'word': 'FEKE'},
+      {'hint': 'Yiğit, özellikle Batı Anadolu köy yiğidi, zeybek', 'word': 'EFE'},
+      ],
+    '31': [
+      {'hint': 'İçindeki yetenekler uyanarak amacına varmak, gelişmek, inkişaf etmek', 'word': 'AÇINMAK'},
       {'hint': 'Ayıplama, takbih', 'word': 'KINAMA'},
       {'hint': 'Kırşehir iline bağlı ilçelerden biri', 'word': 'KAMAN'},
-      {'hint': 'Masallarda adı geçen ve gerçekte var olmayan büyük bir kuş; Simurg, Zümrüdüanka', 'word': 'ANKA'},
-      {'hint': 'Atardamar ve toplardamarların içinde dolaşarak hücrelerde özümleme, yadımlama görevlerini sağlayan plazma ve yuvarlardan oluşmuş kırmızı renkli sıvı', 'word': 'KAN'}
-    ],
-    '27': [
+      {'hint': 'Masallarda adı geçen ve gerçekte var olmayan büyük bir kuş', 'word': 'ANKA'},
+      {'hint': 'Atardamar ve toplardamarların içinde dolaşarak hücrelerde özümleme, yadımlama görevlerini sağlayan plazma ve yuvarlardan oluşmuş kırmızı renkli sıvı', 'word': 'KAN'},
+      ],
+    '32': [
+      {'hint': 'Çağrılı', 'word': 'DAVETLİ'},
+      {'hint': 'Çeşitli yöntemlerle hastalığı iyi etme, iyileştirme, sağaltım, sağaltma, terapi', 'word': 'TEDAVİ'},
+      {'hint': 'Saklanılması, korunması için birine veya bir yere bırakılan eşya, inam, emanet', 'word': 'VEDİA'},
+      {'hint': 'Ayrılırken birbirine selam ve esenlik dileme', 'word': 'VEDA'},
+      {'hint': 'Korkunç, çok iri ve olağanüstü güçlü masal yaratığı', 'word': 'DEV'},
+      ],
+    '33': [
       {'hint': 'Sağlıklı bir vücuda sahip olmak için tempolu müzik eşliğinde yapılan bir jimnastik türü', 'word': 'AEROBİK'},
       {'hint': 'Büyükler, devlet büyükleri, ileri gelenler', 'word': 'EKABİR'},
       {'hint': 'Bir düşünceyi anlatan bir veya birkaç cümlelik söz', 'word': 'İBARE'},
       {'hint': 'Ölçü aletleri, saat ve göstergelerde sayı veya işaret göstermeye yarayan hareketli iğne', 'word': 'İBRE'},
-      {'hint': 'Sayıların ilki', 'word': 'BİR'}
-    ],
-    '28': [
+      {'hint': 'Sayıların ilki', 'word': 'BİR'},
+      ],
+    '34': [
+      {'hint': 'Çok dar', 'word': 'DARACIK'},
+      {'hint': 'Az acı, acımtırak', 'word': 'ACIRAK'},
+      {'hint': 'Hafif kırlaşmış', 'word': 'KIRCA'},
+      {'hint': 'Uzak', 'word': 'IRAK'},
+      {'hint': 'Beyazla az miktarda siyah karışmasından oluşan renk', 'word': 'KIR'},
+      ],
+    '35': [
       {'hint': 'Dalavereci', 'word': 'AFERİST'},
       {'hint': 'Fiyat gösteren çizelge', 'word': 'TARİFE'},
       {'hint': 'Ramazan ayı içinde verilen, miktarı belirli sadaka, fıtır sadakası', 'word': 'FİTRE'},
       {'hint': 'Dikişte kullanılan pamuk ipliği', 'word': 'TİRE'},
-      {'hint': 'Derinin gözeneklerinden sızan, kendine özgü bir kokusu olan, yapışkan, renksiz, tuzlu sıvı, arak', 'word': 'TER'}
-    ],
-    '29': [
+      {'hint': 'Derinin gözeneklerinden sızan, kendine özgü bir kokusu olan, yapışkan, renksiz, tuzlu sıvı', 'word': 'TER'},
+      ],
+    '36': [
+      {'hint': 'Ansızın', 'word': 'DEFATEN'},
+      {'hint': 'Alçaklık', 'word': 'DENAET'},
+      {'hint': 'Laboratuvar işlemi tamamlanmış bir filmin herhangi bir eksiği olup olmadığını anlamak için dağıtımcıya verilmeden önce incelenmesi', 'word': 'DENET'},
+      {'hint': 'Yemişlerin yenilen bölümü', 'word': 'ETEN'},
+      {'hint': 'İnsan vücudunun dış yüzü, cilt', 'word': 'TEN'},
+      ],
+    '37': [
       {'hint': 'Ağartmak işi', 'word': 'AĞARTMA'},
-      {'hint': 'Bir yamaca veya kaya içine doğru uzanan, barınak olarak kullanılabilen yer kovuğu, in', 'word': 'MAĞARA'},
-      {'hint': 'Taharri', 'word': 'ARAMA'},
-      {'hint': 'Bir devletin, bir hanedanın veya bir şehrin simgesi olarak kabul edilmiş resim, harf veya şekil, ongun', 'word': 'ARMA'},
-      {'hint': 'İki şeyi birbirinden ayıran uzaklık, aralık, boşluk, mesafe', 'word': 'ARA'}
-    ],
-    '30': [
-      {'hint': 'Terazilerde tartma işi yapılırken bir kefeye konulan nesne', 'word': 'AĞIRLIK'},
-      {'hint': 'Taş üzerinde bilenen bir kesici aracın keskin yüzüne yapışan ve aracın iyi kesebilmesi için, yağlanmış yumuşak taşla kaldırılması gereken çok ince çelik parçaları, zağ', 'word': 'KILAĞI'},
-      {'hint': 'İçinde ağı bulunan, zehirli', 'word': 'AĞILI'},
-      {'hint': 'Evcil küçükbaş hayvanların barındığı çit veya duvarla çevrili yer, arkaç', 'word': 'AĞIL'},
-      {'hint': 'Alüvyon', 'word': 'LIĞ'}
-    ],
-    '31': [
+      {'hint': 'Bir yamaca veya kaya içine doğru uzanan, barınak olarak kullanılabilen yer kovuğu', 'word': 'MAĞARA'},
+      {'hint': 'Sanığın yakalanması veya suç belgelerinin elde edilmesi için bir kimsenin evinde, iş yerinde, üzerinde veya eşyasında yapılan araştırma işlemi', 'word': 'ARAMA'},
+      {'hint': 'Bir devletin, bir hanedanın veya bir şehrin simgesi olarak kabul edilmiş resim, harf veya şekil', 'word': 'ARMA'},
+      {'hint': 'İki şeyi birbirinden ayıran uzaklık, aralık, boşluk, mesafe', 'word': 'ARA'},
+      ],
+    '38': [
+      {'hint': 'Defolmak işi', 'word': 'DEFOLMA'},
+      {'hint': 'Derebeylikle ilgili', 'word': 'FEODAL'},
+      {'hint': 'Çoğunlukla imaretlerde yoksullara verilen kepekli undan yapılmış pideye benzer bir ekmek türü', 'word': 'FODLA'},
+      {'hint': 'Küme, yığın', 'word': 'LODA'},
+      {'hint': 'Evin veya herhangi bir yapının oturma, çalışma, yatma gibi işlere yarayan, banyo, salon, giriş vb. dışında kalan, bir veya birden fazla çıkışı olan bölmesi, göz', 'word': 'ODA'},
+      ],
+    '39': [
       {'hint': 'Üzüntü, acı, sevinç, pişmanlık vb.nin etkisiyle gözyaşı dökmek', 'word': 'AĞLAMAK'},
       {'hint': 'İbra', 'word': 'AKLAMA'},
       {'hint': 'İlgi', 'word': 'ALAKA'},
       {'hint': 'Kaldığında', 'word': 'KALA'},
-      {'hint': 'Karışık renkli, çok renkli, alaca', 'word': 'ALA'}
-    ],
-    '32': [
+      {'hint': 'Karışık renkli, çok renkli, alaca', 'word': 'ALA'},
+      ],
+    '40': [
       {'hint': 'Uyumlu, düzenli', 'word': 'AHENKLİ'},
       {'hint': 'Sofrada kullanılan, tencere, çaydanlık veya tava altlığı', 'word': 'NİHALE'},
       {'hint': 'Açık, ortada, meydanda, herkesin içinde yapılan', 'word': 'ALENİ'},
       {'hint': 'Evlilik ve kan bağına dayanan, karı, koca, çocuklar, kardeşler arasındaki ilişkilerin oluşturduğu toplum içindeki en küçük birlik', 'word': 'AİLE'},
-      {'hint': 'Gözde sarıya çalan kestane rengi', 'word': 'ELA'}
-    ],
-    '33': [
+      {'hint': 'Gözde sarıya çalan kestane rengi', 'word': 'ELA'},
+      ],
+  },
+  // MARK: ANA BÖLÜM-5
+  'Ana Bölüm 5': {
+    '1': [
+      {'hint': 'Bilim veya sanat alanında üstün bilgisi ve yeteneği olan kimse', 'word': 'ÜSTAT'},
+      {'hint': 'Stadyum', 'word': 'STAT'},
+      {'hint': 'Rütbe veya kıdemce küçük olan asker', 'word': 'AST'},
+      ],
+    '2': [
+      {'hint': 'Ağaçlarla örtülü geniş alan', 'word': 'ORMAN'},
+      {'hint': 'Yargılama ve değerlendirmenin kendisine göre yapıldığı ölçüt, uyulması gereken kural, düzgü', 'word': 'NORM'},
+      {'hint': 'Kırmızı ile mavinin karışmasından oluşan renk, menekşe renginin kırmızıya çalanı', 'word': 'MOR'},
+      ],
+    '3': [
+      {'hint': 'Bir tehlike veya tehlike düşüncesi karşısında duyulan kaygı, üzüntü', 'word': 'KORKU'},
+      {'hint': 'Okuyan kimse, okuyucu, kari', 'word': 'OKUR'},
+      {'hint': 'İyice yanarak ateş durumuna gelmiş kömür veya odun parçası', 'word': 'KOR'},
+      ],
+    '4': [
+      {'hint': 'İslam inancına göre, ölümden sonra yeniden dirilip ayağa kalkma', 'word': 'KIYAM'},
+      {'hint': 'Oğuz Türklerinin yirmi dört boyundan biri', 'word': 'KAYI'},
+      {'hint': 'Herhangi bir kuvvet alanında, belli bir düzlemin belli bir bölümünden geçtiği varsayılan güç çizgileri, seyelan', 'word': 'AKI'},
+      ],
+    '5': [
+      {'hint': 'Ortaya çıkarma, meydana çıkarma', 'word': 'KEŞİF'},
+      {'hint': 'Sirke veya limon tadında olan', 'word': 'EKŞİ'},
+      {'hint': 'Kış için kurutulan yağsız, tuzsuz yoğurt', 'word': 'KEŞ'},
+      ],
+    '6': [
+      {'hint': 'Evlenmek için hazırlanmış, süslenmiş kız veya yeni evlenmiş kadın', 'word': 'GELİN'},
+      {'hint': 'Gene, yine', 'word': 'GİNE'},
+      {'hint': 'Üçgen, dörtgen vb. geometri terimlerinde `kenarlı` anlamıyla kullanılan bir söz', 'word': 'GEN'},
+      ],
+    '7': [
+      {'hint': 'Arpa, buğday, yulaf vb. ekinlerin tanelerini taşıyan kılçıklı başı', 'word': 'BAŞAK'},
+      {'hint': 'Terbiyeye, inceliğe aykırı, çirkin, kötü', 'word': 'KABA'},
+      {'hint': 'Ağabey', 'word': 'AKA'},
+      ],
+    '8': [
+      {'hint': 'Ölünün gömülü olduğu yer, gömüt, kabir, sin, makber, metfen', 'word': 'MEZAR'},
+      {'hint': 'Otlak', 'word': 'MERA'},
+      {'hint': 'Boyun eğen, kendini başkasının buyruğuna bırakan', 'word': 'RAM'},
+      ],
+    '9': [
+      {'hint': 'Karanın deniz, göl, ırmak boyunca uzanan bölümü, kıyı, yaka, yalı', 'word': 'SAHİL'},
+      {'hint': 'Çok tanrıcılıkta tanrı', 'word': 'İLAH'},
+      {'hint': 'Karışık bir sorunun içinden çıkma, sonuca varma', 'word': 'HAL'},
+      ],
+    '10': [
+      {'hint': 'Saydam olmayan bir cisim tarafından ışığın engellenmesiyle ışıklı yerde oluşan karanlık', 'word': 'GÖLGE'},
+      {'hint': 'Ardahan iline bağlı ilçelerden biri', 'word': 'GÖLE'},
+      {'hint': 'Bir bütünü oluşturan, bütünden ayrıştırıldığında da kendi başına anlam taşıyan parça, unsur', 'word': 'ÖGE'},
+      ],
+    '11': [
+      {'hint': 'Herhangi bir engelle ayrılmış iki yakayı birbirine bağlayan veya trafik akımının, başka bir trafik akımını kesmeden üstten geçmesini sağlayan ahşap, kâgir, beton veya demir yapı', 'word': 'KÖPRÜ'},
+      {'hint': 'Kendi ipiyle onarılmış kısım', 'word': 'ÖRÜK'},
+      {'hint': 'Görme engelli', 'word': 'KÖR'},
+      ],
+    '12': [
+      {'hint': 'Sebze, meyve, çiçek veya ağaç yetiştirilen yer', 'word': 'BAHÇE'},
+      {'hint': 'Hiçbir işe yaramadan yok olma, boşa gitme', 'word': 'HEBA'},
+      {'hint': 'Uyku', 'word': 'HAB'},
+      ],
+    '13': [
+      {'hint': 'Duyularla algılama, his', 'word': 'DUYGU'},
+      {'hint': 'Bir gezegenin çekiminde bulunarak onun çevresinde dolanan daha küçük gezegen, peyk', 'word': 'UYDU'},
+      {'hint': 'Elektrik ampulünün takıldığı bakır veya pirinçten yivli yer', 'word': 'DUY'},
+      ],
+    '14': [
+      {'hint': 'Yer kabuğunun çukur bölümlerini kaplayan, birbiriyle bağlantılı, tuzlu su kütlesi', 'word': 'DENİZ'},
+      {'hint': 'Şiirin satırlarından her biri, mısra', 'word': 'DİZE'},
+      {'hint': 'Kaval, baldır ve uyluk kemiğinin birleştiği yer', 'word': 'DİZ'},
+      ],
+    '15': [
+      {'hint': 'Ağaçların çiçek açtığı mevsim', 'word': 'BAHAR'},
+      {'hint': 'Atların yetiştirildiği ve bakımlarının yapıldığı, hayvanların rahatça hareket etmelerini sağlayan alanların bulunduğu tesis', 'word': 'HARA'},
+      {'hint': '\'Düşüncesizce ve hesapsızca harcamak, bol bol harcayıp tüketmek\' anlamlarındaki har vurup harman savurmak deyiminde geçen bir söz', 'word': 'HAR'},
+      ],
+    '16': [
+      {'hint': 'Salt', 'word': 'MUTLAK'},
+      {'hint': 'Yenmek', 'word': 'UTMAK'},
+      {'hint': 'Dik durma', 'word': 'AMUT'},
+      {'hint': 'Dış', 'word': 'AUT'},
+      ],
+    '17': [
+      {'hint': 'Bir iş için gerekli olan malzemelerin, parçaların tümü', 'word': 'EDEVAT'},
+      {'hint': 'Dönüş, geri gelme', 'word': 'AVDET'},
+      {'hint': 'İlaç, çare', 'word': 'DEVA'},
+      {'hint': 'Afrika\'nın doğusunda ve güneyinde yaşayan, kaplan postuna benzer postu az çizgili olan bir zebra türü', 'word': 'DAV'},
+      ],
+    '18': [
+      {'hint': 'Ara, aralık, uzaklık', 'word': 'MESAFE'},
+      {'hint': 'Adlar, isimler', 'word': 'ESAME'},
+      {'hint': 'Gök', 'word': 'SEMA'},
+      {'hint': 'Bir tür yel', 'word': 'SAM'},
+      ],
+    '19': [
+      {'hint': 'Güçlü bir dinî saygı uyandıran veya uyandırması gereken, kutsi, mukaddes', 'word': 'KUTSAL'},
+      {'hint': 'Otorite', 'word': 'SULTA'},
+      {'hint': 'Bir zanaatı gereği gibi öğrenmiş olan ve kendi başına yapabilen kimse', 'word': 'USTA'},
+      {'hint': 'Eskiden bazı bitkilerden, bugün sodyum klorürden elde edilen sodyum karbonatın ticaretteki adı', 'word': 'SUT'},
+      ],
+    '20': [
+      {'hint': 'Hükümlü', 'word': 'MAHKUM'},
+      {'hint': 'Ateşli hastalık', 'word': 'HUMMA'},
+      {'hint': 'Ümit etme', 'word': 'UMMA'},
+      {'hint': 'Bir fitilin etrafına erimiş bal mumu, içyağı, stearik asit veya parafin dökülerek genellikle silindir biçiminde dondurulan ince, uzun aydınlatma aracı', 'word': 'MUM'},
+      ],
+    '21': [
+      {'hint': 'Yıkılmış veya yıkılmaya yüz tutmuş yapı, yıkı', 'word': 'HARABE'},
+      {'hint': 'Tokat iline bağlı ilçelerden biri', 'word': 'ERBAA'},
+      {'hint': 'Aynı gerilimdeki besleme hattı veya çıkışların toplandığı ve dağıtıldığı boru veya iletken çubuk veya lama', 'word': 'BARA'},
+      {'hint': 'Allah', 'word': 'RAB'},
+      ],
+    '22': [
+      {'hint': 'Zaman bakımından geride kalmış, esbak', 'word': 'GEÇMİŞ'},
+      {'hint': 'Sıska, zayıf (kimse)', 'word': 'ÇEMİŞ'},
+      {'hint': 'Göz', 'word': 'ÇEŞM'},
+      {'hint': 'Süngü gibi yalnız batırılarak yaralamaya yarayan, kısa, düz ve ensiz kılıç', 'word': 'MEÇ'},
+      ],
+    '23': [
+      {'hint': 'Çevresinde olup bitenleri fark edemeyecek kadar düşünceye dalan', 'word': 'DALGIN'},
+      {'hint': 'Aymazlık', 'word': 'DALGI'},
+      {'hint': 'Zamir', 'word': 'ADIL'},
+      {'hint': 'Ağacın gövdesinden ayrılan kollardan her biri', 'word': 'DAL'},
+      ],
+    '24': [
+      {'hint': 'Şehir içinde ağaçlı, geniş cadde', 'word': 'BULVAR'},
+      {'hint': 'İçine eşya konulan ve genellikle yolculukta kullanılan büyük çanta', 'word': 'BAVUL'},
+      {'hint': 'Bir yapının veya yapı grubunun ortasında kalan üstü açık, duvarla çevrili alan, hayat, hanay, sahn', 'word': 'AVLU'},
+      {'hint': 'Yanardağların püskürme sırasında yeryüzüne çıkardıkları, dünyanın derinliklerinden gelen kızgın, erimiş maddeler, püskürtü', 'word': 'LAV'},
+      ],
+    '25': [
+      {'hint': 'Hasta olmama durumu, sağlık, esenlik', 'word': 'AFİYET'},
+      {'hint': 'Alım veya satımda bir şeyin para karşılığındaki değeri, eder, paha', 'word': 'FİYAT'},
+      {'hint': 'Görüntü, hayalet, ruh', 'word': 'TAYF'},
+      {'hint': 'Ağız içinde görülen zemini beyaz, ağrılı küçük yara', 'word': 'AFT'},
+      ],
+    '26': [
+      {'hint': 'Altın, gümüş, mücevher vb. değerli eşya yığını, büyük servet', 'word': 'HAZİNE'},
+      {'hint': 'Telefonda seslerin duyulduğu ve iletildiği parça', 'word': 'AHİZE'},
+      {'hint': 'Açıklama', 'word': 'İZAH'},
+      {'hint': 'Cömert', 'word': 'AHİ'},
+      ],
+    '27': [
+      {'hint': 'Kol dayayacak yerleri olan geniş ve rahat sandalye', 'word': 'KOLTUK'},
+      {'hint': 'Otu bol olan yer', 'word': 'OTLUK'},
+      {'hint': 'Her türlü eğitim ve öğretimin toplu olarak yapıldığı yer, mektep', 'word': 'OKUL'},
+      {'hint': 'Tanrı\'ya göre insan', 'word': 'KUL'},
+      ],
+    '28': [
+      {'hint': 'Ucu eğri ve sivri, kamaya benzer, silah olarak kullanılan bir bıçak türü', 'word': 'HANÇER'},
+      {'hint': 'Gedik', 'word': 'RAHNE'},
+      {'hint': 'Ev, konut', 'word': 'HANE'},
+      {'hint': 'Osmanlı padişahlarının adlarının sonuna getirilen unvan', 'word': 'HAN'},
+      ],
+    '29': [
+      {'hint': 'Eski çağlardan beri söylenegelen, olağanüstü varlıkları, olayları konu edinen hayalî hikâye, söylence', 'word': 'EFSANE'},
+      {'hint': 'Küçük sermaye ve zanaat sahibi', 'word': 'ESNAF'},
+      {'hint': 'İyi nitelikte olmayan, kötü', 'word': 'FENA'},
+      {'hint': 'Havalandırma aracı, pervane, pervane kanadı, vantilatör', 'word': 'FAN'},
+      ],
+    '30': [
+      {'hint': 'Değerli süs taşı, mücevher', 'word': 'CEVHER'},
+      {'hint': 'Pamuk, yün, ipek vb.ni eğirip iplik durumuna getirmeye yarar araç, iğ', 'word': 'CEHRE'},
+      {'hint': 'Bir düşünce, inanç veya iddiayı çürütme', 'word': 'CERH'},
+      {'hint': 'Önüne geldiği ismin benzerlerini \'teker teker hepsi, birer birer hepsi, birer birer tamamı\' anlamıyla kapsayacak biçimde genelleştiren söz', 'word': 'HER'},
+      ],
+    '31': [
       {'hint': 'Alışveriş', 'word': 'AHZÜİTA'},
       {'hint': 'Açıklamalar', 'word': 'İZAHAT'},
-      {'hint': 'Dinin yasak ettiği şeylerden sakınıp buyurduklarını yerine getiren', 'word': 'ZAHİT'},
+      {'hint': 'Dinin yasak ettiği şeylerden sakınıp buyurduklarını yerine getiren (kimse)', 'word': 'ZAHİT'},
       {'hint': 'Doğru bir çizgi üzerinde bulunma durumu', 'word': 'HİZA'},
-      {'hint': 'Hoşa giden duygulanma, hoşlanma, zevk', 'word': 'HAZ'}
-    ],
-    '34': [
-      {'hint': 'Özellikle amber balığının bağırsaklarından çıkarılan, kül renginde, yapışkan, bükülgen ve misk gibi kokusu olan bir taş', 'word': 'AKAMBER'},
+      {'hint': 'Hoşa giden duygulanma, hoşlanma, zevk', 'word': 'HAZ'},
+      ],
+    '32': [
+      {'hint': 'Sıcak ülkelerde yetişen bir ağaçtan elde edilen katı, güzel kokulu reçine', 'word': 'AKAMBER'},
       {'hint': 'Çeşitli gösterilerin yapıldığı eğlence yeri', 'word': 'KABARE'},
       {'hint': 'Diyezli veya bemollü bir sesin eski durumuna getirilmesini gösteren nota işareti', 'word': 'BEKAR'},
       {'hint': 'Kalıcılık, ölmezlik', 'word': 'BEKA'},
-      {'hint': 'Sert, katı', 'word': 'BEK'}
-    ],
-    '35': [
+      {'hint': 'Sert, katı', 'word': 'BEK'},
+      ],
+    '33': [
       {'hint': 'Kuru fasulye', 'word': 'AKBAKLA'},
       {'hint': 'Yiyecek, içecek vb. maddeleri perakende olarak satan kimse', 'word': 'BAKKAL'},
       {'hint': 'Yayvan ve dolgun (yüz)', 'word': 'ABLAK'},
       {'hint': 'Bir kimsenin kendisinden büyük olan kız kardeşi', 'word': 'ABLA'},
-      {'hint': 'Olgunlaşmış incirin, dışına sızan tatlısı', 'word': 'BAL'}
-    ],
-    '36': [
+      {'hint': 'Arılarının bitki ve çiçeklerden topladıkları bal özünden yapıp kovanlarındaki petek gözlerine doldurdukları, rengi beyazdan esmere kadar değişen tatlı, koyu, sıvı madde', 'word': 'BAL'},
+      ],
+    '34': [
       {'hint': 'Parasal', 'word': 'AKÇASAL'},
       {'hint': 'Bir canlıda sürekli veya geçici yaşayarak ona zarar veren başka canlı, parazit', 'word': 'ASALAK'},
       {'hint': 'Kalın biçilmiş uzun tahta', 'word': 'KALAS'},
       {'hint': 'Para veya değerli eşya saklamaya yarayan çelik dolap', 'word': 'KASA'},
-      {'hint': 'Tellerden oluşan ve kasılarak vücut hareketlerini sağlayan organ ve bu organın telsi dokusu, adale', 'word': 'KAS'}
-    ],
-    '37': [
+      {'hint': 'Tellerden oluşan ve kasılarak vücut hareketlerini sağlayan organ ve bu organın telsi dokusu, adale', 'word': 'KAS'},
+      ],
+    '35': [
+      {'hint': 'İçinde bakır, çinko, nikel bulunan ve çatal bıçak takımı yapımında kullanılan gümüşlü bir alaşım', 'word': 'ALFENİT'},
+      {'hint': 'Karabük iline bağlı ilçelerden biri', 'word': 'EFLANİ'},
+      {'hint': 'Bir işin sonu', 'word': 'FİNAL'},
+      {'hint': 'İnsan gözünün algıladığı ışık şiddeti', 'word': 'FANİ'},
+      {'hint': 'Bir işi yapma, yerine getirme', 'word': 'İFA'},
+      ],
+    '36': [
       {'hint': 'Mersin iline bağlı ilçelerden biri', 'word': 'AKDENİZ'},
       {'hint': 'Sütte bulunan protein maddesi', 'word': 'KAZEİN'},
       {'hint': 'Yıkıntı, döküntü, çöküntü', 'word': 'ENKAZ'},
-      {'hint': 'İnsanın düşünme, akıl yürütme, öğrenme, kavramları ve nesneleri zihinde canlandırabilme vb. yeteneklerinin ve becerilerinin tamamı', 'word': 'ZEKA'},
-      {'hint': 'Perde ayaklılardan, uzun, beyaz veya gri boyunlu, suda ve karada yaşayan, uçan, yabani veya evcil kuş', 'word': 'KAZ'}
-    ],
+      {'hint': 'İnsanın düşünme, akıl yürütme, öğrenme, yargılama, sonuç çıkarma, değerlendirebilme, icat edebilme vb. yeteneklerinin ve becerilerinin tamamı', 'word': 'ZEKA'},
+      {'hint': 'Perde ayaklılardan, uzun, beyaz veya gri boyunlu, suda ve karada yaşayan, uçan, yabani veya evcil kuş (Anser)', 'word': 'KAZ'},
+      ],
+    '37': [
+      {'hint': 'Akıl yolu ile kazanılan bilgiler', 'word': 'AKLİYAT'},
+      {'hint': 'Aldırışsız, ilgisiz, umursamaz', 'word': 'LAKAYT'},
+      {'hint': 'İşsiz, boş gezen, avare (kimse)', 'word': 'AYLAK'},
+      {'hint': 'Genellikle üç tabur ve bunlara bağlı birliklerden oluşan asker topluluğu', 'word': 'ALAY'},
+      {'hint': 'Köpek ve sığırlara yedirilmek için un ve kepekle hazırlanan yiyecek', 'word': 'YAL'},
+      ],
+    '38': [
+      {'hint': 'Kısma ad', 'word': 'AKRONİM'},
+      {'hint': 'Bir metrenin milyonda biri, milimetrenin binde biri, mikrometre', 'word': 'MİKRON'},
+      {'hint': 'Küçük, dar, makro karşıtı', 'word': 'MİKRO'},
+      {'hint': 'Otel, pansiyon vb. yerlerde çalışan hizmetli', 'word': 'KOMİ'},
+      {'hint': '\'Hangi kişi?\' anlamında cümlede, özne, tümleç, nesne, yüklem görevinde kullanılan bir söz', 'word': 'KİM'},
+      ],
+    '39': [
+      {'hint': 'Hapşırma, hapşırık', 'word': 'AKSIRIK'},
+      {'hint': 'Dişi at', 'word': 'KISRAK'},
+      {'hint': 'Sarılarak meydana getirilen başlık', 'word': 'SARIK'},
+      {'hint': 'Yüzyıl', 'word': 'ASIR'},
+      {'hint': 'Yabancı şeylerden arınmış, katışıksız, saf, halis, öz', 'word': 'ARI'},
+      ],
+    '40': [
+      {'hint': 'Terslik, zıtlık, karşıtlık', 'word': 'AKSİLİK'},
+      {'hint': 'Üzerinden çok zaman geçtiği hâlde değerini yitirmeyen, türünde örnek olarak görülen eser', 'word': 'KLASİK'},
+      {'hint': 'Çirkin, kaba, uyumsuz', 'word': 'SAKİL'},
+      {'hint': 'Soylu', 'word': 'ASİL'},
+      {'hint': 'Başkaldırıcı', 'word': 'ASİ'},
+      ],
+  },
+  // MARK: ANA BÖLÜM-6
+  'Ana Bölüm 6': {
+    '1': [
+      {'hint': 'İş yeri, gazino, buluşma yeri vb. belli bir işe ayrılmış olan yer', 'word': 'MEKAN'},
+      {'hint': 'Mektup', 'word': 'NAME'},
+      {'hint': 'Hafif ıslaklık, rutubet', 'word': 'NEM'},
+      ],
+    '2': [
+      {'hint': 'Erişkin dişi insan, hatun, hatun kişi, zen', 'word': 'KADIN'},
+      {'hint': 'Kurutulmuş yapraklarından elde edilen, saç ve elleri boyamakta kullanılan toz', 'word': 'KINA'},
+      {'hint': 'Bıçak, kılıç vb. kesici araçların kabı', 'word': 'KIN'},
+      ],
+    '3': [
+      {'hint': 'Saadetli, bahtiyar, berhudar, mesut', 'word': 'MUTLU'},
+      {'hint': 'Ummaktan doğan duygu, ümit', 'word': 'UMUT'},
+      {'hint': 'Erdemleri bakımından çok büyük, yüce', 'word': 'ULU'},
+      ],
+    '4': [
+      {'hint': 'İnsanı bir şeye veya bir kimseye karşı yakın ilgi ve bağlılık göstermeye yönelten duygu', 'word': 'SEVGİ'},
+      {'hint': 'Aşk', 'word': 'SEVİ'},
+      {'hint': 'Bir tür bağlaç', 'word': 'İSE'},
+      ],
+    '5': [
+      {'hint': 'Güneşin doğduğu andan öğleye kadar geçen zaman', 'word': 'SABAH'},
+      {'hint': 'Patiska', 'word': 'HASA'},
+      {'hint': 'Bazı ülkelerde, hükümdarların, mareşallerin, din adamlarının güç sembolü olarak törenlerde taşıdıkları bir tür ağaç veya metalden değnek', 'word': 'ASA'},
+      ],
+    '6': [
+      {'hint': 'Bir işin, bir oluşun içinde geçtiği, geçeceği veya geçmekte olduğu süre, vakit', 'word': 'ZAMAN'},
+      {'hint': 'Anlam', 'word': 'MANA'},
+      {'hint': 'Yavrusu olan dişi hayvan', 'word': 'ANA'},
+      ],
+    '7': [
+      {'hint': 'Canlı, sağ olma durumu', 'word': 'HAYAT'},
+      {'hint': 'Yanlış', 'word': 'HATA'},
+      {'hint': 'Çizgi', 'word': 'HAT'},
+      ],
+    '8': [
+      {'hint': 'Masa, sini vb. şeylerin, yemek yemek üzere hazırlanmış durumu', 'word': 'SOFRA'},
+      {'hint': 'Söz geçirirlik, saygınlık', 'word': 'FORS'},
+      {'hint': 'Çürük, temelsiz, boş, kof', 'word': 'FOS'},
+      ],
+    '9': [
+      {'hint': 'Su ile karışıp bulaşır ve içine batılır duruma gelmiş toprak, balçık', 'word': 'ÇAMUR'},
+      {'hint': 'Betonu kırmakta veya betona delik açmakta kullanılan sivri uçlu, çelikten yapılmış bir alet', 'word': 'MURÇ'},
+      {'hint': 'Yunan asıllı kimse', 'word': 'RUM'},
+      ],
+    '10': [
+      {'hint': 'Acı, yoksulluk, haksızlık vb. üzücü durumlar karşısında ses çıkarmadan onların geçmesini bekleme erdemi, dayanç', 'word': 'SABIR'},
+      {'hint': 'Yan yana, art arda olan şey veya kimselerin tümü, dizi', 'word': 'SIRA'},
+      {'hint': 'Bazı nesnelere parlaklık verme, dış etkilerden koruma, sızmalarını önleme vb. amaçlarla sürülen, saydam veya donuk vernik', 'word': 'SIR'},
+      ],
+    '11': [
+      {'hint': 'Kuşlarda ve böceklerde uçmayı sağlayan organ', 'word': 'KANAT'},
+      {'hint': 'Zırhlı ve silahlı, tekerlekleri paletli, motorlu savaş taşıtı', 'word': 'TANK'},
+      {'hint': 'Tanrı\'yı veya kutsal bilinen bir kişiyi, bir şeyi tanık göstererek bir olayı doğrulama, yemin, kasem', 'word': 'ANT'},
+      ],
+    '12': [
+      {'hint': 'Sözleşme', 'word': 'BAĞIT'},
+      {'hint': 'Ölenin iyi niteliklerini, ölümünden duyulan acıyı dile getiren söz veya ezgi', 'word': 'AĞIT'},
+      {'hint': 'Dantel veya yün örmekte kullanılan, ucu çengelli kısa şiş', 'word': 'TIĞ'},
+      ],
+    '13': [
+      {'hint': 'Bir toplum içinde kişilerin uymak zorunda oldukları davranış biçimleri ve kuralları, aktöre, sağtöre', 'word': 'AHLAK'},
+      {'hint': 'Aynı ülkede yaşayan, aynı kültür özelliklerine sahip olan, aynı uyruktaki insan topluluğu, folk', 'word': 'HALK'},
+      {'hint': 'Adalet', 'word': 'HAK'},
+      ],
+    '14': [
+      {'hint': 'İnsanoğlu, insan', 'word': 'BEŞER'},
+      {'hint': 'Doğal çimento ile lavlı, kavkılı, kabuklu, kemikli kırıntıların kaynaşmasıyla oluşmuş kütle', 'word': 'BREŞ'},
+      {'hint': 'Gece', 'word': 'ŞEB'},
+      ],
+    '15': [
+      {'hint': 'Her türlü kabın üstünü örtmeye veya bir deliği kapamaya yarayan nesne', 'word': 'KAPAK'},
+      {'hint': 'Bembeyaz', 'word': 'APAK'},
+      {'hint': 'İçi gaz, sıvı veya katı herhangi bir maddeyi alabilen oyuk nesne', 'word': 'KAP'},
+      ],
+    '16': [
+      {'hint': 'Yaklaşık uzunluğu 20 metre, ağırlığı 200 ton olan memeli hayvan, kadırga balığı, falyanos (Balaena mistycetus)', 'word': 'BALİNA'},
+      {'hint': 'Genellikle sarık, bohça, kundak ve yorgan yüzü yapımında kullanılan, zemini beyaz, üzerinde safran renginde nakışlar bulunan ipek kumaş', 'word': 'ABANİ'},
+      {'hint': 'Yapı', 'word': 'BİNA'},
+      {'hint': 'Büyük erkek kardeş', 'word': 'ABİ'},
+      ],
+    '17': [
+      {'hint': 'Kedigillerden, enine siyah çizgili, koyu sarı postu olan, Asya\'da yaşayan çevik ve yırtıcı hayvan (Felis tigris)', 'word': 'KAPLAN'},
+      {'hint': 'Bir kimseye, bir aileye kendi adından ayrı olarak sonradan takılan, o kimsenin veya o ailenin bir özelliğinden kaynaklanan ad', 'word': 'LAKAP'},
+      {'hint': 'Kavisli, kısa, uç bölümü geniş, kabzasına doğru daralan bir tür kılıç', 'word': 'PALA'},
+      {'hint': 'Bir cins güvercin', 'word': 'PAL'},
+      ],
+    '18': [
+      {'hint': 'Görme bozukluğu olan gözlerin daha iyi görmesine veya gözleri korumaya yarayan, bir çerçeveye yerleştirilmiş çift camdan oluşan araç, lünet', 'word': 'GÖZLÜK'},
+      {'hint': 'Bir türle ilgili, bir türe ilişkin', 'word': 'ÖZGÜL'},
+      {'hint': 'Birine, bir şeye ait olan, öze, has, mahsus', 'word': 'ÖZGÜ'},
+      {'hint': 'Görme organı, basar', 'word': 'GÖZ'},
+      ],
+    '19': [
+      {'hint': 'Muvaffakiyet', 'word': 'BAŞARI'},
+      {'hint': 'Savaşın bittiğinin bir antlaşmayla belirtilmesinden sonraki durum, sulh, hazar', 'word': 'BARIŞ'},
+      {'hint': 'Henüz mayalanmamış üzüm suyu', 'word': 'ŞIRA'},
+      {'hint': 'Birtakım hastalıklara karşı bağışıklık sağlamak için vücuda verilen, o hastalığın mikrobuyla hazırlanmış eriyik', 'word': 'AŞI'},
+      ],
+    '20': [
+      {'hint': 'Tarla, bahçe vb. yerlerde ağaç dallarından örülmüş barınak', 'word': 'ÇARDAK'},
+      {'hint': 'Dağ sırtlarında davarların yatırıldığı düz, rüzgâr almayan kuytu yer', 'word': 'ARKAÇ'},
+      {'hint': 'Bir iş yapmakta veya sonuçlandırmakta gücünden yararlanılan nesne', 'word': 'ARAÇ'},
+      {'hint': 'Rus imparatorlarına ve Bulgar krallarına verilen unvan', 'word': 'ÇAR'},
+      ],
+    '21': [
+      {'hint': 'Bir milletin, belli bir topluluğun veya bir kuruluşun simgesi olarak kullanılan, renk ve biçimle özelleştirilmiş, genellikle dikdörtgen biçiminde kumaş, sancak', 'word': 'BAYRAK'},
+      {'hint': 'Yüksek tutulan veya sayılan birinden gelen iyilik, lütuf, ihsan, atıfet, inayet', 'word': 'KAYRA'},
+      {'hint': 'Bir iş veya bir davranışta gereken ölçü', 'word': 'AYAR'},
+      {'hint': 'Uçurum', 'word': 'YAR'},
+      ],
+    '22': [
+      {'hint': 'Yüzeyi belirli uzunlukta bırakılmış ham madde lifleriyle kaplı, parlak, yumuşak kumaş, velur', 'word': 'KADİFE'},
+      {'hint': 'Kural', 'word': 'KAİDE'},
+      {'hint': 'Memeli, köpek dişleri iyi gelişmiş, çevik ve kuvvetli, evcil, küçük hayvan, pisik (Felis domesticus)', 'word': 'KEDİ'},
+      {'hint': 'Yatay bir düzleme göre yer çekimi doğrultusunda bulunan, eğik olmayan', 'word': 'DİK'},
+      ],
+    '23': [
+      {'hint': 'Antep fıstığı, çam fıstığı veya yer fıstığı denilen yemişlerin genel adı', 'word': 'FISTIK'},
+      {'hint': 'Kişinin yurttaşlık haklarını kullanma yetkisinin yargı kuruluşları tarafından kaldırılması', 'word': 'KISIT'},
+      {'hint': 'Dar', 'word': 'SIKI'},
+      {'hint': 'Bir cismin uzamasına, genleşmesine, buharlaşmasına, erimesine, sıcaklığının artmasına yol açan fiziksel enerji', 'word': 'ISI'},
+      ],
+    '24': [
+      {'hint': 'Yapılan işler, çalışmalar, uygulamalar', 'word': 'İCRAAT'},
+      {'hint': 'Ticaretle uğraşan kimse, tüccar', 'word': 'TACİR'},
+      {'hint': 'Gelir', 'word': 'İRAT'},
+      {'hint': 'Arka, geri', 'word': 'ART'},
+      ],
+    '25': [
+      {'hint': 'Bir alet veya taşıtın hareket etmesini sağlayan mekanizması', 'word': 'MAKİNE'},
+      {'hint': 'Kansızlık', 'word': 'ANEMİ'},
+      {'hint': 'Dişlerin taç kısmını kaplayan beyaz ve sert doku', 'word': 'MİNE'},
+      {'hint': 'Yasaklama', 'word': 'MEN'},
+      ],
+    '26': [
+      {'hint': 'Bir alacağın, teminat gösterilerek güvence altına alınması', 'word': 'İPOTEK'},
+      {'hint': 'Tahin, nohut, patates ve soğanla yapılan meze', 'word': 'TOPİK'},
+      {'hint': 'Kurşundan dökülmüş harflerin bir araya getirilmesiyle yapılan bir baskı türü', 'word': 'TİPO'},
+      {'hint': 'Kötü dikiş sebebiyle kumaşta oluşan büzülme veya kıvrım', 'word': 'POT'},
+      ],
+    '27': [
+      {'hint': 'Yüksek makamlı bir kimsenin yanı, huzuru', 'word': 'MAHZAR'},
+      {'hint': 'Dayanılması güç durum', 'word': 'MARAZ'},
+      {'hint': 'Sivas iline bağlı ilçelerden biri', 'word': 'ZARA'},
+      {'hint': 'Sır', 'word': 'RAZ'},
+      ],
+    '28': [
+      {'hint': 'Birine geçici olarak bırakılan ve teslim alınan kişice korunması gereken eşya, kimse vb., inam, vedia', 'word': 'EMANET'},
+      {'hint': 'Çürümekte olan karbonlu maddelerden çıkan, havada sarı bir alevle yanan, renksiz bir gaz, bataklık gazı (CH4)', 'word': 'METAN'},
+      {'hint': 'Asıl konu, temel motif, ana konu', 'word': 'TEMA'},
+      {'hint': 'Satranç oyununda taraflardan birinin yenilgisi', 'word': 'MAT'},
+      ],
+    '29': [
+      {'hint': 'Hristiyanların ibadet etmek için toplandıkları yer', 'word': 'KİLİSE'},
+      {'hint': 'Aksaray iline bağlı ilçelerden biri', 'word': 'ESKİL'},
+      {'hint': 'Temel düşünce, temel inanç, umde, prensip', 'word': 'İLKE'},
+      {'hint': 'Saçı dökülmüş olan (kimse)', 'word': 'KEL'},
+      ],
+    '30': [
+      {'hint': 'Şehirden küçük, köyden büyük, henüz kırsal özelliklerini yitirmemiş olan yerleşim merkezi, belde', 'word': 'KASABA'},
+      {'hint': 'Merdiven', 'word': 'BASAK'},
+      {'hint': 'Klasik Türk müziğinde bir birleşik makam', 'word': 'SABA'},
+      {'hint': 'İhtiyarların baston yerine kullandıkları uzun sopa', 'word': 'ASA'},
+      ],
+    '31': [
+      {'hint': 'Belit', 'word': 'AKSİYOM'},
+      {'hint': 'Ölçek, ölçü', 'word': 'MİKYAS'},
+      {'hint': 'Alşimi', 'word': 'SİMYA'},
+      {'hint': 'Yüz', 'word': 'SİMA'},
+      {'hint': 'Mavi', 'word': 'MAİ'},
+      ],
+    '32': [
+      {'hint': 'Sulu boya resim', 'word': 'AKVAREL'},
+      {'hint': 'Halatların dikişlerinde kullanılan demir veya ağaç kama', 'word': 'KAVELA'},
+      {'hint': 'Genellikle kamıştan yapılan, daha çok çobanların çaldığı, yumuşak sesli, üflemeli bir çalgı', 'word': 'KAVAL'},
+      {'hint': 'Olay, hadise', 'word': 'VAKA'},
+      {'hint': 'Ağaçların gövdesinde veya dallarında yetişen bir tür mantardan elde edilen ve çabuk tutuşan, süngerimsi madde', 'word': 'KAV'},
+      ],
+    '33': [
+      {'hint': 'Fırça gibi dik kesilmiş (erkek saçı)', 'word': 'ALABROS'},
+      {'hint': 'Lapinanın büyük cinsi', 'word': 'LABROS'},
+      {'hint': 'Bazı tüccarların ve özellikle sarraflarla değerli kâğıt ve tahvil alışverişiyle uğraşanların alım satım ve değişim amacıyla devlet denetimi altında iş yaptıkları yer', 'word': 'BORSA'},
+      {'hint': 'İçinde kömür, odun veya gaz yakılan, elektrikle de çalıştırılabilen ısınma aracı', 'word': 'SOBA'},
+      {'hint': 'Göçebelerin konak yeri', 'word': 'OBA'},
+      ],
+    '34': [
+      {'hint': 'Seçmeli yemek, tabildot karşıtı', 'word': 'ALAKART'},
+      {'hint': 'Genellikle kızıl siyah tüylü, çok güçlü, yuvasını yüksek kayalıklar üzerinde kuran, iri, yırtıcı bir tür kuş (Aquila)', 'word': 'KARTAL'},
+      {'hint': 'Tarıma elverişli olan, sınırlı ve belirli toprak parçası', 'word': 'TARLA'},
+      {'hint': 'Dar ve kalınca tahta', 'word': 'LATA'},
+      {'hint': 'Dedelerden ve büyükbabalardan her biri', 'word': 'ATA'},
+      ],
+    '35': [
+      {'hint': 'Doğum sırasında temizliğe dikkat edilmemesi yüzünden lohusanın tutulduğu ateşli hastalık, lohusa humması, albasma', 'word': 'ALBASTI'},
+      {'hint': 'Basımcılıkta, provalar için `basınız, basılsın` anlamında kullanılan bir söz', 'word': 'BASILA'},
+      {'hint': 'Aba giymiş olan', 'word': 'ABALI'},
+      {'hint': 'Yavru, çocuk', 'word': 'BALA'},
+      {'hint': 'Yünün dövülmesiyle yapılan kalın ve kaba kumaş', 'word': 'ABA'},
+      ],
+    '36': [
+      {'hint': 'Bitkilerin, hayvanların doku ve sıvılarında bulunan, birleşimi karbon, oksijen, azot, hidrojen ve kükürt olan, suda eriyen, beyaza yakın renkte, yapışkan özellikte bir protein', 'word': 'ALBÜMİN'},
+      {'hint': 'Suda çözünmeyen, 2050 °C\'de eriyen, beyaz bir toz olan alüminyum oksit (Al2O3)', 'word': 'ALÜMİN'},
+      {'hint': 'Gemilerin barınmalarına, yük alıp boşaltmalarına, yolcu indirip bindirmelerine yarayan doğal veya yapay sığınak', 'word': 'LİMAN'},
+      {'hint': 'Yazım', 'word': 'İMLA'},
+      {'hint': 'Dolaylı olarak anlatma, üstü kapalı olarak belirtme, işaretleme, anıştırma, ihsas', 'word': 'İMA'},
+      ],
+    '37': [
+      {'hint': 'Bir görüntü, bir yaşantı veya bir davranışın daha iyi kavranmasını sağlamak için göz önünde canlandırıp dile getirme, yerine koyma', 'word': 'ALEGORİ'},
+      {'hint': 'Bir yapının birçok bölümünü aynı katta birbirine bağlayan içten veya dıştan yapılmış geniş geçit', 'word': 'GALERİ'},
+      {'hint': 'Sıkıntı, dert, keder, üzüntü', 'word': 'GAİLE'},
+      {'hint': 'İçerisinde kalıp yapılan üç tarafı kaplı, bir tarafı açık tepsi şeklinde dizgi aleti', 'word': 'GALE'},
+      {'hint': 'Su yosunu', 'word': 'ALG'},
+      ],
     '38': [
       {'hint': 'Akış özellikleri gözlenebilen (sıvı veya gaz), seyyal', 'word': 'AKIŞKAN'},
       {'hint': 'Yapıların duvar ve tavanlarına süslemeler yapan usta, bezekçi', 'word': 'NAKKAŞ'},
       {'hint': 'Göz, alın ve yanak arasında, elmacık kemiğinin üstünde bulunan çukurumsu bölge', 'word': 'ŞAKAK'},
       {'hint': 'Güldürmek, eğlendirmek amacıyla karşısındakini kırmadan yapılan hareket veya söylenen söz, latife', 'word': 'ŞAKA'},
-      {'hint': 'Gözlerin üzerinde kemerli birer çizgi oluşturan kısa kıllar', 'word': 'KAŞ'}
-    ],
+      {'hint': 'Gözlerin üzerinde kemerli birer çizgi oluşturan kısa kıllar', 'word': 'KAŞ'},
+      ],
     '39': [
-      {'hint': 'Akıl yolu ile kazanılan bilgiler', 'word': 'AKLİYAT'},
-      {'hint': 'İlgisiz, umursamaz ve olaylar karşısında kayıtsız durma hali', 'word': 'LAKAYT'},
-      {'hint': 'İşsiz, boş gezen, avare (kimse)', 'word': 'AYLAK'},
-      {'hint': 'Herhangi bir törende veya gösteride yer alan topluluk', 'word': 'ALAY'},
-      {'hint': 'Köpek ve sığırlara yedirilmek için un ve kepekle hazırlanan yiyecek', 'word': 'YAL'}
-    ],
+      {'hint': 'Terazilerde tartma işi yapılırken bir kefeye konulan nesne', 'word': 'AĞIRLIK'},
+      {'hint': 'Taş üzerinde bilenen bir kesici aracın keskin yüzüne yapışan ve aracın iyi kesebilmesi için, yağlanmış yumuşak taşla kaldırılması gereken çok ince çelik parçaları, zağ', 'word': 'KILAĞI'},
+      {'hint': 'İçinde ağı bulunan, zehirli', 'word': 'AĞILI'},
+      {'hint': 'Evcil küçükbaş hayvanların barındığı çit veya duvarla çevrili yer, arkaç', 'word': 'AĞIL'},
+      {'hint': 'Alüvyon', 'word': 'LIĞ'},
+      ],
     '40': [
-      {'hint': 'Kısma ad', 'word': 'AKRONİM'},
-      {'hint': 'Bir metrenin milyonda biri, milimetrenin binde biri, mikrometre', 'word': 'MİKRON'},
-      {'hint': 'Küçük, dar, makro karşıtı', 'word': 'MİKRO'},
-      {'hint': 'Otel, pansiyon vb. yerlerde çalışan hizmetli', 'word': 'KOMİ'},
-      {'hint': '`Hangi kişi?` anlamında cümlede, özne, tümleç, nesne, yüklem görevinde kullanılan bir söz', 'word': 'KİM'}
-    ],
-  },
-  // MARK: ANA BÖLÜM-2
-  'Ana Bölüm 2': {
-    '1': [
-      {'hint': 'Yasalar önünde insanlar arasında ayrım bulunmaması', 'word': 'EŞİTLİK'},
-      {'hint': 'Eski dilde, oluşturulan, meydana getirme', 'word': 'TEŞKİL'},
-      {'hint': 'Bir konuyu açıklamaya yarayan resim veya çizim', 'word': 'ŞEKİL'},
-      {'hint': 'Danışıklı dövüş', 'word': 'ŞİKE'},
-      {'hint': 'Eski dilde kuşku', 'word': 'ŞEK'}
-    ],
-  },
-  // MARK: ANA BÖLÜM-3
-  'Ana Bölüm 3': {
-    '1': [
-      {'hint': 'Suyu sıcak olarak yerden çıkan hamam', 'word': 'KAPLICA'},
-      {'hint': 'Açık olmayan', 'word': 'KAPALI'},
-      {'hint': 'Bir şeye biçim vermeye yarayan araç', 'word': 'KALIP'},
-      {'hint': 'Yapıya girip çıkarken geçilen boşluk', 'word': 'KAPI'},
-      {'hint': 'Temiz', 'word': 'PAK'}
-    ],
-  },
-  // MARK: ANA BÖLÜM-4
-  'Ana Bölüm 4': {
-    '1': [
-      {'hint': 'Koyun veya keçi postu', 'word': 'PÖSTEKİ'},
-      {'hint': 'Pehlivan pantalonu', 'word': 'KİSPET'},
-      {'hint': 'Herhangi bir etkiye cevap olarak doğan davranış', 'word': 'TEPKİ'},
-      {'hint': 'Pamuklu kumaştan yapılan yatak örtüsü', 'word': 'PİKE'},
-      {'hint': 'Biçim, örnek', 'word': 'KİP'}
-    ],
-  },
-  // MARK: ANA BÖLÜM-5
-  'Ana Bölüm 5': {
-    '1': [
-      {'hint': 'Patates benzeri yiyeceklerden çıkartılan una benzer madde', 'word': 'NİŞASTA'},
-      {'hint': 'Yapımı süren bina', 'word': 'İNŞAAT'},
-      {'hint': 'Tanıdık', 'word': 'AŞİNA'},
-      {'hint': 'Ölen insanın vücudu', 'word': 'NAAŞ'},
-      {'hint': 'Ün', 'word': 'ŞAN'}
-    ],
-  },
-  // MARK: ANA BÖLÜM-6
-  'Ana Bölüm 6': {
-    '1': [
-      {'hint': 'Rimel', 'word': 'MASKARA'},
-      {'hint': 'Üzerinde iplik, tel gibi şeyler sarılan ortası delik silindir', 'word': 'MAKARA'},
-      {'hint': 'Sayıları göstermek için kullanılan işaretlerin her biri', 'word': 'RAKAM'},
-      {'hint': 'Ucu sivri iki ağzı da keskin bıçak', 'word': 'KAMA'},
-      {'hint': 'Halk dilinde ağabey', 'word': 'AKA'}
-    ],
+      {'hint': 'Kökten', 'word': 'RADİKAL'},
+      {'hint': 'Salon danslarından biri', 'word': 'KADRİL'},
+      {'hint': 'Anlama yeteneği, anlayış, akıl erdirme', 'word': 'İDRAK'},
+      {'hint': 'Arap harflerinin en çok kullanılan el yazısı biçimi', 'word': 'RİKA'},
+      {'hint': 'İçinden su akıtmak için toprak kazılarak yapılan açık oluk, arık, dren, karık', 'word': 'ARK'},
+      ],
   },
   // MARK: ANA BÖLÜM-7
   'Ana Bölüm 7': {
     '1': [
-      {'hint': 'Rimel', 'word': 'MASKARA'},
-      {'hint': 'Üzerinde iplik, tel gibi şeyler sarılan ortası delik silindir', 'word': 'MAKARA'},
-      {'hint': 'Sayıları göstermek için kullanılan işaretlerin her biri', 'word': 'RAKAM'},
-      {'hint': 'Ucu sivri iki ağzı da keskin bıçak', 'word': 'KAMA'},
-      {'hint': 'Halk dilinde ağabey', 'word': 'AKA'}
-    ],
+      {'hint': 'Değeri, üstünlüğü, yaşlılığı, yararlılığı, kutsallığı dolayısıyla bir kimseye, bir şeye karşı dikkatli, özenli, ölçülü davranmaya sebep olan sevgi duygusu, hürmet, ihtiram', 'word': 'SAYGI'},
+      {'hint': 'Sayma, ölçme, tartma vb. işlerin sonunda bulunan birimlerin kaç olduğunu bildiren söz, adet', 'word': 'SAYI'},
+      {'hint': 'Çalışma, emek', 'word': 'SAY'},
+      ],
+    '2': [
+      {'hint': 'Doğru olmayan, gerçeğe uymayan söz, kıtır', 'word': 'YALAN'},
+      {'hint': 'Belli, açık', 'word': 'AYAN'},
+      {'hint': 'Göz', 'word': 'AYN'},
+      ],
+    '3': [
+      {'hint': 'Saf renkten hafif uzaklaşmış', 'word': 'KIRIK'},
+      {'hint': 'Otuz dokuzdan sonra gelen sayının adı', 'word': 'KIRK'},
+      {'hint': 'Kalıtımsal olarak ortak fiziksel ve fizyolojik özelliklere sahip insanlar topluluğu', 'word': 'IRK'},
+      ],
+    '4': [
+      {'hint': 'Eni çok olan, enli, vâsi', 'word': 'GENİŞ'},
+      {'hint': 'Kötü, çirkin, alçakça, utanç verici', 'word': 'ŞENİ'},
+      {'hint': 'Duvar içinde bırakılan oyuk', 'word': 'NİŞ'},
+      ],
+    '5': [
+      {'hint': 'Aralarında töre, dil ve kültür ortaklığı bulunan, boy ve soy bakımından da birbirine bağlı insan topluluğu, budun', 'word': 'KAVİM'},
+      {'hint': 'Başka bir şeyin yerine geçen', 'word': 'KAİM'},
+      {'hint': 'Şaman', 'word': 'KAM'},
+      ],
+    '6': [
+      {'hint': 'Bir yapının yanlarını dışa karşı koruyan, iç bölümlerini birbirinden ayıran, taş, tuğla vb. gereçlerden yapılan veya örülen dikey düzlem, örek', 'word': 'DUVAR'},
+      {'hint': 'İlaç', 'word': 'DARU'},
+      {'hint': 'Tanrı\'ya yalvarma, yakarış için söylenen dinî metin', 'word': 'DUA'},
+      ],
+    '7': [
+      {'hint': 'Bir yapının, kapalı bir yerin üst bölümünü oluşturan düz ve yatay yüzey, taban karşıtı', 'word': 'TAVAN'},
+      {'hint': 'Bir işi yerine getirmek için verilen söz', 'word': 'VAAT'},
+      {'hint': 'İşlenecek bir nesnede bulunması gereken ısının, nemin yeterli olması durumu', 'word': 'TAV'},
+      ],
+    '8': [
+      {'hint': 'Yılın dördüncü ayı', 'word': 'NİSAN'},
+      {'hint': 'Kadın', 'word': 'NİSA'},
+      {'hint': 'Mezar', 'word': 'SİN'},
+      ],
+    '9': [
+      {'hint': 'Saatin iki ibresinden küçüğü', 'word': 'AKREP'},
+      {'hint': 'Parça, kısım', 'word': 'PARE'},
+      {'hint': 'Bazı iskambil oyunlarında farklı renklerden iki benzer kartın bir arada bulunma durumu', 'word': 'PER'},
+      ],
+    '10': [
+      {'hint': 'Nüfusunun çoğu ticaret, sanayi, hizmet veya yönetimle ilgili işlerle uğraşan, genellikle tarımsal etkinliklerin olmadığı yerleşim alanı, kent, site', 'word': 'ŞEHİR'},
+      {'hint': 'Açma, ayırma', 'word': 'ŞERH'},
+      {'hint': 'Kötülük, fenalık', 'word': 'ŞER'},
+      ],
+    '11': [
+      {'hint': 'Zihinde tasarlanan, canlandırılan ve gerçekleşmesi özlenen şey, imge, hülya', 'word': 'HAYAL'},
+      {'hint': 'Er bezi', 'word': 'HAYA'},
+      {'hint': 'Elin parmak dipleriyle bilek arasındaki iç bölümü, avuç içi', 'word': 'AYA'},
+      ],
+    '12': [
+      {'hint': 'Yeryüzünün herhangi bir yerinde hava olaylarına bağlı olarak gerçekleşen etkilerin uzun yılların ortalamasına dayanan durumu, abuhava', 'word': 'İKLİM'},
+      {'hint': 'Bilim', 'word': 'İLİM'},
+      {'hint': 'Küçük limon', 'word': 'LİM'},
+      ],
+    '13': [
+      {'hint': 'Birine, ölen bir yakınından kalan mal mülk, para veya servet, kalıt, bırakıt, tereke', 'word': 'MİRAS'},
+      {'hint': 'Bayındırlık', 'word': 'İMAR'},
+      {'hint': 'Baş, kumandan, amir', 'word': 'MİR'},
+      ],
+    '14': [
+      {'hint': 'Omurgalılardan, suda yaşayan, solungaçla nefes alan ve yumurtadan üreyen hayvanların genel adı', 'word': 'BALIK'},
+      {'hint': 'Düşünme, anlama ve kavrama gücü, us', 'word': 'AKIL'},
+      {'hint': 'Bazı hayvanların derisinde, insan vücudunun belli yerlerinde çıkan, üst deri ürünü olan ipliksi uzantı', 'word': 'KIL'},
+      ],
+    '15': [
+      {'hint': 'Nitelik, nicelik ve derece bakımından üstün olan', 'word': 'SÜPER'},
+      {'hint': 'Üzüm, elma, zeytin vb. meyve ve sebzeleri sıkarak suyunu, yağını çıkarmakta kullanılan alet veya araç', 'word': 'PRES'},
+      {'hint': 'Yenilgiyi kabul ettiğini belirtmek için veya birinin şaşkınlık veren davranışlarına karşılık olarak kullanılan bir söz', 'word': 'PES'},
+      ],
+    '16': [
+      {'hint': 'Kendi isteğiyle işten veya bir hizmetten ayrılma', 'word': 'İSTİFA'},
+      {'hint': 'Düzeni bozma, karışıklık çıkarma', 'word': 'İFSAT'},
+      {'hint': 'Katıksız, duru, temiz', 'word': 'SAFİ'},
+      {'hint': 'Dizi, sıra', 'word': 'SAF'},
+      ],
+    '17': [
+      {'hint': 'Bir yapının giriş yeri, giriş', 'word': 'METHAL'},
+      {'hint': 'Çok yüksek elektrik ve ısı iletkenliği, kendine özgü parlaklığı olan, oksijenli birleşimiyle çoğunlukla bazik oksitler veren madde', 'word': 'METAL'},
+      {'hint': 'Mal, ticaret malı', 'word': 'META'},
+      {'hint': 'Tema', 'word': 'TEM'},
+      ],
+    '18': [
+      {'hint': 'Son biçimini bulmamış, taslak durumunda olan', 'word': 'DENEME'},
+      {'hint': 'Denmek işi', 'word': 'DENME'},
+      {'hint': 'Halk edebiyatında şiir', 'word': 'DEME'},
+      {'hint': 'Ağabey', 'word': 'EDE'},
+      ],
+    '19': [
+      {'hint': 'Deniz dibine inilebilecek özel donanımla su altında çalışmayı meslek edinen kimse, balık adam, kurbağa adam', 'word': 'DALGIÇ'},
+      {'hint': 'Müzik aleti, çalgı aleti, enstrüman', 'word': 'ÇALGI'},
+      {'hint': 'Alçı taşının pişirilip toz durumuna getirilmesinden elde edilerek yapılarda, sanatta, mimarlıkta ve dişçilikte kullanılan madde', 'word': 'ALÇI'},
+      {'hint': 'Birbirini kesen iki yüzey veya aynı noktadan çıkan iki yarım doğrunun oluşturduğu geometrik biçim, zaviye', 'word': 'AÇI'},
+      ],
+    '20': [
+      {'hint': 'Bir elektrik akımının iletken üzerinde aldığı yol, devre', 'word': 'ÇEVRİM'},
+      {'hint': 'Edirne iline bağlı ilçelerden biri', 'word': 'MERİÇ'},
+      {'hint': 'Asker', 'word': 'ÇERİ'},
+      {'hint': 'Kayısı, erik, zerdali vb. meyvelerin kurusu', 'word': 'ÇİR'},
+      ],
+    '21': [
+      {'hint': 'Kaza veya arıza yapan, yanlış yere park eden aracı belli bir yere götürmek için kullanılan taşıt', 'word': 'ÇEKİCİ'},
+      {'hint': 'Madenî kulp, halka, çivi', 'word': 'ÇECİK'},
+      {'hint': 'Geviş getiren memelilerden, eti, sütü, derisi ve kılı için yetiştirilen hayvan(Capra hircus)', 'word': 'KEÇİ'},
+      {'hint': 'Bir kimsenin, satın aldığı hizmet veya ürün karşılığında para yerine verdiği ve karşılığı banka hesabından ödenen yazılı belge', 'word': 'ÇEK'},
+      ],
+    '22': [
+      {'hint': 'Bir arada olma durumu, vahdet', 'word': 'BİRLİK'},
+      {'hint': 'Su koymaya yarayan kulplu, emzikli kap', 'word': 'İBRİK'},
+      {'hint': 'Bilinmeyen bir kimse', 'word': 'BİRİ'},
+      {'hint': 'Olağandan daha hacimli, olağanı aşan büyüklüğü olan, ince karşıtı', 'word': 'İRİ'},
+      ],
+    '23': [
+      {'hint': 'Bilemek eylemi', 'word': 'BİLEME'},
+      {'hint': 'Bir şeyin ne olduğunun bilincine varma', 'word': 'BİLME'},
+      {'hint': 'Evet', 'word': 'BELİ'},
+      {'hint': 'Dudak', 'word': 'LEB'},
+      ],
+    '24': [
+      {'hint': 'Askerlikle ilgili, askere özgü', 'word': 'ASKERİ'},
+      {'hint': 'Bit, tahtakurusu vb. asalak böceklerin yumurtası', 'word': 'SİRKE'},
+      {'hint': 'Zarara uğrama tehlikesi, riziko', 'word': 'RİSK'},
+      {'hint': 'Kalıtım', 'word': 'İRS'},
+      ],
+    '25': [
+      {'hint': 'Sıkıntı, iç sıkıntısı', 'word': 'KASVET'},
+      {'hint': 'İçinde, görüntü ve seslerin kaydedildiği, gerektiğinde yeniden kullanılmasını sağlayan bir manyetik şeridin bulunduğu küçük kutu', 'word': 'KASET'},
+      {'hint': 'Hastalık nöbeti, kriz', 'word': 'AKSE'},
+      {'hint': 'İçine su, başka bir içki veya bir sıvı karıştırılmamış (içki)', 'word': 'SEK'},
+      ],
+    '26': [
+      {'hint': 'Arıtmak işi', 'word': 'ARITMA'},
+      {'hint': 'Çoğu beyaz renkte, eti yenmez, yüzücü, perde ayaklı deniz kuşlarının ortak adı (Larus)', 'word': 'MARTI'},
+      {'hint': 'Yılın üçüncü ayı', 'word': 'MART'},
+      {'hint': 'Doğu Anadolu ile Azerbaycan\'da çalınan bir çalgı türü', 'word': 'TAR'},
+      ],
+    '27': [
+      {'hint': 'Deneme, tecrübe', 'word': 'SINAMA'},
+      {'hint': 'Kın kanatlılardan, ergin evrede yaprakları, kurtçuk evresinde kökleri kemirerek tarım bitkilerine ve orman ağaçlarına büyük zarar veren bir böcek (Polyhylla fullo)', 'word': 'MANAS'},
+      {'hint': 'Ayaklar veya bir destek üzerine oturtulmuş tabladan oluşan mobilya', 'word': 'MASA'},
+      {'hint': 'Emme, emerek içine çekme, soğurma', 'word': 'MAS'},
+      ],
+    '28': [
+      {'hint': 'Bir sanat, bir bilim, bir meslek dalında kullanılan yöntemlerin hepsi', 'word': 'TEKNİK'},
+      {'hint': 'Güvenilir (kişi, yer)', 'word': 'TEKİN'},
+      {'hint': 'Şehir', 'word': 'KENT'},
+      {'hint': 'İnsan vücudunun dış yüzü, cilt', 'word': 'TEN'},
+      ],
+    '29': [
+      {'hint': 'Koni biçiminde, ucuna bir sıra kurşun dizilmiş balık ağı, serpme ağ, tepeden inme', 'word': 'SERPME'},
+      {'hint': 'At, eşek, katır vb. hayvanların sırtına yerleştirilen, üzerine yük bağlanan veya binilen, iskeleti ağaçtan araç', 'word': 'SEMER'},
+      {'hint': 'Emek sonucu ortaya konan ürün, yapıt', 'word': 'ESER'},
+      {'hint': 'Baş, kafa', 'word': 'SER'},
+      ],
+    '30': [
+      {'hint': 'Benzerleri arasında niteliklerinin yüksekliğiyle göze çarpan, üstün, mümtaz, güzide, mutena', 'word': 'SEÇKİN'},
+      {'hint': 'İnce yağmur', 'word': 'ÇİSEN'},
+      {'hint': 'Gönül, yürek', 'word': 'SİNE'},
+      {'hint': 'Teklik ikinci kişiyi gösteren söz', 'word': 'SEN'},
+      ],
+    '31': [
+      {'hint': 'Sal yarışı', 'word': 'RAFTİNG'},
+      {'hint': 'Değerlendirme', 'word': 'RATİNG'},
+      {'hint': 'Eski Yunan\'da siyasal gücü zorla ele geçiren, onu kötüye kullanan kimse', 'word': 'TİRAN'},
+      {'hint': 'Karşıt, zıt', 'word': 'ANTİ'},
+      {'hint': 'Ruh', 'word': 'TİN'},
+      ],
+    '32': [
+      {'hint': 'Bakışı, dikkati çeken her şey', 'word': 'MANZARA'},
+      {'hint': 'Anlaşmazlık, çekişme, kavga', 'word': 'MARAZA'},
+      {'hint': 'Dayanılması güç durum', 'word': 'MARAZ'},
+      {'hint': 'Belirti', 'word': 'ARAZ'},
+      {'hint': 'İnce perde veya örtü', 'word': 'ZAR'},
+      ],
+    '33': [
+      {'hint': 'Kendi türünde mükemmel olan, üstün ve kalıcı nitelikte eser, başyapıt', 'word': 'ŞAHESER'},
+      {'hint': 'Böcek', 'word': 'HAŞERE'},
+      {'hint': 'Dilim, parça', 'word': 'ŞERHA'},
+      {'hint': 'Açma, ayırma', 'word': 'ŞERH'},
+      {'hint': 'Kötülük, fenalık', 'word': 'ŞER'},
+      ],
+    '34': [
+      {'hint': 'Raksı meslek edinmiş kadın', 'word': 'RAKKASE'},
+      {'hint': 'Demirli betonla yapılmış yapı', 'word': 'KARKAS'},
+      {'hint': 'Aksayan, hafifçe topallayan', 'word': 'AKSAK'},
+      {'hint': 'Başı darbelerden korumak için sertleştirilmiş sentetik maddelerden yapılmış sağlam başlık', 'word': 'KASK'},
+      {'hint': 'Elma, armut vb. meyvelerin kurutulmuşu', 'word': 'KAK'},
+      ],
+    '35': [
+      {'hint': 'Ötücü kuşlar ezgili ses çıkarmak, ötmek, şakramak, terennüm etmek', 'word': 'ŞAKIMAK'},
+      {'hint': 'Bir sıraya gelen ses, hece veya kelimelerin birbirleriyle uyuşarak kulağa hoş ve dile kolay gelen bir bütün oluşturması', 'word': 'AKIŞMA'},
+      {'hint': 'Güneşin batmasına yakın zamandan gecenin başlamasına kadar olan vakit', 'word': 'AKŞAM'},
+      {'hint': 'Silah olarak kullanılan, ucu sivri, iki ağzı da keskin uzun bıçak', 'word': 'KAMA'},
+      {'hint': 'Şaman', 'word': 'KAM'},
+      ],
+    '36': [
+      {'hint': 'Yergiye, alaya, şakaya yer veren manzum eser', 'word': 'ŞATHİYE'},
+      {'hint': 'Dipnot', 'word': 'HAŞİYE'},
+      {'hint': 'İyi, güzel, çok güzel', 'word': 'YAHŞİ'},
+      {'hint': 'Yaygın, yayılmış (söz veya haber)', 'word': 'ŞAYİ'},
+      {'hint': 'Doğuştan beri geçen ve yıl birimi ile ölçülen zaman', 'word': 'YAŞ'},
+      ],
+    '37': [
+      {'hint': 'Belli bir saatte, belli bir yerde iki veya daha çok kişi arasında kararlaştırılan buluşma', 'word': 'RANDEVU'},
+      {'hint': 'Dünya', 'word': 'DEVRAN'},
+      {'hint': 'Giden, yürüyen', 'word': 'REVAN'},
+      {'hint': 'Toplardamar', 'word': 'VENA'},
+      {'hint': 'Türkiye\'nin Doğu Anadolu Bölgesi\'nde yer alan illerinden biri', 'word': 'VAN'},
+      ],
+    '38': [
+      {'hint': 'Billurları idrarda bulunabilen ve idrar yolunda taş yapan kalsiyum oksalatın kısa biçimi', 'word': 'OKSALAT'},
+      {'hint': 'Bir şeyi, bir sanat veya edebiyat eserini ana çizgileriyle, türlü bölümleriyle belirten ön çalışma', 'word': 'TASLAK'},
+      {'hint': 'Yetişkin erkeklerde yanak ve alt çenede çıkan kılların tümü', 'word': 'SAKAL'},
+      {'hint': 'Üstün nitelikli, üstün yetenekli', 'word': 'KLAS'},
+      {'hint': 'Tellerden oluşan ve kasılarak vücut hareketlerini sağlayan organ ve bu organın telsi dokusu, adale', 'word': 'KAS'},
+      ],
+    '39': [
+      {'hint': 'Getirimci', 'word': 'RANTİYE'},
+      {'hint': 'Genellikle tek parçalı kadın giyeceği', 'word': 'ENTARİ'},
+      {'hint': 'Genellikle yağ bazlı boyaların inceltilmesinde kullanılan organik çözücü', 'word': 'TİNER'},
+      {'hint': 'Ergen', 'word': 'ERİN'},
+      {'hint': 'Bir tür geyik', 'word': 'REN'},
+      ],
+    '40': [
+      {'hint': 'İnşa durumundaki ev, fabrika, baraj vb. her türlü yapı', 'word': 'ŞANTİYE'},
+      {'hint': 'İyilik, kayra, atıfet, ihsan, lütuf', 'word': 'İNAYET'},
+      {'hint': 'Atama', 'word': 'TAYİN'},
+      {'hint': '\'Demek oluyor ki\' anlamlarında bir söz', 'word': 'YANİ'},
+      {'hint': 'Göz', 'word': 'AYN'},
+      ],
   },
+  /*
   // MARK: ANA BÖLÜM-8
   'Ana Bölüm 8': {
     '1': [
@@ -381,6 +1735,6 @@ final Map<String, Map<String, List<Map<String, String>>>> puzzleSections = {
       {'hint': 'Ucu sivri iki ağzı da keskin bıçak', 'word': 'KAMA'},
       {'hint': 'Halk dilinde ağabey', 'word': 'AKA'}
     ],
-  },
+  },*/
 };
 
