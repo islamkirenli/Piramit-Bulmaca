@@ -49,8 +49,8 @@ class _LevelCompleteDialogState extends State<LevelCompleteDialog> with TickerPr
           } else {
             GlobalProperties.remainingLives.value += 2;
             GlobalProperties.coin.value += 150;
-            GlobalProperties.wordHintCount.value += 2;   
-            GlobalProperties.singleHintCount.value += 2;
+            GlobalProperties.wordHintCount.value += 1;   
+            GlobalProperties.singleHintCount.value += 1;
           }
           saveGameData();
         });
@@ -203,7 +203,7 @@ Widget build(BuildContext context) {
                             ),
                             SizedBox(width: 8),
                             Text(
-                              widget.sourcePage == 'daily_puzzle_game' ? "+1" : "+2",
+                              widget.sourcePage == 'daily_puzzle_game' ? "+1" : "+1",
                               style: GlobalProperties.globalTextStyle(
                                 color: Colors.white,
                                 fontSize: 22,
@@ -225,7 +225,7 @@ Widget build(BuildContext context) {
                             ),
                             SizedBox(width: 8),
                             Text(
-                              widget.sourcePage == 'daily_puzzle_game' ? "+1" : "+2",
+                              widget.sourcePage == 'daily_puzzle_game' ? "+1" : "+1",
                               style: GlobalProperties.globalTextStyle(
                                 color: Colors.white,
                                 fontSize: 22,

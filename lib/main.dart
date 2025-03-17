@@ -78,9 +78,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    AdManager.loadRewardedAd();
     requestAppTrackingPermission();
-
+    AdManager.loadRewardedAd();
+    
     _videoController = VideoPlayerController.asset('assets/videos/dongu.mp4')
     ..setLooping(true)
     ..initialize().then((_) {

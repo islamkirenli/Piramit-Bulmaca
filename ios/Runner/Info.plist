@@ -38,7 +38,7 @@
 	<key>NSLocalNotificationsUsageDescription</key>
 	<string>Bildirim göndermek için izin gerekiyor.</string>
 	<key>NSUserTrackingUsageDescription</key>
-	<string>Bildirim göndermek için izin gerekiyor.</string>
+	<string>Uygulamamız, ilgi alanlarınıza yönelik kişiselleştirilmiş reklamlar sunabilmek amacıyla cihazınızı takip edebilir.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
