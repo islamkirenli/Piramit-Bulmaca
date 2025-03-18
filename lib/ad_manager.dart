@@ -92,9 +92,10 @@ class AdManager {
   // Platforma göre banner reklam birimi ID'si
   static String get _bannerAdUnitId {
     if (Platform.isAndroid) {
-      return 'ca-app-pub-3915721961755607/2708723730'; // Android test ID
+      return 'ca-app-pub-3915721961755607/2708723730'; // Android ad ID
     } else if (Platform.isIOS) {
-      return 'ca-app-pub-3915721961755607/3606501307'; // iOS test ID (gerektiğinde değiştirin)
+      //return 'ca-app-pub-3915721961755607/3606501307'; // iOS ad ID 
+      return 'ca-app-pub-3940256099942544/2934735716'; // iOS test ad ID 
     } else {
       throw UnsupportedError("Desteklenmeyen platform");
     }
@@ -103,9 +104,10 @@ class AdManager {
   // Platforma göre interstitial reklam birimi ID'si
   static String get _interstitialAdUnitId {
     if (Platform.isAndroid) {
-      return 'ca-app-pub-3915721961755607/2708723730'; // Android test ID
+      return 'ca-app-pub-3915721961755607/2708723730'; // Android ad ID
     } else if (Platform.isIOS) {
-      return 'ca-app-pub-3915721961755607/4071870318'; // iOS test ID (gerektiğinde değiştirin)
+      //return 'ca-app-pub-3915721961755607/4071870318'; // iOS ad ID 
+      return 'ca-app-pub-3940256099942544/4411468910'; // iOS test ad ID 
     } else {
       throw UnsupportedError("Desteklenmeyen platform");
     }
@@ -114,9 +116,10 @@ class AdManager {
   // Platforma göre farklı reklam birimi ID'si döndürür
   static String get rewardedAdUnitId {
     if (Platform.isAndroid) {
-      return 'ca-app-pub-3915721961755607/7482904195'; // Android için test reklam ID'si
+      return 'ca-app-pub-3915721961755607/7482904195'; // Android ad ID
     } else if (Platform.isIOS) {
-      return 'ca-app-pub-3915721961755607/6978473320'; // iOS için test reklam ID'si
+      //return 'ca-app-pub-3915721961755607/6978473320'; // iOS ad ID
+      return 'ca-app-pub-3940256099942544/1712485313'; // iOS test ad ID 
     } else {
       throw UnsupportedError("Desteklenmeyen platform");
     }
