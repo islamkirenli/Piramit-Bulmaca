@@ -94,8 +94,8 @@ class AdManager {
     if (Platform.isAndroid) {
       return 'ca-app-pub-3915721961755607/2708723730'; // Android ad ID
     } else if (Platform.isIOS) {
-      //return 'ca-app-pub-3915721961755607/3606501307'; // iOS ad ID 
-      return 'ca-app-pub-3940256099942544/2934735716'; // iOS test ad ID 
+      return 'ca-app-pub-3915721961755607/3606501307'; // iOS ad ID 
+      //return 'ca-app-pub-3940256099942544/2934735716'; // iOS test ad ID 
     } else {
       throw UnsupportedError("Desteklenmeyen platform");
     }
@@ -106,8 +106,8 @@ class AdManager {
     if (Platform.isAndroid) {
       return 'ca-app-pub-3915721961755607/2708723730'; // Android ad ID
     } else if (Platform.isIOS) {
-      //return 'ca-app-pub-3915721961755607/4071870318'; // iOS ad ID 
-      return 'ca-app-pub-3940256099942544/4411468910'; // iOS test ad ID 
+      return 'ca-app-pub-3915721961755607/4071870318'; // iOS ad ID 
+      //return 'ca-app-pub-3940256099942544/4411468910'; // iOS test ad ID 
     } else {
       throw UnsupportedError("Desteklenmeyen platform");
     }
@@ -118,8 +118,8 @@ class AdManager {
     if (Platform.isAndroid) {
       return 'ca-app-pub-3915721961755607/7482904195'; // Android ad ID
     } else if (Platform.isIOS) {
-      //return 'ca-app-pub-3915721961755607/6978473320'; // iOS ad ID
-      return 'ca-app-pub-3940256099942544/1712485313'; // iOS test ad ID 
+      return 'ca-app-pub-3915721961755607/6978473320'; // iOS ad ID
+      //return 'ca-app-pub-3940256099942544/1712485313'; // iOS test ad ID 
     } else {
       throw UnsupportedError("Desteklenmeyen platform");
     }

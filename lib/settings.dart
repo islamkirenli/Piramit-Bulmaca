@@ -341,7 +341,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
               url = Uri.parse("https://play.google.com/store/apps/details?id=YOUR_ANDROID_PACKAGE_ID");
             } else if (Platform.isIOS) {
               // iOS mağaza linki (App Store)
-              url = Uri.parse("https://apps.apple.com/app/idYOUR_APP_ID");
+              url = Uri.parse("https://apps.apple.com/app/piramit-bulmaca/id6743098390");
             } else {
               // Diğer platformlar için alternatif bir link
               url = Uri.parse("https://yourgamewebsite.com");
