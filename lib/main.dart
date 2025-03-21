@@ -24,7 +24,13 @@ void main() async{
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
-  MobileAds.instance.initialize();
+  
+  // MobileAds'i başlat ve reklamları yükle
+  await MobileAds.instance.initialize();
+  AdManager.loadBannerAd();
+  AdManager.loadInterstitialAd();
+  AdManager.loadRewardedAd();
+  
   runApp(
     MusicBackground(
       child: MaterialApp(

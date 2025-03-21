@@ -105,7 +105,7 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
   void initState() {
     super.initState();
 
-    // Örnek doğru tahmin görselleri (rastgele göstermek için)
+    // Örnek doğru tahmin görselleri
     correctGuessImages = [
       'assets/images/correct_guess/correct_guess1.png',
       'assets/images/correct_guess/correct_guess2.png',
@@ -113,14 +113,16 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
       'assets/images/correct_guess/correct_guess4.png',
     ];
 
+    // Reklam yönetimi
     AdManager.loadBannerAd();
     AdManager.loadInterstitialAd();
+    AdManager.loadRewardedAd();
 
-    // Banner reklamı 5 saniyede bir yenileme
-    _bannerAdTimer = Timer.periodic(Duration(seconds: 5), (_) {
-      setState(() {
+    // Banner reklamını periyodik olarak yenile
+    _bannerAdTimer = Timer.periodic(Duration(seconds: 30), (_) {
+      if (mounted) {
         AdManager.loadBannerAd();
-      });
+      }
     });
 
     _letterShuffleController = AnimationController(
@@ -618,7 +620,7 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
         } else {
           GlobalProperties.puzzleForTodayCompleted.value = true;
           Timer(Duration(seconds: 2), () {
-            AdManager.showInterstitialAd();
+            showInterstitialIfReady();
             showLevelCompleteDialog(context, sourcePage: 'daily_puzzle_game');
           });
         }
@@ -744,6 +746,32 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
     GlobalProperties.countdownSeconds.value = prefs.getInt('countdownSeconds') ?? 3599;
     GlobalProperties.isTimerRunning.value = prefs.getBool('isTimerRunning') ?? false;
     GlobalProperties.deadlineTimestamp = prefs.getInt('deadlineTimestamp') ?? 0;
+  }
+
+  // Interstitial reklam gösterme
+  void showInterstitialIfReady() {
+    if (AdManager.isInterstitialAdReady) {
+      AdManager.showInterstitialAd();
+    }
+  }
+
+  // Rewarded reklam gösterme
+  void showRewardedAdIfReady(Function onRewarded) {
+    if (AdManager.rewardedAd != null && AdManager.isRewardedAdReady) {
+      AdManager.rewardedAd!.show(onUserEarnedReward: (_, reward) {
+        onRewarded();
+      });
+      AdManager.rewardedAd = null;
+      AdManager.loadRewardedAd();
+    } else {
+      debugPrint('Rewarded reklam henüz hazır değil.');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Reklam henüz hazır değil, lütfen tekrar deneyin!'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
   }
 }
 

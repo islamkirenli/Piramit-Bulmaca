@@ -133,14 +133,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
 
     AdManager.loadBannerAd();
     AdManager.loadInterstitialAd();
-
-    // Banner reklamını 5 saniyede bir yenile
-    _bannerAdTimer = Timer.periodic(Duration(seconds: 5), (_) {
-      setState(() {
-        AdManager.loadBannerAd();
-        print("banner yenilendi.");
-      });
-    });
+    AdManager.loadRewardedAd();
 
     // Correct Guess animasyonu için controller
     _correctGuessController = AnimationController(
@@ -170,10 +163,11 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
         if (shouldShowAds) {
           AdManager.loadBannerAd();
           AdManager.loadInterstitialAd();
-          _bannerAdTimer = Timer.periodic(Duration(seconds: 5), (_) {
-            setState(() {
+          AdManager.loadRewardedAd();
+          _bannerAdTimer = Timer.periodic(Duration(seconds: 30), (_) {
+            if (mounted && shouldShowAds) {
               AdManager.loadBannerAd();
-            });
+            }
           });
         }
 
@@ -1238,11 +1232,11 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
   }
 
   void startCountdownInAppBarStats() {
-    // 1) Timer’ın bitiş zamanını hesapla
+    // 1) Timer'ın bitiş zamanını hesapla
     final now = DateTime.now().millisecondsSinceEpoch;
     GlobalProperties.deadlineTimestamp = now + (GlobalProperties.countdownSeconds.value * 1000);
 
-    // 2) Timer’ın aktif olduğunu işaretle
+    // 2) Timer'ın aktif olduğunu işaretle
     GlobalProperties.isTimerRunning.value = true;
 
     // 3) Hemen kaydet
@@ -1339,7 +1333,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
         // YENİ: Açılan harfi kaydet
         lastOpenedIndex = randomIndex;
 
-        // Örnek: 1 saniye sonra lastOpenedIndex’i sıfırlayıp animasyonu gizlemek isterseniz:
+        // Örnek: 1 saniye sonra lastOpenedIndex'i sıfırlayıp animasyonu gizlemek isterseniz:
         Timer(Duration(seconds: 1), () {
           setState(() {
             lastOpenedIndex = null; 
@@ -1529,18 +1523,36 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
   }
 
   bool checkIfShouldShowAds(String mainSection, String subSection) {
-    // Eğer "Ana Bölüm 1" ise alt bölüm sayısını kontrol edelim:
     if (mainSection == "Ana Bölüm 1") {
       final subSecInt = int.tryParse(subSection) ?? 0;
-      // 10. alt bölümü geçtikten sonra, yani 11 veya üstüyse reklam göster
-      if (subSecInt > 10) {
-        return true;
-      } else {
-        return false;
-      }
+      return subSecInt > 10;
+    }
+    return true;
+  }
+
+  // Interstitial reklam gösterme
+  void showInterstitialIfReady() {
+    if (checkIfShouldShowAds(currentMainSection, currentSubSection) && AdManager.isInterstitialAdReady) {
+      AdManager.showInterstitialAd();
+    }
+  }
+
+  // Rewarded reklam gösterme
+  void showRewardedAdIfReady(Function onRewarded) {
+    if (AdManager.rewardedAd != null && AdManager.isRewardedAdReady) {
+      AdManager.rewardedAd!.show(onUserEarnedReward: (_, reward) {
+        onRewarded();
+      });
+      AdManager.rewardedAd = null;
+      AdManager.loadRewardedAd();
     } else {
-      // Ana Bölüm 2 veya 3 veya başka bir bölüme geçilmişse direkt göster
-      return true;
+      debugPrint('Rewarded reklam henüz hazır değil.');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Reklam henüz hazır değil, lütfen tekrar deneyin!'),
+          duration: Duration(seconds: 2),
+        ),
+      );
     }
   }
 }
