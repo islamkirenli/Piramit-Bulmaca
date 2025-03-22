@@ -3,169 +3,82 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:flutter/material.dart';
 
 class AdManager {
-  static RewardedAd? rewardedAd;
-  static BannerAd? bannerAd;
   static InterstitialAd? interstitialAd;
-  static bool isInterstitialAdReady = false;
-  static bool isRewardedAdReady = false;
-  static bool isBannerAdReady = false;
+  static BannerAd? bannerAd;
+  static RewardedAd? rewardedAd;
 
-  static int _maxBannerLoadAttempts = 3;
-  static int _currentBannerLoadAttempts = 0;
-
-  /// Banner reklamı yükler
-  static void loadBannerAd() {
-    if (_currentBannerLoadAttempts >= _maxBannerLoadAttempts) {
-      debugPrint("Maksimum banner yükleme denemesi aşıldı. Bir süre beklenecek.");
-      Future.delayed(Duration(minutes: 1), () {
-        _currentBannerLoadAttempts = 0;
-        loadBannerAd();
-      });
-      return;
-    }
-
-    bannerAd?.dispose();
+  static void loadBannerAd({required VoidCallback adLoaded}) async {
     bannerAd = BannerAd(
       adUnitId: _bannerAdUnitId,
-      size: AdSize.banner,
       request: const AdRequest(),
+      size: AdSize.banner,
       listener: BannerAdListener(
-        onAdLoaded: (Ad ad) {
-          debugPrint("Banner reklam yüklendi.");
-          isBannerAdReady = true;
-          _currentBannerLoadAttempts = 0;
+        onAdLoaded: (ad) {
+          bannerAd = ad as BannerAd;
+          adLoaded();
         },
-        onAdFailedToLoad: (Ad ad, LoadAdError error) {
-          debugPrint("Banner reklam yüklenemedi: $error");
-          isBannerAdReady = false;
+        onAdFailedToLoad: (ad, err) {
           ad.dispose();
-          _currentBannerLoadAttempts++;
-          if (_currentBannerLoadAttempts < _maxBannerLoadAttempts) {
-            Future.delayed(Duration(seconds: 10), () {
-              loadBannerAd();
-            });
-          }
-        },
-        onAdOpened: (Ad ad) {
-          debugPrint('Banner reklam açıldı.');
-        },
-        onAdClosed: (Ad ad) {
-          debugPrint("Banner reklam kapatıldı.");
-          ad.dispose();
-          loadBannerAd(); // Reklam kapatıldığında yeni reklam yükle
         },
       ),
-    );
-    bannerAd!.load();
+    )..load();
   }
-
-  /// Banner reklamını widget olarak döndürür
-  static Widget getBannerAdWidget() {
-    if (bannerAd != null && isBannerAdReady) {
-      return Container(
-        width: bannerAd!.size.width.toDouble(),
-        height: bannerAd!.size.height.toDouble(),
-        child: AdWidget(ad: bannerAd!),
-      );
-    } else {
-      return const SizedBox();
-    }
-  }
-
-  /// Interstitial reklamı yükler
+  
   static void loadInterstitialAd() {
     InterstitialAd.load(
-      adUnitId: _interstitialAdUnitId,
-      request: const AdRequest(),
-      adLoadCallback: InterstitialAdLoadCallback(
-        onAdLoaded: (InterstitialAd ad) {
-          interstitialAd = ad;
-          isInterstitialAdReady = true;
-          debugPrint("Interstitial reklam yüklendi.");
-          
-          // Reklam kapatıldığında yapılacak işlemler
-          ad.fullScreenContentCallback = FullScreenContentCallback(
-            onAdDismissedFullScreenContent: (ad) {
-              isInterstitialAdReady = false;
-              ad.dispose();
-              loadInterstitialAd(); // Yeni reklam yükle
-            },
-            onAdFailedToShowFullScreenContent: (ad, error) {
-              debugPrint("Interstitial reklam gösterilemedi: $error");
-              isInterstitialAdReady = false;
-              ad.dispose();
-              loadInterstitialAd();
-            },
-          );
-        },
-        onAdFailedToLoad: (LoadAdError error) {
-          debugPrint("Interstitial reklam yüklenemedi: $error");
-          isInterstitialAdReady = false;
-          interstitialAd = null;
-          // Belirli bir süre sonra tekrar dene
-          Future.delayed(Duration(minutes: 1), () {
-            loadInterstitialAd();
-          });
-        },
-      ),
-    );
+        adUnitId: _interstitialAdUnitId,
+        request: const AdRequest(),
+        adLoadCallback: InterstitialAdLoadCallback(
+          onAdLoaded: (ad) {
+            debugPrint('$ad loaded.');
+            interstitialAd = ad;
+          },
+          onAdFailedToLoad: (LoadAdError error) {
+            debugPrint('InterstitialAd failed to load: $error');
+          },
+        ));
   }
-
-  /// Yüklü interstitial reklamı gösterir
-  static void showInterstitialAd() {
-    if (isInterstitialAdReady && interstitialAd != null) {
+  
+  static void showInterstitialAd(){
+    if(interstitialAd != null){
       interstitialAd!.show();
-    } else {
-      debugPrint("Interstitial reklam henüz hazır değil.");
       loadInterstitialAd();
     }
   }
 
-  /// Rewarded reklamı yükler
   static void loadRewardedAd() {
     RewardedAd.load(
-      adUnitId: _rewardedAdUnitId,
-      request: const AdRequest(),
-      rewardedAdLoadCallback: RewardedAdLoadCallback(
-        onAdLoaded: (RewardedAd ad) {
-          rewardedAd = ad;
-          isRewardedAdReady = true;
-          debugPrint("Rewarded reklam yüklendi.");
-          
-          // Reklam kapatıldığında yapılacak işlemler
-          ad.fullScreenContentCallback = FullScreenContentCallback(
-            onAdDismissedFullScreenContent: (ad) {
-              isRewardedAdReady = false;
-              ad.dispose();
-              loadRewardedAd(); // Yeni reklam yükle
-            },
-            onAdFailedToShowFullScreenContent: (ad, error) {
-              debugPrint("Rewarded reklam gösterilemedi: $error");
-              isRewardedAdReady = false;
-              ad.dispose();
-              loadRewardedAd();
-            },
-          );
-        },
-        onAdFailedToLoad: (LoadAdError error) {
-          debugPrint('Rewarded reklam yüklenemedi: $error');
-          isRewardedAdReady = false;
-          rewardedAd = null;
-          // Belirli bir süre sonra tekrar dene
-          Future.delayed(Duration(minutes: 1), () {
-            loadRewardedAd();
-          });
-        },
-      ),
-    );
+        adUnitId: _rewardedAdUnitId,
+        request: const AdRequest(),
+        rewardedAdLoadCallback: RewardedAdLoadCallback(
+          onAdLoaded: (ad) {
+            ad.fullScreenContentCallback = FullScreenContentCallback(
+              onAdDismissedFullScreenContent: (ad) {
+                ad.dispose();
+                loadRewardedAd(); // Yeni reklam yükle
+              },
+              onAdFailedToShowFullScreenContent: (ad, error) {
+                debugPrint("Rewarded reklam gösterilemedi: $error");
+                ad.dispose();
+                loadRewardedAd();
+              },
+            );
+            debugPrint('$ad loaded.');
+            rewardedAd = ad;
+          },
+          onAdFailedToLoad: (LoadAdError error) {
+            debugPrint('RewardedAd failed to load: $error');
+          },
+        ));
   }
-
+  
   // Platform'a göre banner reklam ID'si
   static String get _bannerAdUnitId {
     if (Platform.isAndroid) {
       return 'ca-app-pub-3915721961755607/2708723730';
     } else if (Platform.isIOS) {
-      return 'ca-app-pub-3915721961755607/3606501307';
+      return 'ca-app-pub-3915721961755607/3606501307'; // ios ad id
+      //return 'ca-app-pub-3915721961755607/3606501307'; // ios test ad id
     } else {
       throw UnsupportedError("Desteklenmeyen platform");
     }
@@ -176,7 +89,8 @@ class AdManager {
     if (Platform.isAndroid) {
       return 'ca-app-pub-3915721961755607/2708723730';
     } else if (Platform.isIOS) {
-      return 'ca-app-pub-3915721961755607/4071870318';
+      return 'ca-app-pub-3915721961755607/4071870318'; // ios ad id
+      //return 'ca-app-pub-3940256099942544/4411468910'; // ios test ad id
     } else {
       throw UnsupportedError("Desteklenmeyen platform");
     }
@@ -187,7 +101,8 @@ class AdManager {
     if (Platform.isAndroid) {
       return 'ca-app-pub-3915721961755607/7482904195';
     } else if (Platform.isIOS) {
-      return 'ca-app-pub-3915721961755607/6978473320';
+      return 'ca-app-pub-3915721961755607/6978473320'; // ios ad id
+      //return 'ca-app-pub-3940256099942544/1712485313'; // ios test ad id
     } else {
       throw UnsupportedError("Desteklenmeyen platform");
     }

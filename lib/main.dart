@@ -21,13 +21,12 @@ import 'special_day_popup.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  await MobileAds.instance.initialize();
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
   
-  // MobileAds'i başlat ve reklamları yükle
-  await MobileAds.instance.initialize();
-  AdManager.loadBannerAd();
+  AdManager.loadBannerAd(adLoaded: () {});
   AdManager.loadInterstitialAd();
   AdManager.loadRewardedAd();
   
@@ -85,6 +84,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     requestAppTrackingPermission();
+    AdManager.loadBannerAd(adLoaded: () {});
+    AdManager.loadInterstitialAd();
     AdManager.loadRewardedAd();
     
     _videoController = VideoPlayerController.asset('assets/videos/dongu.mp4')

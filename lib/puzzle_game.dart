@@ -20,24 +20,6 @@ import 'level_complete_dialog.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'all_sections_completed_dialog.dart';
 
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  MobileAds.instance.initialize();
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Bulmaca Oyunu',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: PuzzleGame(),
-    );
-  }
-}
-
 class PuzzleGame extends StatefulWidget {
   final String? initialMainSection; // Başlangıç ana bölümü
   final String? initialSubSection; // Başlangıç alt bölümü
@@ -131,9 +113,19 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
       'assets/images/correct_guess/correct_guess4.png',
     ];
 
-    AdManager.loadBannerAd();
+    AdManager.loadBannerAd(adLoaded: () {
+      setState(() {});
+    });
     AdManager.loadInterstitialAd();
     AdManager.loadRewardedAd();
+
+    _bannerAdTimer = Timer.periodic(Duration(seconds: 10), (_) {
+      if (mounted) {
+        AdManager.loadBannerAd(adLoaded: () {
+          setState(() {});
+        });
+      }
+    });
 
     // Correct Guess animasyonu için controller
     _correctGuessController = AnimationController(
@@ -158,18 +150,6 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
         isDataLoaded = true;
 
         shouldShowAds = checkIfShouldShowAds(currentMainSection, currentSubSection);
-
-        // Eğer reklam göstermemiz gerekiyorsa Banner ve Interstitial yüklüyoruz.
-        if (shouldShowAds) {
-          AdManager.loadBannerAd();
-          AdManager.loadInterstitialAd();
-          AdManager.loadRewardedAd();
-          _bannerAdTimer = Timer.periodic(Duration(seconds: 30), (_) {
-            if (mounted && shouldShowAds) {
-              AdManager.loadBannerAd();
-            }
-          });
-        }
 
         // (Diğer kodlar, örneğin timer bitmiş mi kontrolü vs.)
         if (isTimeCompletedWhileAppClosed) {
@@ -752,9 +732,18 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                     ),
                   ),
                 ),
-                SizedBox(height: 5 * scaleFactor), // Reklamın en altta görünmesi için Spacer ekleniyor
+                SizedBox(height: 5 * scaleFactor), // Reklamın en altta görünmesi için Spacer ekleniyor                  
                 if (checkIfShouldShowAds(currentMainSection, currentSubSection) && AdManager.bannerAd != null)
-                  AdManager.getBannerAdWidget()
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: SafeArea(
+                      child: SizedBox(
+                        width: 320,
+                        height: 50,
+                        child: AdWidget(ad: AdManager.bannerAd!),
+                      ),
+                    ),
+                  )
               ],
             ),
           ),
@@ -932,8 +921,9 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                 .reduce((a, b) => a > b ? a : b);
 
             
-            if (checkIfShouldShowAds(currentMainSection, currentSubSection))
+            if (checkIfShouldShowAds(currentMainSection, currentSubSection)) {
               AdManager.showInterstitialAd();
+            }
 
             // Çokgen kenarlarını güncellemek için bir callback'e bırak
             showNextLevelDialog(
@@ -1076,23 +1066,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
   }
 
   void gainExtraLife() {
-    // Reklam hazırsa göster
-    if (AdManager.isInterstitialAdReady) {
-      AdManager.showInterstitialAd();
-
-      // Reklam gösteriminden sonra hak ekleme işlemi
-      AdManager.interstitialAd?.fullScreenContentCallback = FullScreenContentCallback(
-        onAdDismissedFullScreenContent: (InterstitialAd ad) {
-          // Kullanıcı reklamı kapattıktan sonra hak ekle
-          ad.dispose();
-          setState(() {
-            GlobalProperties.remainingLives.value++; // Kullanıcıya bir hak ekle
-            saveGameData();
-          });
-          print("Reklam kapatıldı, hak eklendi.");
-        }
-      );
-    }
+    showRewardedAd();
   }
 
 
@@ -1367,8 +1341,9 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                 .map((wordData) => wordData['word']!.length)
                 .reduce((a, b) => a > b ? a : b);
 
-            if (checkIfShouldShowAds(currentMainSection, currentSubSection))
+            if (checkIfShouldShowAds(currentMainSection, currentSubSection)) {
               AdManager.showInterstitialAd();
+            }
 
             // Çokgen kenarlarını güncellemek için bir callback'e bırak
             showNextLevelDialog(
@@ -1481,8 +1456,9 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
               .map((wordData) => wordData['word']!.length)
               .reduce((a, b) => a > b ? a : b);
           
-          if (checkIfShouldShowAds(currentMainSection, currentSubSection))
-              AdManager.showInterstitialAd();
+          if (checkIfShouldShowAds(currentMainSection, currentSubSection)) {
+            AdManager.showInterstitialAd();
+          }
 
           showNextLevelDialog(
             context,
@@ -1530,23 +1506,19 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
     return true;
   }
 
-  // Interstitial reklam gösterme
-  void showInterstitialIfReady() {
-    if (checkIfShouldShowAds(currentMainSection, currentSubSection) && AdManager.isInterstitialAdReady) {
-      AdManager.showInterstitialAd();
-    }
-  }
-
-  // Rewarded reklam gösterme
-  void showRewardedAdIfReady(Function onRewarded) {
-    if (AdManager.rewardedAd != null && AdManager.isRewardedAdReady) {
-      AdManager.rewardedAd!.show(onUserEarnedReward: (_, reward) {
-        onRewarded();
-      });
+  void showRewardedAd() {
+    if (AdManager.rewardedAd != null) {
+      AdManager.rewardedAd!.show(
+        onUserEarnedReward: (AdWithoutView ad, RewardItem reward) {
+          GlobalProperties.remainingLives.value += 1;
+          (context as Element).markNeedsBuild();
+          saveGameData();
+        },
+      );
       AdManager.rewardedAd = null;
       AdManager.loadRewardedAd();
     } else {
-      debugPrint('Rewarded reklam henüz hazır değil.');
+      debugPrint('Rewarded ad is not ready yet.');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Reklam henüz hazır değil, lütfen tekrar deneyin!'),

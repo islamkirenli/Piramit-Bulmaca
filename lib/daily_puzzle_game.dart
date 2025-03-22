@@ -16,24 +16,6 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  MobileAds.instance.initialize();
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Günlük Bulmaca Oyunu',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: DailyPuzzleGame(),
-    );
-  }
-}
-
 class DailyPuzzleGame extends StatefulWidget {
   @override
   _DailyPuzzleGameState createState() => _DailyPuzzleGameState();
@@ -41,7 +23,7 @@ class DailyPuzzleGame extends StatefulWidget {
 
 class _DailyPuzzleGameState extends State<DailyPuzzleGame>
     with WidgetsBindingObserver, TickerProviderStateMixin {
-  // Her güne ait puzzle indexi
+  
   int puzzleIndex = 0;
 
   // Günlük puzzle içinde birden fazla kelime varsa, currentIndex o kelimenin sırası
@@ -114,14 +96,18 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
     ];
 
     // Reklam yönetimi
-    AdManager.loadBannerAd();
+    AdManager.loadBannerAd(adLoaded: () {
+      setState(() {});
+    });
     AdManager.loadInterstitialAd();
     AdManager.loadRewardedAd();
 
     // Banner reklamını periyodik olarak yenile
-    _bannerAdTimer = Timer.periodic(Duration(seconds: 30), (_) {
+    _bannerAdTimer = Timer.periodic(Duration(seconds: 10), (_) {
       if (mounted) {
-        AdManager.loadBannerAd();
+        AdManager.loadBannerAd(adLoaded: () {
+          setState(() {});
+        });
       }
     });
 
@@ -478,8 +464,17 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
                 SizedBox(height: 5 * scaleFactor),
 
                 // Banner reklam alanı
-                if (AdManager.bannerAd != null)
-                  AdManager.getBannerAdWidget()
+                if (AdManager.bannerAd != null) 
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: SafeArea(
+                      child: SizedBox(
+                        width: 320,
+                        height: 50,
+                        child: AdWidget(ad: AdManager.bannerAd!),
+                      ),
+                    ),
+                  )
               ],
             ),
           ),
@@ -620,7 +615,7 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
         } else {
           GlobalProperties.puzzleForTodayCompleted.value = true;
           Timer(Duration(seconds: 2), () {
-            showInterstitialIfReady();
+            AdManager.showInterstitialAd();
             showLevelCompleteDialog(context, sourcePage: 'daily_puzzle_game');
           });
         }
@@ -746,32 +741,6 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
     GlobalProperties.countdownSeconds.value = prefs.getInt('countdownSeconds') ?? 3599;
     GlobalProperties.isTimerRunning.value = prefs.getBool('isTimerRunning') ?? false;
     GlobalProperties.deadlineTimestamp = prefs.getInt('deadlineTimestamp') ?? 0;
-  }
-
-  // Interstitial reklam gösterme
-  void showInterstitialIfReady() {
-    if (AdManager.isInterstitialAdReady) {
-      AdManager.showInterstitialAd();
-    }
-  }
-
-  // Rewarded reklam gösterme
-  void showRewardedAdIfReady(Function onRewarded) {
-    if (AdManager.rewardedAd != null && AdManager.isRewardedAdReady) {
-      AdManager.rewardedAd!.show(onUserEarnedReward: (_, reward) {
-        onRewarded();
-      });
-      AdManager.rewardedAd = null;
-      AdManager.loadRewardedAd();
-    } else {
-      debugPrint('Rewarded reklam henüz hazır değil.');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Reklam henüz hazır değil, lütfen tekrar deneyin!'),
-          duration: Duration(seconds: 2),
-        ),
-      );
-    }
   }
 }
 
