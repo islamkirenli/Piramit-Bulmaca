@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pyramid_puzzle/main.dart';
@@ -26,10 +27,14 @@ class _LevelCompleteDialogState extends State<LevelCompleteDialog> with TickerPr
 
   late AnimationController _slideController;
   late Animation<Offset> _slideAnimation;
+  AudioPlayer? _chestOpeningAudioPlayer;
+
+
 
   @override
   void initState() {
     super.initState();
+    _chestOpeningAudioPlayer = AudioPlayer();
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 2), // Tam animasyon süresi
@@ -97,6 +102,7 @@ class _LevelCompleteDialogState extends State<LevelCompleteDialog> with TickerPr
     _coinFlipController.dispose();
     _heartBeatController.dispose();
     _slideController.dispose();    
+    _chestOpeningAudioPlayer?.dispose();
     super.dispose();
   }
 
@@ -120,11 +126,16 @@ Widget build(BuildContext context) {
           });
           _animationController.duration = Duration(seconds: 2);
           _animationController.forward(from: 0);
+          if (GlobalProperties.isSoundOn) {
+            Future.delayed(Duration(milliseconds: 500), () { 
+              _chestOpeningAudioPlayer?.stop();
+              _chestOpeningAudioPlayer?.play(AssetSource('audios/chest_sound.mp3'));
+            });
+          }
         }
       },
       child: Stack(
         children: [
-          // Ödül animasyonlarının Positioned widget'ı:
           if (showRewardAnimations)
             Positioned(
               top: rewardTop,

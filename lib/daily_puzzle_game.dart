@@ -78,6 +78,7 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
 
   // Ses oynatıcı
   AudioPlayer? _clickAudioPlayer;
+  AudioPlayer? _letterSelectAudioPlayer;
 
   int nextPuzzleSeconds = 0;       // Bir sonraki günlük bulmacaya kalan saniye
   Timer? _nextPuzzleTimer;         // Geri sayımı her saniye güncellemek için timer
@@ -138,6 +139,7 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
 
     // Ses tıklama efekti için
     _clickAudioPlayer = AudioPlayer();
+    _letterSelectAudioPlayer = AudioPlayer();
 
     // Oyun verilerini (puzzleIndex, coin, vb.) yükle
     loadGameData().then((_) {
@@ -155,6 +157,7 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
     _clickAudioPlayer?.dispose();
     _nextPuzzleTimer?.cancel();
     _letterShuffleController.dispose();
+    _letterSelectAudioPlayer?.dispose();
     saveGameData();
     super.dispose();
   }
@@ -552,6 +555,10 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
             linePoints.add(point);
             showSelectedLetters = true;
           });
+          if (GlobalProperties.isSoundOn) {
+            _letterSelectAudioPlayer?.stop();
+            _letterSelectAudioPlayer?.play(AssetSource('audios/select_sound.wav'));
+          }
           break;
         }
       }

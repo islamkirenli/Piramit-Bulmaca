@@ -83,6 +83,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
 
   AudioPlayer? _audioPlayerForHints;
   AudioPlayer? _clickAudioPlayer;
+  AudioPlayer? _letterSelectAudioPlayer;
 
   @override
   void initState() {
@@ -164,6 +165,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
 
     _audioPlayerForHints = AudioPlayer();
     _clickAudioPlayer = AudioPlayer();
+    _letterSelectAudioPlayer = AudioPlayer();
   }
 
 
@@ -177,6 +179,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
     _audioPlayerForHints?.dispose();
     _clickAudioPlayer?.dispose();
     _letterShuffleController.dispose();
+    _letterSelectAudioPlayer?.dispose();
     super.dispose();
   }
 
@@ -839,6 +842,10 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
             linePoints.add(point); // Çizgi noktasını ekle
             showSelectedLetters = true; // Kutuyu göster
           });
+          if (GlobalProperties.isSoundOn) {
+            _letterSelectAudioPlayer?.stop();
+            _letterSelectAudioPlayer?.play(AssetSource('audios/select_sound.wav'));
+          }
           break;
         }
       }
@@ -921,7 +928,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                 .reduce((a, b) => a > b ? a : b);
 
             
-            if (checkIfShouldShowAds(currentMainSection, currentSubSection)) {
+            if (checkIfShouldShowAds(currentMainSection, currentSubSection) && shouldShowTransitionAd(currentSubSection)) {
               AdManager.showInterstitialAd();
             }
 
@@ -1341,7 +1348,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                 .map((wordData) => wordData['word']!.length)
                 .reduce((a, b) => a > b ? a : b);
 
-            if (checkIfShouldShowAds(currentMainSection, currentSubSection)) {
+            if (checkIfShouldShowAds(currentMainSection, currentSubSection) && shouldShowTransitionAd(currentSubSection)) {
               AdManager.showInterstitialAd();
             }
 
@@ -1456,7 +1463,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
               .map((wordData) => wordData['word']!.length)
               .reduce((a, b) => a > b ? a : b);
           
-          if (checkIfShouldShowAds(currentMainSection, currentSubSection)) {
+          if (checkIfShouldShowAds(currentMainSection, currentSubSection) && shouldShowTransitionAd(currentSubSection)) {
             AdManager.showInterstitialAd();
           }
 
@@ -1526,5 +1533,10 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
         ),
       );
     }
+  }
+
+  bool shouldShowTransitionAd(String subSection) {
+    final subSecInt = int.tryParse(subSection) ?? 0;
+    return subSecInt % 3 == 0;
   }
 }
