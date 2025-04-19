@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:pyramid_puzzle/ad_manager.dart';
 import 'game_over_dialog.dart'; // Pop-up için ayrı dosya
 import 'puzzle_data.dart'; // puzzleData'yı içe aktar
 import 'next_level_dialog.dart';
@@ -81,11 +82,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
   int correctAnswerCounter = 0; // Doğru cevapların sayısını takip eder
   List<String> correctGuessImages = []; // Görsellerin yolu
   String? currentCorrectGuessImage; // Şu anki gösterilen görsel
-  late BannerAd _bannerAd;
-  bool _isBannerAdReady = false;
   late Timer _bannerAdTimer;
-  late InterstitialAd _interstitialAd;
-  bool _isInterstitialAdReady = false;
   bool shouldShowAds = false;
   Timer? _wrongChoiceTimer;        // Yanlış seçim sonrası beklemeyi yöneten Timer
   bool _isWrongChoiceWaiting = false; // Yanlış seçim temizlenmeyi bekliyor mu?
@@ -134,16 +131,13 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
       'assets/images/correct_guess/correct_guess4.png',
     ];
 
-    // Banner reklamı oluştur ve yükle
-    createAndLoadBannerAd();
-
-    loadInterstitialAd(); // Interstitial reklamı yükle
+    AdManager.loadBannerAd();
+    AdManager.loadInterstitialAd();
 
     // Banner reklamını 5 saniyede bir yenile
     _bannerAdTimer = Timer.periodic(Duration(seconds: 5), (_) {
       setState(() {
-        _bannerAd.dispose(); // Mevcut banner reklamı temizle
-        createAndLoadBannerAd(); // Yeni bir banner reklam oluştur ve yükle
+        AdManager.loadBannerAd();
         print("banner yenilendi.");
       });
     });
@@ -174,12 +168,11 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
 
         // Eğer reklam göstermemiz gerekiyorsa Banner ve Interstitial yüklüyoruz.
         if (shouldShowAds) {
-          createAndLoadBannerAd();
-          loadInterstitialAd(); 
+          AdManager.loadBannerAd();
+          AdManager.loadInterstitialAd();
           _bannerAdTimer = Timer.periodic(Duration(seconds: 5), (_) {
             setState(() {
-              _bannerAd.dispose();
-              createAndLoadBannerAd();
+              AdManager.loadBannerAd();
             });
           });
         }
@@ -203,8 +196,6 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
   @override
   void dispose() {
     _bannerAdTimer.cancel(); // Timer'ı durdur
-    _bannerAd.dispose(); // Mevcut reklamı temizle
-    _interstitialAd.dispose();
     _correctGuessController.dispose(); // Correct Guess controller'ını temizle
     _settingsIconController.dispose(); // Animasyon denetleyicisini temizle
     WidgetsBinding.instance.removeObserver(this);
@@ -768,12 +759,8 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                   ),
                 ),
                 SizedBox(height: 5 * scaleFactor), // Reklamın en altta görünmesi için Spacer ekleniyor
-                if (checkIfShouldShowAds(currentMainSection, currentSubSection) && _isBannerAdReady)
-                  Container(
-                    height: _bannerAd.size.height.toDouble() * scaleFactor,
-                    width: _bannerAd.size.width.toDouble() * scaleFactor,
-                    child: AdWidget(ad: _bannerAd),
-                  ),
+                if (checkIfShouldShowAds(currentMainSection, currentSubSection) && AdManager.bannerAd != null)
+                  AdManager.getBannerAdWidget()
               ],
             ),
           ),
@@ -950,7 +937,9 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                 .map((wordData) => wordData['word']!.length)
                 .reduce((a, b) => a > b ? a : b);
 
-            showInterstitialAd();
+            
+            if (checkIfShouldShowAds(currentMainSection, currentSubSection))
+              AdManager.showInterstitialAd();
 
             // Çokgen kenarlarını güncellemek için bir callback'e bırak
             showNextLevelDialog(
@@ -1094,13 +1083,11 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
 
   void gainExtraLife() {
     // Reklam hazırsa göster
-    if (_isInterstitialAdReady) {
-      _interstitialAd.show();
-      _isInterstitialAdReady = false;
-      loadInterstitialAd(); // Reklamı tekrar yükle
+    if (AdManager.isInterstitialAdReady) {
+      AdManager.showInterstitialAd();
 
       // Reklam gösteriminden sonra hak ekleme işlemi
-      _interstitialAd.fullScreenContentCallback = FullScreenContentCallback(
+      AdManager.interstitialAd?.fullScreenContentCallback = FullScreenContentCallback(
         onAdDismissedFullScreenContent: (InterstitialAd ad) {
           // Kullanıcı reklamı kapattıktan sonra hak ekle
           ad.dispose();
@@ -1386,7 +1373,8 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                 .map((wordData) => wordData['word']!.length)
                 .reduce((a, b) => a > b ? a : b);
 
-            showInterstitialAd();
+            if (checkIfShouldShowAds(currentMainSection, currentSubSection))
+              AdManager.showInterstitialAd();
 
             // Çokgen kenarlarını güncellemek için bir callback'e bırak
             showNextLevelDialog(
@@ -1501,7 +1489,8 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
               .map((wordData) => wordData['word']!.length)
               .reduce((a, b) => a > b ? a : b);
           
-          showInterstitialAd(); // Reklamı göster
+          if (checkIfShouldShowAds(currentMainSection, currentSubSection))
+              AdManager.showInterstitialAd();
 
           showNextLevelDialog(
             context,
@@ -1539,55 +1528,6 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
       showWordHintAnimation = false;
       isWordHintActive = false; 
     });
-  }
-
-  void createAndLoadBannerAd() {
-    _bannerAd = BannerAd(
-      adUnitId: 'ca-app-pub-3940256099942544/2934735716', // AdMob reklam birimi kimliğiniz
-      size: AdSize.banner,
-      request: AdRequest(),
-      listener: BannerAdListener(
-        onAdLoaded: (_) {
-          setState(() {
-            _isBannerAdReady = true;
-          });
-        },
-        onAdFailedToLoad: (ad, error) {
-          print('Banner failed to load: $error');
-          ad.dispose();
-        },
-      ),
-    );
-    _bannerAd.load();
-  }
-
-  // Interstitial reklamı yükleyen fonksiyon
-  void loadInterstitialAd() {
-    InterstitialAd.load(
-      adUnitId: 'ca-app-pub-3940256099942544/4411468910', // AdMob interstitial reklam birimi kimliğiniz
-      request: AdRequest(),
-      adLoadCallback: InterstitialAdLoadCallback(
-        onAdLoaded: (InterstitialAd ad) {
-          _interstitialAd = ad;
-          _isInterstitialAdReady = true;
-        },
-        onAdFailedToLoad: (LoadAdError error) {
-          print('Interstitial ad failed to load: $error');
-          _isInterstitialAdReady = false;
-        },
-      ),
-    );
-  }
-
-  // Interstitial reklamı gösteren fonksiyon
-  void showInterstitialAd() {
-    if (checkIfShouldShowAds(currentMainSection, currentSubSection) && _isInterstitialAdReady) {
-      _interstitialAd.show();
-      _isInterstitialAdReady = false;
-      loadInterstitialAd(); // Reklamı tekrar yükle
-    } else {
-      print('Interstitial ad is not ready yet.');
-    }
   }
 
   bool checkIfShouldShowAds(String mainSection, String subSection) {

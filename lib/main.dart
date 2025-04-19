@@ -1,6 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pyramid_puzzle/ad_manager.dart';
 import 'package:pyramid_puzzle/background_music.dart';
 import 'package:video_player/video_player.dart';
 import 'puzzle_game.dart'; // Oyun sayfası dosyasını dahil edin
@@ -77,6 +78,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    AdManager.loadRewardedAd();
     requestAppTrackingPermission();
 
     _videoController = VideoPlayerController.asset('assets/videos/dongu.mp4')

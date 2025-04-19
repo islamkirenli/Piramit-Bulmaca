@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:lottie/lottie.dart';
+import 'package:pyramid_puzzle/ad_manager.dart';
 import 'package:pyramid_puzzle/circle_painter.dart';
 import 'package:pyramid_puzzle/level_complete_dialog.dart';
 import 'daily_puzzle_data.dart'; // Günlük puzzle verileri (liste)
@@ -68,11 +69,7 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
   String? currentCorrectGuessImage;
 
   // Reklamlar
-  late BannerAd _bannerAd;
-  bool _isBannerAdReady = false;
   late Timer _bannerAdTimer;
-  late InterstitialAd _interstitialAd;
-  bool _isInterstitialAdReady = false;
 
   // Yanlış seçimler için küçük bir bekleme
   Timer? _wrongChoiceTimer;
@@ -116,15 +113,13 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
       'assets/images/correct_guess/correct_guess4.png',
     ];
 
-    // Başlangıçta Banner ve Interstitial reklamları yükle
-    createAndLoadBannerAd();
-    loadInterstitialAd();
+    AdManager.loadBannerAd();
+    AdManager.loadInterstitialAd();
 
     // Banner reklamı 5 saniyede bir yenileme
     _bannerAdTimer = Timer.periodic(Duration(seconds: 5), (_) {
       setState(() {
-        _bannerAd.dispose();
-        createAndLoadBannerAd();
+        AdManager.loadBannerAd();
       });
     });
 
@@ -167,8 +162,6 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
   @override
   void dispose() {
     _bannerAdTimer.cancel();
-    _bannerAd.dispose();
-    _interstitialAd.dispose();
     _correctGuessController.dispose();
     _settingsIconController.dispose();
     _clickAudioPlayer?.dispose();
@@ -483,12 +476,8 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
                 SizedBox(height: 5 * scaleFactor),
 
                 // Banner reklam alanı
-                if (_isBannerAdReady)
-                  Container(
-                    height: _bannerAd.size.height.toDouble(),
-                    width: _bannerAd.size.width.toDouble(),
-                    child: AdWidget(ad: _bannerAd),
-                  ),
+                if (AdManager.bannerAd != null)
+                  AdManager.getBannerAdWidget()
               ],
             ),
           ),
@@ -629,7 +618,7 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
         } else {
           GlobalProperties.puzzleForTodayCompleted.value = true;
           Timer(Duration(seconds: 2), () {
-            showInterstitialAd();
+            AdManager.showInterstitialAd();
             showLevelCompleteDialog(context, sourcePage: 'daily_puzzle_game');
           });
         }
@@ -693,54 +682,6 @@ class _DailyPuzzleGameState extends State<DailyPuzzleGame>
       });
       saveGameData();
     });
-  }
-
-  /// Reklamlar
-  void createAndLoadBannerAd() {
-    _bannerAd = BannerAd(
-      adUnitId: 'ca-app-pub-3940256099942544/2934735716',
-      size: AdSize.banner,
-      request: AdRequest(),
-      listener: BannerAdListener(
-        onAdLoaded: (_) {
-          setState(() {
-            _isBannerAdReady = true;
-          });
-        },
-        onAdFailedToLoad: (ad, error) {
-          print('Banner yüklenemedi: $error');
-          ad.dispose();
-        },
-      ),
-    );
-    _bannerAd.load();
-  }
-
-  void loadInterstitialAd() {
-    InterstitialAd.load(
-      adUnitId: 'ca-app-pub-3940256099942544/4411468910',
-      request: AdRequest(),
-      adLoadCallback: InterstitialAdLoadCallback(
-        onAdLoaded: (InterstitialAd ad) {
-          _interstitialAd = ad;
-          _isInterstitialAdReady = true;
-        },
-        onAdFailedToLoad: (LoadAdError error) {
-          print('Interstitial yüklenemedi: $error');
-          _isInterstitialAdReady = false;
-        },
-      ),
-    );
-  }
-
-  void showInterstitialAd() {
-    if (_isInterstitialAdReady) {
-      _interstitialAd.show();
-      _isInterstitialAdReady = false;
-      loadInterstitialAd(); // Bir sonraki gösterim için yeniden yükle
-    } else {
-      print('Interstitial henüz hazır değil.');
-    }
   }
 
   Future<void> saveGameData() async {

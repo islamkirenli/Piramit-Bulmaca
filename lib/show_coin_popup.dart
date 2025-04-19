@@ -3,27 +3,10 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'global_properties.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'ad_manager.dart';
 
 Future<void> showCoinPopup(BuildContext context) async {
-  RewardedAd? _rewardedAd;
   AudioPlayer _clickAudioPlayer = AudioPlayer();
-
-  // Reklamı yükleme fonksiyonu
-  void loadRewardedAd() {
-    RewardedAd.load(
-      adUnitId: 'ca-app-pub-3940256099942544/5224354917', // Test reklam ID'si
-      request: const AdRequest(),
-      rewardedAdLoadCallback: RewardedAdLoadCallback(
-        onAdLoaded: (RewardedAd ad) {
-          _rewardedAd = ad;
-        },
-        onAdFailedToLoad: (LoadAdError error) {
-          debugPrint('Rewarded ad failed to load: $error');
-          _rewardedAd = null;
-        },
-      ),
-    );
-  }
 
   // Coin ve diğer verilerin kaydedilmesi
   Future<void> saveGameData() async {
@@ -38,8 +21,8 @@ Future<void> showCoinPopup(BuildContext context) async {
 
   // Reklamı gösterme ve coin ekleme fonksiyonu
   void showRewardedAd() {
-    if (_rewardedAd != null) {
-      _rewardedAd!.show(
+    if (AdManager.rewardedAd != null) {
+      AdManager.rewardedAd!.show(
         onUserEarnedReward: (AdWithoutView ad, RewardItem reward) {
           // Kullanıcıya coin ekle
           int earnedCoins = 75; // Reklam başına kazanılan coin miktarı
@@ -49,8 +32,8 @@ Future<void> showCoinPopup(BuildContext context) async {
           saveGameData();
         },
       );
-      _rewardedAd = null;
-      loadRewardedAd();
+      AdManager.rewardedAd = null;
+      AdManager.loadRewardedAd();
     } else {
       debugPrint('Rewarded ad is not ready yet.');
       ScaffoldMessenger.of(context).showSnackBar(
@@ -61,9 +44,6 @@ Future<void> showCoinPopup(BuildContext context) async {
       );
     }
   }
-
-  // Popup açılmadan önce reklam yükleniyor
-  loadRewardedAd();
 
   await showDialog(
     context: context,
