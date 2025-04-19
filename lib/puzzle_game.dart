@@ -594,7 +594,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                     Padding(
                       padding: EdgeInsets.only(right: 16.0 * scaleFactor, bottom: 1.0 * scaleFactor),
                       child: GestureDetector(
-                        onTap: widget.isCompleted
+                        onTap: widget.isCompleted || isWordHintActive
                             ? null
                             : () {
                                 showSingleHint();
@@ -694,11 +694,11 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.0 * scaleFactor),
                   child: GestureDetector(
-                    onPanUpdate: (details) {
+                    onPanUpdate: isWordHintActive ? null : (details) {
                       final localPosition = details.localPosition;
                       onLetterDrag(localPosition, polygonSize);
                     },
-                    onPanEnd: (_) => onDragEnd(),
+                    onPanEnd: isWordHintActive ? null : (_) => onDragEnd(),
                     child: Stack(
                       alignment: Alignment.center,
                       children: [
@@ -1418,13 +1418,10 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
         puzzleSections[currentMainSection]![currentSubSection]![currentIndex]['word']!;
     int cost = (currentWord.length - 1) * 50;
 
-    setState(() {
-      isWordHintActive = true; // Animasyon başladı
-    });
-
     if (GlobalProperties.wordHintCount.value > 0) {
       setState(() {
         GlobalProperties.wordHintCount.value--;
+        isWordHintActive = true;
       });
       saveGameData();
     } else {
@@ -1435,6 +1432,7 @@ class _PuzzleGameState extends State<PuzzleGame> with WidgetsBindingObserver, Ti
       } else {
         setState(() {
           GlobalProperties.coin.value -= cost;
+          isWordHintActive = true;
         });
         saveGameData();
       }
